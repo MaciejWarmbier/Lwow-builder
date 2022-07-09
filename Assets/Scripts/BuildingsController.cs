@@ -26,7 +26,7 @@ public class BuildingsController : MonoBehaviour
             }
         }
 
-        return availableBuildings;
+        return availableBuildinga;
     }
 
 }
