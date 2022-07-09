@@ -9,19 +9,23 @@ using UnityEngine.UI;
 public class Building : MonoBehaviour
 {
     [SerializeField] string buildingName;
-    [SerializeField] int levelRequirement;
     [SerializeField] int foodCost;
     [SerializeField] int resourcesCost;
     [SerializeField] int buildingScore;
+    [SerializeField] int moraleProduction;
+    [SerializeField] int resourcesProduction;
+    [SerializeField] int foodProduction;
     [SerializeField] Sprite buildingImage; 
     [SerializeField] string description; 
-    public int LevelRequirement { get { return levelRequirement; } }
+
     public int FoodCost { get { return foodCost; } }
     public int ResourcesCost { get { return resourcesCost; } }
     public Sprite BuildingImage { get { return buildingImage; } }
     public string Description { get { return description; } }
     public int BuildingScore { get { return buildingScore; } }
-
+    public int MoraleProduction { get { return moraleProduction; } }
+    public int ResourcesProduction { get { return resourcesProduction; } }
+    public int FoodProduction { get { return foodProduction; } }
 
     public Action HoveredOver;
     public Action StoppedHover;
@@ -53,6 +57,11 @@ public class Building : MonoBehaviour
     {
         var instantiatedBuilding = Instantiate(building.gameObject, position, Quaternion.identity);
         return instantiatedBuilding;
+    }
+
+    public virtual bool CheckIfPossibleToBuild()
+    {
+        return true;
     }
 
     // Start is called before the first frame update

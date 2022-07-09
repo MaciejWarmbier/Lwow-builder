@@ -21,5 +21,5 @@ public class Choice
     public int resourcesChange;
     public int foodChange;
     public int moraleChange;
-    public string choiceResult;
+    public string choiceResultText;
 }

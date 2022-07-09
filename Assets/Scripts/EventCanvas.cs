@@ -72,7 +72,7 @@ public class EventCanvas : MonoBehaviour
         VillageResources.villageResources.ChangeFood(selectedChoice.foodChange);
         VillageResources.villageResources.ChangeMorale(selectedChoice.moraleChange);
         VillageResources.villageResources.ChangeResources(selectedChoice.resourcesChange);
-        description.text = selectedChoice.choiceResult;
+        description.text = selectedChoice.choiceResultText;
         ShowContinueButton();
     }
 

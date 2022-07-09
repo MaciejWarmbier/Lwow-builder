@@ -16,6 +16,11 @@ public class WorldController : MonoBehaviour
     private bool isCycleActive = false;
     private bool isPaused = false;
     private bool isEventOnCooldown = false;
+
+    public bool isPerunActivated = false;
+    public bool isCityHallBuilt = false;
+
+
     private float eventTime = 0;
     private int cycle = 0;
     private IEnumerator coroutine;
@@ -34,11 +39,6 @@ public class WorldController : MonoBehaviour
 
     private void Update()
     {
-        //if (!isEventActive && Time.time > eventCooldown && !isPaused)
-        //{
-        //    StartCoroutine("StartEvent");
-        //}
-
         if (Input.GetKeyUp(KeyCode.P) && !isEventActive)
         {
             ChangePauseCanvas();
