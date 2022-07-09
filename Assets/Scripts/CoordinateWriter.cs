@@ -56,19 +56,18 @@ public class CoordinateWriter : MonoBehaviour
         ObjectNode node = gridManager.GetNode(coordinates);
         if (node == null) return;
 
-        if (!node.isUsable)
+        if (node.isClickable)
         {
-            coordinateLabel.color = blockedColor;
+            coordinateLabel.color = defaultColor;
         }
-        else if (node.isCleared)
-        {
-            coordinateLabel.color = pathColor;
-        }
-        else if (node.isTaken)
+        else if (node.isResource)
         {
             coordinateLabel.color = exploredColor;
         }
-        else coordinateLabel.color = defaultColor;
+        else 
+        {
+            coordinateLabel.color = blockedColor;
+        }
     }
 
     void DisplayCoordinates()

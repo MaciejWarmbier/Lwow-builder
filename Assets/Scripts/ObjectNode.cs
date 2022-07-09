@@ -5,13 +5,12 @@ using UnityEngine;
 public class ObjectNode
 {
     public Vector2Int coordinates;
-    public bool isUsable;
-    public bool isCleared;
-    public bool isTaken;
+    public bool isClickable;
+    public bool isResource;
 
-    public ObjectNode(Vector2Int coordinates, bool isWalkable)
+    public ObjectNode(Vector2Int coordinates, bool isClickable)
     {
         this.coordinates = coordinates;
-        this.isUsable = isWalkable;
+        this.isClickable = isClickable;
     }
 }

@@ -5,7 +5,8 @@ using UnityEngine.EventSystems;
 
 public class Tile : MonoBehaviour
 {
-    [SerializeField] bool isPlaceable;
+    [SerializeField] bool isClickable;
+    [SerializeField] bool isResource;
     [SerializeField] BuildingSelectionCanvas buildingSelectionCanvas;
     [SerializeField] GameObject hoverMesh;
 
@@ -14,7 +15,6 @@ public class Tile : MonoBehaviour
     private GridManager gridManager;
     private Vector2Int coordinates = new Vector2Int();
 
-    public bool IsPlaceable { get { return isPlaceable; } }
     private bool isSelected = false;
 
     private void Awake()
@@ -28,9 +28,13 @@ public class Tile : MonoBehaviour
         {
             coordinates = gridManager.GetCoordinatesFromPosotion(transform.position);
 
-            if (!isPlaceable)
+            if (!isClickable)
             {
                 gridManager.BlockNode(coordinates);
+            }
+            if (isResource)
+            {
+                gridManager.CreateResource(coordinates);
             }
         }
     }
@@ -39,7 +43,7 @@ public class Tile : MonoBehaviour
         //TODO -=
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            if (gridManager.GetNode(coordinates).isUsable)
+            if (gridManager.GetNode(coordinates).isClickable)
             {
                 var canvas = Instantiate(buildingSelectionCanvas);
                 canvas.OnCanvasClosed += OnBuildingSelection;
@@ -71,7 +75,7 @@ public class Tile : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (!EventSystem.current.IsPointerOverGameObject())
+        if (!EventSystem.current.IsPointerOverGameObject() && (isClickable || isResource))
         {
             Hover();
         }
@@ -79,7 +83,7 @@ public class Tile : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (!EventSystem.current.IsPointerOverGameObject())
+        if (!EventSystem.current.IsPointerOverGameObject() && (isClickable || isResource))
         {
             StopHover();
         }

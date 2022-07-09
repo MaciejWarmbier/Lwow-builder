@@ -40,15 +40,15 @@ public class GridManager : MonoBehaviour
     {
         if (grid.ContainsKey(coordinates))
         {
-            grid[coordinates].isUsable = false;
+            grid[coordinates].isClickable = false;
         }
     }
-    public void ResetNodes()
+    
+    public void CreateResource(Vector2Int coordinates)
     {
-        foreach (KeyValuePair<Vector2Int, ObjectNode> entry in grid)
+        if (grid.ContainsKey(coordinates))
         {
-            entry.Value.isTaken = false;
-            entry.Value.isCleared = false;
+            grid[coordinates].isResource = true;
         }
     }
 
@@ -61,15 +61,5 @@ public class GridManager : MonoBehaviour
         coordinates.y = Mathf.RoundToInt(position.z / unityGridSizeSnap);
 
         return coordinates;
-    }
-
-    public Vector3 GetPostionFromCoordinates(Vector2 coordinates)
-    {
-        Vector3 position = new Vector3();
-
-        position.x = coordinates.x * unityGridSizeSnap;
-        position.z = coordinates.y * unityGridSizeSnap;
-
-        return position;
     }
 }

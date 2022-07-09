@@ -320,7 +320,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a159727636cdff747b1c6ed152b849d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlaceable: 1
+  isClickable: 1
+  isResource: 0
   buildingSelectionCanvas: {fileID: 4276697632863640977, guid: a10f71fadf455604d93a03644218785d, type: 3}
   hoverMesh: {fileID: 6095185676694195245}
 --- !u!65 &5503434025645111032
