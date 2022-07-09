@@ -5,13 +5,19 @@ using UnityEngine.Assertions;
 
 public class WorldController : MonoBehaviour
 {
-    [SerializeField] EventCanvas eventCanvas;
-    [SerializeField] float eventTimer;
+    [SerializeField] private EventCanvas eventCanvas;
+    [SerializeField] private float eventCooldown;
+    [SerializeField] private float cycleTime;
     [SerializeField] private Canvas gameUI;
     [SerializeField] private Canvas pauseUI;
 
+    private Queue<GameEvent> queuedEvents = new Queue<GameEvent>();
     private bool isEventActive = false;
+    private bool isCycleActive = false;
     private bool isPaused = false;
+    private bool isEventOnCooldown = false;
+    private float eventTime = 0;
+    private int cycle = 0;
     private IEnumerator coroutine;
     public static WorldController worldController;
 
@@ -28,29 +34,68 @@ public class WorldController : MonoBehaviour
 
     private void Update()
     {
-        if (!isEventActive && Time.time > eventTimer && !isPaused)
-        {
-            StartCoroutine("StartEvent");
-        }
+        //if (!isEventActive && Time.time > eventCooldown && !isPaused)
+        //{
+        //    StartCoroutine("StartEvent");
+        //}
 
         if (Input.GetKeyUp(KeyCode.P) && !isEventActive)
         {
             ChangePauseCanvas();
         }
-        Debug.Log(Time.time);
+
+        if (!isEventActive && Time.time > cycleTime && !isPaused && !isCycleActive)
+        {
+            StartCoroutine("MakeCycle");
+        }
+
+        if(isEventOnCooldown && Time.time > eventTime + eventCooldown)
+        {
+            isEventOnCooldown = false;
+            if(queuedEvents.Count > 0)
+            {
+                StartCoroutine("StartEvent");
+            }
+        }
+    }
+
+    private IEnumerator MakeCycle()
+    {
+        isCycleActive = true;
+        cycle++;
+        VillageResources.villageResources.ProcessCycle(cycle);
+        yield return new WaitForSeconds(cycleTime);
+        isCycleActive = false;
+    }
+
+    public void CheckEvent()
+    {
+        List<GameEvent> gameEvents = GameEventsController.gameEventsController.GetEvent();
+        if (gameEvents == null || gameEvents.Count < 0) return;
+        else
+        {
+            foreach(GameEvent gameEvent in gameEvents)
+            {
+                queuedEvents.Enqueue(gameEvent);
+            }
+
+            if (!isEventOnCooldown)
+            {
+                StartCoroutine("StartEvent");
+            }
+        }
     }
 
     private IEnumerator StartEvent()
     {
+        
         isEventActive = true;
-        GameEvent gameEvent = GameEventsController.gameEventsController.GetEvent();
         var canvas = Instantiate(eventCanvas);
-        canvas.ShowEvent(gameEvent);
+        canvas.ShowEvent(queuedEvents.Dequeue());
         PauseGame();
         yield return new WaitUntil(() => canvas.HasEnded);
-
-        yield return new WaitForSeconds(eventTimer);
-
+        isEventOnCooldown = true;
+        eventTime = Time.time;
         isEventActive = false;
     }
 

@@ -12,6 +12,7 @@ public class Building : MonoBehaviour
     [SerializeField] int levelRequirement;
     [SerializeField] int foodCost;
     [SerializeField] int resourcesCost;
+    [SerializeField] int buildingScore;
     [SerializeField] Sprite buildingImage; 
     [SerializeField] string description; 
     public int LevelRequirement { get { return levelRequirement; } }
@@ -19,6 +20,7 @@ public class Building : MonoBehaviour
     public int ResourcesCost { get { return resourcesCost; } }
     public Sprite BuildingImage { get { return buildingImage; } }
     public string Description { get { return description; } }
+    public int BuildingScore { get { return buildingScore; } }
 
 
     public Action HoveredOver;
@@ -49,20 +51,8 @@ public class Building : MonoBehaviour
 
     public GameObject CreateBuilding(Building building, Vector3 position)
     {
-        //Bank bank = FindObjectOfType<Bank>();
-        //if (bank == null)
-        //{
-        //    return false;
-        //}
-
-        //if (bank.CurrentBalance >= cost)
-        //{
-            var instantiatedBuilding = Instantiate(building.gameObject, position, Quaternion.identity);
-            //bank.Withdrawal(cost);
-            return instantiatedBuilding;
-        //}
-
-        //return false;
+        var instantiatedBuilding = Instantiate(building.gameObject, position, Quaternion.identity);
+        return instantiatedBuilding;
     }
 
     // Start is called before the first frame update

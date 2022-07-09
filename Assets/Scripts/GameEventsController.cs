@@ -13,24 +13,23 @@ public class GameEventsController : MonoBehaviour
         gameEventsController = GetComponent<GameEventsController>();
     }
 
-    public GameEvent GetEvent()
+    public List<GameEvent> GetEvent()
     {
         List<GameEvent> possibleEvents = new List<GameEvent>();
-        foreach (GameEvent gameEvent in events)
+        for (int i = 0; i< events.Count; i++)
         {
-            if(!gameEvent.wasUsed && gameEvent.eventLevel == VillageResources.villageResources.Level)
+            if (!events[i].wasUsed && events[i].eventLevel <= VillageResources.villageResources.BuildingScore)
             {
-                possibleEvents.Add(gameEvent);
+                possibleEvents.Add(events[i]);
+                events[i].wasUsed = true;
             }
         }
         if (possibleEvents.Count == 0)
         {
-            Debug.LogError("No possible events to get!");
+            //Debug.LogError("No possible events to get!");
             return null;
         }
 
-        int randomIndex = Random.Range(0, possibleEvents.Count-1);
-
-        return possibleEvents[randomIndex];
+        return possibleEvents;
     }
 }

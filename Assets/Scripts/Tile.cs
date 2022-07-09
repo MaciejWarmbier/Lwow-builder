@@ -65,6 +65,8 @@ public class Tile : MonoBehaviour
                 building.StoppedHover += StopHover;
                 gridManager.BlockNode(coordinates);
                 StopHover();
+                VillageResources.villageResources.ChangeBuildingScore(boughtBuilding.BuildingScore);
+                WorldController.worldController.CheckEvent();
             }
         }
         else
