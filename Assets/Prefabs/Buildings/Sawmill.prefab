@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 1602534005798488506}
   - component: {fileID: 1602534005797489530}
   - component: {fileID: 790865502987575155}
+  - component: {fileID: 3707126454964146881}
   m_Layer: 0
-  m_Name: House_07
+  m_Name: Sawmill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116,6 +117,28 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 2b49f0206a5e72f49b2d9955527e112f, type: 3}
+--- !u!114 &3707126454964146881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1602534005799491002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a585d224e991aaa4395fc624bc62f8a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingName: Sawmill
+  isBig: 0
+  foodCost: 30
+  resourcesCost: 60
+  buildingScore: 2
+  moraleProduction: 0
+  resourcesProduction: 20
+  foodProduction: 0
+  buildingImage: {fileID: 0}
+  description: +20 {r} and +10 {r} if there are any trees nearby
 --- !u!1001 &65147849940523504
 PrefabInstance:
   m_ObjectHideFlags: 0
