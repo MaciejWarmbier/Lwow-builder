@@ -10,9 +10,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float minPositionZ = -40;
     [SerializeField] private float maxPositionZ = 16;
 
-
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         Vector3 pos = transform.position;
 

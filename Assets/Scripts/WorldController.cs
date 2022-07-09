@@ -37,6 +37,7 @@ public class WorldController : MonoBehaviour
         {
             ChangePauseCanvas();
         }
+        Debug.Log(Time.time);
     }
 
     private IEnumerator StartEvent()
@@ -45,6 +46,7 @@ public class WorldController : MonoBehaviour
         GameEvent gameEvent = GameEventsController.gameEventsController.GetEvent();
         var canvas = Instantiate(eventCanvas);
         canvas.ShowEvent(gameEvent);
+        PauseGame();
         yield return new WaitUntil(() => canvas.HasEnded);
 
         yield return new WaitForSeconds(eventTimer);
