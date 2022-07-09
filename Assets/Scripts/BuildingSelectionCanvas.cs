@@ -104,9 +104,9 @@ public class BuildingSelectionCanvas : MonoBehaviour
             OnCanvasClosed.Invoke(false, null);
             return;
         }
-        
-        villageResources.WithdrawFood(buildings[buildingIndex].FoodCost);
-        villageResources.WithdrawResources(buildings[buildingIndex].ResourcesCost);
+
+        VillageResources.villageResources.ChangeFood(-buildings[buildingIndex].FoodCost);
+        VillageResources.villageResources.ChangeResources(-buildings[buildingIndex].ResourcesCost);
 
         OnCanvasClosed.Invoke(true, buildings[buildingIndex]);
         CloseCanvas();
