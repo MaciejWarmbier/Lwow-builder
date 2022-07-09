@@ -66,6 +66,9 @@ public class Tile : MonoBehaviour
                 gridManager.BlockNode(coordinates);
                 StopHover();
                 VillageResources.villageResources.ChangeBuildingScore(boughtBuilding.BuildingScore);
+                VillageResources.villageResources.ChangeFoodProduction(boughtBuilding.FoodProduction);
+                VillageResources.villageResources.ChangeResourcesProduction(boughtBuilding.ResourcesProduction);
+                VillageResources.villageResources.ChangeMoraleProduction(boughtBuilding.MoraleProduction);
                 WorldController.worldController.CheckEvent();
             }
         }

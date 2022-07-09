@@ -8,6 +8,7 @@ public class GameEvent
 {
     public int eventLevel;
     public bool wasUsed = false;
+    public string title;
     public string description;
     public Choice rightChoice;
     public Choice leftChoice;

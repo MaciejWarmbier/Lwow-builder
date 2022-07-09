@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class Building : MonoBehaviour
 {
     [SerializeField] string buildingName;
+    [SerializeField] bool isBig;
     [SerializeField] int foodCost;
     [SerializeField] int resourcesCost;
     [SerializeField] int buildingScore;
