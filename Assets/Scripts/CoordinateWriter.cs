@@ -60,7 +60,7 @@ public class CoordinateWriter : MonoBehaviour
         {
             coordinateLabel.color = defaultColor;
         }
-        else if (node.isResource)
+        else if (node.isTree || node.isRock)
         {
             coordinateLabel.color = exploredColor;
         }

@@ -234,6 +234,7 @@ public class VillageResources : MonoBehaviour
         {
             if (morale + value < 0)
             {
+                WorldController.worldController.EndGame();
                 return false;
             }
             morale += value;
@@ -274,6 +275,7 @@ public class VillageResources : MonoBehaviour
         {
             if (moraleConsumption + value < 0)
             {
+                
                 return false;
             }
             moraleConsumption += value;

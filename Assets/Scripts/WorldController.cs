@@ -10,6 +10,7 @@ public class WorldController : MonoBehaviour
     [SerializeField] private float cycleTime;
     [SerializeField] private Canvas gameUI;
     [SerializeField] private Canvas pauseUI;
+    [SerializeField] private Canvas endGameUI;
 
     private Queue<GameEvent> queuedEvents = new Queue<GameEvent>();
     private bool isEventActive = false;
@@ -97,6 +98,11 @@ public class WorldController : MonoBehaviour
         isEventOnCooldown = true;
         eventTime = Time.time;
         isEventActive = false;
+    }
+
+    public void EndGame()
+    {
+        Instantiate(endGameUI);
     }
 
     private void ChangePauseCanvas()

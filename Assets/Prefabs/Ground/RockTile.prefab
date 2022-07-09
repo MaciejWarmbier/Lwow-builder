@@ -1560,6 +1560,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5503434025645111035, guid: 5255bc81c20f10d42a2f65357d0fb149, type: 3}
+      propertyPath: isRock
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5503434025645111035, guid: 5255bc81c20f10d42a2f65357d0fb149, type: 3}
       propertyPath: hoverMesh
       value: 
       objectReference: {fileID: 2270806563653532179}

@@ -44,11 +44,19 @@ public class GridManager : MonoBehaviour
         }
     }
     
-    public void CreateResource(Vector2Int coordinates)
+    public void CreateTreeResource(Vector2Int coordinates)
     {
         if (grid.ContainsKey(coordinates))
         {
-            grid[coordinates].isResource = true;
+            grid[coordinates].isTree = true;
+        }
+    }
+
+    public void CreateRockResource(Vector2Int coordinates)
+    {
+        if (grid.ContainsKey(coordinates))
+        {
+            grid[coordinates].isRock = true;
         }
     }
 

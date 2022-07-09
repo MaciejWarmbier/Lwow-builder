@@ -6,9 +6,11 @@ using UnityEngine.EventSystems;
 public class Tile : MonoBehaviour
 {
     [SerializeField] bool isClickable;
-    [SerializeField] bool isResource;
+    [SerializeField] bool isTree;
+    [SerializeField] bool isRock;
     [SerializeField] BuildingSelectionCanvas buildingSelectionCanvas;
     [SerializeField] GameObject hoverMesh;
+    
 
     private Building building;
     private Renderer tileRenderer;
@@ -16,6 +18,8 @@ public class Tile : MonoBehaviour
     private Vector2Int coordinates = new Vector2Int();
 
     private bool isSelected = false;
+    private bool isRockSmashed = false;
+    private bool isTreeSmashed = false;
 
     private void Awake()
     {
@@ -32,9 +36,13 @@ public class Tile : MonoBehaviour
             {
                 gridManager.BlockNode(coordinates);
             }
-            if (isResource)
+            if (isTree)
             {
-                gridManager.CreateResource(coordinates);
+                gridManager.CreateTreeResource(coordinates);
+            }
+            if (isRock)
+            {
+                gridManager.CreateRockResource(coordinates);
             }
         }
     }
@@ -48,7 +56,35 @@ public class Tile : MonoBehaviour
                 var canvas = Instantiate(buildingSelectionCanvas);
                 canvas.OnCanvasClosed += OnBuildingSelection;
             }
+            else if (gridManager.GetNode(coordinates).isTree && !isTreeSmashed)
+            {
+                StartCoroutine("SmashThatTree");
+            }
+            else if (gridManager.GetNode(coordinates).isRock && !isRockSmashed)
+            {
+                StartCoroutine("SmashThatRock");
+            }
         }
+    }
+
+    private IEnumerator SmashThatTree()
+    {
+        isTreeSmashed = true;
+        int number = Random.Range(1, 2);
+        VillageResources.villageResources.ChangeResources(number);
+
+        yield return new WaitForSeconds(1);
+        isTreeSmashed = false;
+    }
+
+    private IEnumerator SmashThatRock()
+    {
+        isRockSmashed = true;
+        int number = Random.Range(0, 3);
+        VillageResources.villageResources.ChangeResources(number);
+
+        yield return new WaitForSeconds(1);
+        isRockSmashed = false;
     }
 
     private void OnBuildingSelection(bool isBought, Building boughtBuilding)
@@ -80,7 +116,7 @@ public class Tile : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (!EventSystem.current.IsPointerOverGameObject() && (isClickable || isResource))
+        if (!EventSystem.current.IsPointerOverGameObject() && (isClickable || isTree || isRock))
         {
             Hover();
         }
@@ -88,7 +124,7 @@ public class Tile : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (!EventSystem.current.IsPointerOverGameObject() && (isClickable || isResource))
+        if (!EventSystem.current.IsPointerOverGameObject() && (isClickable || isTree || isRock))
         {
             StopHover();
         }
@@ -99,7 +135,7 @@ public class Tile : MonoBehaviour
         if (!isSelected)
         {
             isSelected = true;
-            hoverMesh.active = true;
+            hoverMesh.SetActive(true);
             tileRenderer.material.SetColor("_Color", Color.red);
         }
     }
@@ -109,7 +145,7 @@ public class Tile : MonoBehaviour
         if (isSelected)
         {
             isSelected = false;
-            hoverMesh.active = false;
+            hoverMesh.SetActive(false);
             tileRenderer.material.SetColor("_Color", Color.green);
         }
     }

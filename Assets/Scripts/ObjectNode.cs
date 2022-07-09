@@ -6,7 +6,8 @@ public class ObjectNode
 {
     public Vector2Int coordinates;
     public bool isClickable;
-    public bool isResource;
+    public bool isRock;
+    public bool isTree;
 
     public ObjectNode(Vector2Int coordinates, bool isClickable)
     {
