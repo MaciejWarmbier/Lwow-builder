@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8396534493604826377}
   - component: {fileID: 259992478080628544}
   m_Layer: 0
-  m_Name: House_05
+  m_Name: House_05_ratusz
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,6 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 647168090374487585}
+  - {fileID: 2971538770679565161}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -99,6 +100,80 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 18c49bb3310ae4444aab99aeb9a42dac, type: 3}
+--- !u!1001 &1118336729707729114
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8396534493602926569}
+    m_Modifications:
+    - target: {fileID: 2790023468704881587, guid: b42502ca7860b564295d11d3c3d900f7, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2790023468704881587, guid: b42502ca7860b564295d11d3c3d900f7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.3318167
+      objectReference: {fileID: 0}
+    - target: {fileID: 2790023468704881587, guid: b42502ca7860b564295d11d3c3d900f7, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.7741
+      objectReference: {fileID: 0}
+    - target: {fileID: 2790023468704881587, guid: b42502ca7860b564295d11d3c3d900f7, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2087427
+      objectReference: {fileID: 0}
+    - target: {fileID: 2790023468704881587, guid: b42502ca7860b564295d11d3c3d900f7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2790023468704881587, guid: b42502ca7860b564295d11d3c3d900f7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.0055
+      objectReference: {fileID: 0}
+    - target: {fileID: 2790023468704881587, guid: b42502ca7860b564295d11d3c3d900f7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.00000023837
+      objectReference: {fileID: 0}
+    - target: {fileID: 2790023468704881587, guid: b42502ca7860b564295d11d3c3d900f7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071325
+      objectReference: {fileID: 0}
+    - target: {fileID: 2790023468704881587, guid: b42502ca7860b564295d11d3c3d900f7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2790023468704881587, guid: b42502ca7860b564295d11d3c3d900f7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7070811
+      objectReference: {fileID: 0}
+    - target: {fileID: 2790023468704881587, guid: b42502ca7860b564295d11d3c3d900f7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2790023468704881587, guid: b42502ca7860b564295d11d3c3d900f7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2790023468704881587, guid: b42502ca7860b564295d11d3c3d900f7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -89.996
+      objectReference: {fileID: 0}
+    - target: {fileID: 2790023468704881587, guid: b42502ca7860b564295d11d3c3d900f7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2790023468705367955, guid: b42502ca7860b564295d11d3c3d900f7, type: 3}
+      propertyPath: m_Name
+      value: SmallHouse_07
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b42502ca7860b564295d11d3c3d900f7, type: 3}
+--- !u!4 &2971538770679565161 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2790023468704881587, guid: b42502ca7860b564295d11d3c3d900f7, type: 3}
+  m_PrefabInstance: {fileID: 1118336729707729114}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6847942294325964562
 PrefabInstance:
   m_ObjectHideFlags: 0

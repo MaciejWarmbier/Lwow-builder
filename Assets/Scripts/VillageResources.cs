@@ -14,6 +14,7 @@ public class VillageResources : MonoBehaviour
     [SerializeField] TextMeshProUGUI foodLabel;
     [SerializeField] TextMeshProUGUI moraleLabel;
 
+    public static VillageResources villageResources;
     public int Resources { get { return resources; } }
     public int Food { get { return food; } }
     public int Morale { get { return morale; } }
@@ -24,6 +25,8 @@ public class VillageResources : MonoBehaviour
         Assert.IsNotNull(resourcesLabel);
         Assert.IsNotNull(foodLabel);
         Assert.IsNotNull(moraleLabel);
+
+        villageResources = GetComponent<VillageResources>();
     }
 
     private void Start()
@@ -31,55 +34,64 @@ public class VillageResources : MonoBehaviour
         UpdateLabels();
     }
 
-    public void AddResources(int addValue)
+    public bool ChangeResources(int value)
     {
-        resources += addValue;
-        UpdateLabels();
-    }
-
-    public void AddFood(int addValue)
-    {
-        food += addValue;
-        UpdateLabels();
-    }
-
-    public void AddMorale(int addValue)
-    {
-        morale += addValue;
-        UpdateLabels();
-    }
-
-    public bool WithdrawResources(int minusValue)
-    {
-        if(resources - minusValue < 0)
+        if (value < 0)
         {
-            return false;
+            if (resources + value < 0)
+            {
+                return false;
+            }
+            resources += value;
+            UpdateLabels();
+            return true;
         }
-        resources -= minusValue;
-        UpdateLabels();
-        return true;
+        else
+        {
+            resources += value;
+            UpdateLabels();
+            return true;
+        }
     }
 
-    public bool WithdrawFood(int minusValue)
+    public bool ChangeFood(int value)
     {
-        if (food - minusValue < 0)
+        if(value < 0)
         {
-            return false;
+            if (food + value < 0)
+            {
+                return false;
+            }
+            food += value;
+            UpdateLabels();
+            return true;
         }
-        food -= minusValue;
-        UpdateLabels();
-        return true;
+        else
+        {
+            food += value;
+            UpdateLabels();
+            return true;
+        }
     }
 
-    public bool WithdrawMorale(int minusValue)
+    public bool ChangeMorale(int value)
     {
-        if (morale - minusValue < 0)
+        if (value < 0)
         {
-            return false;
+            if (morale + value < 0)
+            {
+                return false;
+            }
+            morale += value;
+            UpdateLabels();
+            return true;
         }
-        morale -= minusValue;
-        UpdateLabels();
-        return true;
+        else
+        {
+            morale += value;
+            UpdateLabels();
+            return true;
+        }
     }
     
     public void UpdateLabels()
