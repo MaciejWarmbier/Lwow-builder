@@ -6,9 +6,8 @@ using UnityEngine.EventSystems;
 public class Tile : MonoBehaviour
 {
     [SerializeField] bool isPlaceable;
-    [SerializeField] Material defaultMaterial;
-    [SerializeField] Material selectedMaterial;
     [SerializeField] BuildingSelectionCanvas buildingSelectionCanvas;
+    [SerializeField] GameObject hoverMesh;
 
     private Building building;
     private Renderer tileRenderer;
@@ -52,7 +51,9 @@ public class Tile : MonoBehaviour
     {
         if (isBought)
         {
-            GameObject createdBuilding = boughtBuilding.CreateBuilding(boughtBuilding, transform.position);
+            Vector3 buildingPosition = transform.position;
+            buildingPosition.y += 2;
+            GameObject createdBuilding = boughtBuilding.CreateBuilding(boughtBuilding, buildingPosition);
             if (createdBuilding != null)
             {
                 building = createdBuilding.GetComponent<Building>();
@@ -89,6 +90,7 @@ public class Tile : MonoBehaviour
         if (!isSelected)
         {
             isSelected = true;
+            hoverMesh.active = true;
             tileRenderer.material.SetColor("_Color", Color.red);
         }
     }
@@ -98,6 +100,7 @@ public class Tile : MonoBehaviour
         if (isSelected)
         {
             isSelected = false;
+            hoverMesh.active = false;
             tileRenderer.material.SetColor("_Color", Color.green);
         }
     }
