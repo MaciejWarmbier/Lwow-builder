@@ -6,19 +6,40 @@ using UnityEngine.Assertions;
 
 public class VillageResources : MonoBehaviour
 {
+    [Header("Resources")]
     [SerializeField] int resources;
-    [SerializeField] int food;
-    [SerializeField] int morale;
-    [SerializeField] int level;
+    [SerializeField] private int resourceConsumption;
+    [SerializeField] private int resourceProduction;
+    [SerializeField] private int resourceConsumptionCycle;
+    [SerializeField] private int resourceProductionCycle;
     [SerializeField] TextMeshProUGUI resourcesLabel;
+
+    [Header("Food")]
+    [SerializeField] int food;
+    [SerializeField] private int foodConsumption;
+    [SerializeField] private int foodProduction;
+    [SerializeField] private int foodConsumptionCycle;
+    [SerializeField] private int foodProductionCycle;
     [SerializeField] TextMeshProUGUI foodLabel;
+
+    [Header("Morale")]
+    [SerializeField] int morale;
+    [SerializeField] private int moraleConsumption;
+    [SerializeField] private int moraleProduction;
+    [SerializeField] private int moraleConsumptionCycle;
+    [SerializeField] private int moraleProductionCycle;
     [SerializeField] TextMeshProUGUI moraleLabel;
+
+    [SerializeField] int buildingScore;
+
 
     public static VillageResources villageResources;
     public int Resources { get { return resources; } }
     public int Food { get { return food; } }
     public int Morale { get { return morale; } }
-    public int Level { get { return level; } }
+    public int BuildingScore { get { return buildingScore; } }
+   
+    
 
     private void Awake()
     {
@@ -27,6 +48,59 @@ public class VillageResources : MonoBehaviour
         Assert.IsNotNull(moraleLabel);
 
         villageResources = GetComponent<VillageResources>();
+    }
+
+    public bool ChangeBuildingScore(int value)
+    {
+        if (value < 0)
+        {
+            if (buildingScore + value < 0)
+            {
+                return false;
+            }
+            buildingScore += value;
+            UpdateLabels();
+            return true;
+        }
+        else
+        {
+            buildingScore += value;
+            UpdateLabels();
+            return true;
+        }
+    }
+
+    public void ProcessCycle(int cycle)
+    {
+        if(cycle%foodConsumptionCycle == 0)
+        {
+            ChangeFood(-foodConsumption);
+        }
+
+        if (cycle % resourceConsumptionCycle == 0)
+        {
+            ChangeResources(-resourceConsumption);
+        }
+
+        if (cycle % moraleConsumptionCycle == 0)
+        {
+            ChangeMorale(-moraleConsumption);
+        }
+
+        if (cycle % foodProductionCycle == 0)
+        {
+            ChangeFood(foodProduction);
+        }
+
+        if (cycle % resourceProductionCycle == 0)
+        {
+            ChangeResources(resourceProduction);
+        }
+
+        if (cycle % moraleProductionCycle == 0)
+        {
+            ChangeMorale(moraleProduction);
+        }
     }
 
     private void Start()
@@ -54,6 +128,46 @@ public class VillageResources : MonoBehaviour
         }
     }
 
+    public bool ChangeResourcesProduction(int value)
+    {
+        if (value < 0)
+        {
+            if (resourceProduction + value < 0)
+            {
+                return false;
+            }
+            resourceProduction += value;
+            UpdateLabels();
+            return true;
+        }
+        else
+        {
+            resourceProduction += value;
+            UpdateLabels();
+            return true;
+        }
+    }
+
+    public bool ChangeResourcesConsumption(int value)
+    {
+        if (value < 0)
+        {
+            if (resourceConsumption + value < 0)
+            {
+                return false;
+            }
+            resourceConsumption += value;
+            UpdateLabels();
+            return true;
+        }
+        else
+        {
+            resourceConsumption += value;
+            UpdateLabels();
+            return true;
+        }
+    }
+
     public bool ChangeFood(int value)
     {
         if(value < 0)
@@ -69,6 +183,46 @@ public class VillageResources : MonoBehaviour
         else
         {
             food += value;
+            UpdateLabels();
+            return true;
+        }
+    }
+
+    public bool ChangeFoodProduction(int value)
+    {
+        if (value < 0)
+        {
+            if (foodProduction + value < 0)
+            {
+                return false;
+            }
+            foodProduction += value;
+            UpdateLabels();
+            return true;
+        }
+        else
+        {
+            foodProduction += value;
+            UpdateLabels();
+            return true;
+        }
+    }
+
+    public bool ChangeFoodConsumption(int value)
+    {
+        if (value < 0)
+        {
+            if (foodConsumption + value < 0)
+            {
+                return false;
+            }
+            foodConsumption += value;
+            UpdateLabels();
+            return true;
+        }
+        else
+        {
+            foodConsumption += value;
             UpdateLabels();
             return true;
         }
@@ -93,7 +247,47 @@ public class VillageResources : MonoBehaviour
             return true;
         }
     }
-    
+
+    public bool ChangeMoraleProduction(int value)
+    {
+        if (value < 0)
+        {
+            if (moraleProduction + value < 0)
+            {
+                return false;
+            }
+            moraleProduction += value;
+            UpdateLabels();
+            return true;
+        }
+        else
+        {
+            moraleProduction += value;
+            UpdateLabels();
+            return true;
+        }
+    }
+
+    public bool ChangeMoraleConsumption(int value)
+    {
+        if (value < 0)
+        {
+            if (moraleConsumption + value < 0)
+            {
+                return false;
+            }
+            moraleConsumption += value;
+            UpdateLabels();
+            return true;
+        }
+        else
+        {
+            moraleConsumption += value;
+            UpdateLabels();
+            return true;
+        }
+    }
+
     public void UpdateLabels()
     {
         foodLabel.text = food.ToString();

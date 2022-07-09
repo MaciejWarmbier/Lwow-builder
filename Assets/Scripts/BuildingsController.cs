@@ -20,7 +20,7 @@ public class BuildingsController : MonoBehaviour
         List<Building> availableBuildings = new List<Building>();
         foreach(var building in buildingPrefabs)
         {
-            if(building.LevelRequirement <= village.Level)
+            if(building.LevelRequirement <= village.BuildingScore)
             {
                 availableBuildings.Add(building);
             }
