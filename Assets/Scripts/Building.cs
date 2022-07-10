@@ -31,6 +31,8 @@ public class Building : MonoBehaviour
     public Action HoveredOver;
     public Action StoppedHover;
 
+    public bool isGhosted = true;
+
     public void Awake()
     {
         Assert.IsFalse(string.IsNullOrEmpty(buildingName));
@@ -72,8 +74,16 @@ public class Building : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
-        
+        if (isGhosted)
+        {
+            gameObject.transform.position = Input.mousePosition;
+        }
+
+        if(Input.GetMouseButtonDown(0) && isGhosted)
+        {
+            isGhosted = false;
+        }
     }
 }

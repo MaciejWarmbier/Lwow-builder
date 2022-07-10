@@ -91,25 +91,25 @@ public class BuildingSelectionCanvas : MonoBehaviour
 
     public void BuyBuilding()
     {
-        //TODO popup
-        if (buildings[buildingIndex].FoodCost > villageResources.Food)
-        {
-            Debug.LogError("NotEnough Food");
-            OnCanvasClosed.Invoke(false, null);
-            return;
-        }
-        if (buildings[buildingIndex].ResourcesCost > villageResources.Resources)
-        {
-            Debug.LogError("NotEnough Resources");
-            OnCanvasClosed.Invoke(false, null);
-            return;
-        }
+        ////TODO popup
+        //if (buildings[buildingIndex].FoodCost > villageResources.Food)
+        //{
+        //    Debug.LogError("NotEnough Food");
+        //    OnCanvasClosed.Invoke(false, null);
+        //    return;
+        //}
+        //if (buildings[buildingIndex].ResourcesCost > villageResources.Resources)
+        //{
+        //    Debug.LogError("NotEnough Resources");
+        //    OnCanvasClosed.Invoke(false, null);
+        //    return;
+        //}
 
-        VillageResources.villageResources.ChangeFood(-buildings[buildingIndex].FoodCost);
-        VillageResources.villageResources.ChangeResources(-buildings[buildingIndex].ResourcesCost);
+        //VillageResources.villageResources.ChangeFood(-buildings[buildingIndex].FoodCost);
+        //VillageResources.villageResources.ChangeResources(-buildings[buildingIndex].ResourcesCost);
 
-        OnCanvasClosed.Invoke(true, buildings[buildingIndex]);
-        CloseCanvas();
+        OnCanvasClosed?.Invoke(true, buildings[buildingIndex]);
+        Destroy(gameObject);
     }
 
     // Update is called once per frame
@@ -123,7 +123,7 @@ public class BuildingSelectionCanvas : MonoBehaviour
 
     public void CloseCanvas()
     {
-        OnCanvasClosed.Invoke(false, null);
+        OnCanvasClosed?.Invoke(false, null);
         Destroy(gameObject);
     }
 }

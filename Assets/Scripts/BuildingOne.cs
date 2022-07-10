@@ -14,6 +14,6 @@ public class BuildingOne : Building
     // Update is called once per frame
     void Update()
     {
-        
+        base.Update();
     }
 }

@@ -6,13 +6,47 @@ using UnityEngine.Assertions;
 public class BuildingsController : MonoBehaviour
 {
     [SerializeField] private List<Building> buildingPrefabs;
-    private VillageResources village;
+    [SerializeField] BuildingSelectionCanvas buildingSelectionCanvas;
 
     private void Awake()
     {
         Assert.IsNotNull(buildingPrefabs);
+    }
 
-        village = GetComponent<VillageResources>();
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.B))
+        {
+            var canvas = Instantiate(buildingSelectionCanvas);
+            canvas.OnCanvasClosed += OnBuildingSelection;
+        }
+    }
+
+    private void OnBuildingSelection(bool isBought, Building boughtBuilding)
+    {
+        if (isBought)
+        {
+            Vector3 buildingPosition = transform.position;
+            buildingPosition.y += 2;
+            GameObject createdBuilding = boughtBuilding.CreateBuilding(boughtBuilding, buildingPosition);
+            //if (createdBuilding != null)
+            //{
+            //    building = createdBuilding.GetComponent<Building>();
+            //    building.HoveredOver += Hover;
+            //    building.StoppedHover += StopHover;
+            //    gridManager.BlockNode(coordinates);
+            //    StopHover();
+            //    VillageResources.villageResources.ChangeBuildingScore(boughtBuilding.BuildingScore);
+            //    VillageResources.villageResources.ChangeFoodProduction(boughtBuilding.FoodProduction);
+            //    VillageResources.villageResources.ChangeResourcesProduction(boughtBuilding.ResourcesProduction);
+            //    VillageResources.villageResources.ChangeMoraleProduction(boughtBuilding.MoraleProduction);
+            //    WorldController.worldController.CheckEvent();
+            //}
+        }
+        else
+        {
+            //StopHover();
+        }
     }
 
     public List<Building> GetAvailableBuildings()
@@ -28,5 +62,7 @@ public class BuildingsController : MonoBehaviour
 
         return availableBuildings;
     }
+
+
 
 }
