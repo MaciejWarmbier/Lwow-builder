@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44991827, g: 0.49997628, b: 0.57555836, a: 1}
+  m_IndirectSpecularColor: {r: 0.44992036, g: 0.49997658, b: 0.575558, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -905,6 +905,54 @@ PrefabInstance:
       propertyPath: buildingSelectionCanvas
       value: 
       objectReference: {fileID: 4276697632863640977, guid: a10f71fadf455604d93a03644218785d, type: 3}
+    - target: {fileID: 3729858378180792988, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: buildingPrefabs.Array.size
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729858378180792988, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: buildingPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: -3265355176716764080, guid: 8511c2546236eb74a8e571684902febf, type: 3}
+    - target: {fileID: 3729858378180792988, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: buildingPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: -130627132721811875, guid: 06a72b17837b95343bbd82ccd9e0ea81, type: 3}
+    - target: {fileID: 3729858378180792988, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: buildingPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 2902467848867663825, guid: ff8c4a6780c57ac44bce2a4eae601830, type: 3}
+    - target: {fileID: 3729858378180792988, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: buildingPrefabs.Array.data[3]
+      value: 
+      objectReference: {fileID: 3707126454964146881, guid: ed733be38211d1945bf6791effcd7127, type: 3}
+    - target: {fileID: 3729858378180792988, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: buildingPrefabs.Array.data[4]
+      value: 
+      objectReference: {fileID: 499405985744986767, guid: afc8aaac1d009be40a4c13985f827b5d, type: 3}
+    - target: {fileID: 3729858378180792988, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: buildingPrefabs.Array.data[5]
+      value: 
+      objectReference: {fileID: 7249631466088605068, guid: 9457a516be297434585cc68e00e21ff9, type: 3}
+    - target: {fileID: 3729858378180792988, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: buildingPrefabs.Array.data[6]
+      value: 
+      objectReference: {fileID: -8970739949064254186, guid: 3672dece5e072af47afb6b04ab353a49, type: 3}
+    - target: {fileID: 3729858378180792988, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: buildingPrefabs.Array.data[7]
+      value: 
+      objectReference: {fileID: -3694076406551610633, guid: 97a3f81a13f7273488a7ba1c72cabaf1, type: 3}
+    - target: {fileID: 3729858378180792988, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: buildingPrefabs.Array.data[8]
+      value: 
+      objectReference: {fileID: 4812366968762913956, guid: fdc82f97baf1b854ba1b7655041678e8, type: 3}
+    - target: {fileID: 3729858378180792988, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: buildingPrefabs.Array.data[9]
+      value: 
+      objectReference: {fileID: 4377963341648652649, guid: 7cd353cd60f947c499dbe78c096b48df, type: 3}
+    - target: {fileID: 3729858378180792988, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: buildingPrefabs.Array.data[10]
+      value: 
+      objectReference: {fileID: 5343327019967877404, guid: be038047054570341acecd11b0a41637, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
 --- !u!1001 &1381336739
