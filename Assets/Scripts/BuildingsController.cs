@@ -8,9 +8,14 @@ public class BuildingsController : MonoBehaviour
     [SerializeField] private List<Building> buildingPrefabs;
     [SerializeField] BuildingSelectionCanvas buildingSelectionCanvas;
 
+    public static BuildingsController buildingsController;
+
+    public Building buildingInProgress = null;
+
     private void Awake()
     {
         Assert.IsNotNull(buildingPrefabs);
+        buildingsController = GetComponent<BuildingsController>();
     }
 
     private void Update()
@@ -29,9 +34,10 @@ public class BuildingsController : MonoBehaviour
             Vector3 buildingPosition = transform.position;
             buildingPosition.y += 2;
             GameObject createdBuilding = boughtBuilding.CreateBuilding(boughtBuilding, buildingPosition);
-            //if (createdBuilding != null)
-            //{
-            //    building = createdBuilding.GetComponent<Building>();
+            if (createdBuilding != null)
+            {
+                var building = createdBuilding.GetComponent<Building>();
+                buildingInProgress = building;
             //    building.HoveredOver += Hover;
             //    building.StoppedHover += StopHover;
             //    gridManager.BlockNode(coordinates);
@@ -41,7 +47,7 @@ public class BuildingsController : MonoBehaviour
             //    VillageResources.villageResources.ChangeResourcesProduction(boughtBuilding.ResourcesProduction);
             //    VillageResources.villageResources.ChangeMoraleProduction(boughtBuilding.MoraleProduction);
             //    WorldController.worldController.CheckEvent();
-            //}
+            }
         }
         else
         {

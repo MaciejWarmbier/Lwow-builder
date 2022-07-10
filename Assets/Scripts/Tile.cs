@@ -54,8 +54,11 @@ public class Tile : MonoBehaviour
         {
             if (gridManager.GetNode(coordinates).isClickable)
             {
-                var canvas = Instantiate(buildingSelectionCanvas);
-                canvas.OnCanvasClosed += OnBuildingSelection;
+                if(BuildingsController.buildingsController.buildingInProgress != null)
+                {
+                    BuildingsController.buildingsController.buildingInProgress.PlaceOnTile(gameObject.transform);
+                    isClickable = false;
+                }
             }
             else if (gridManager.GetNode(coordinates).isTree && !isTreeSmashed)
             {
@@ -125,10 +128,15 @@ public class Tile : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (!EventSystem.current.IsPointerOverGameObject() && (isClickable || isTree || isRock))
+        if (!EventSystem.current.IsPointerOverGameObject() && hoverMesh.activeSelf)
         {
             StopHover();
         }
+    }
+
+    public bool HoveredByBuilding()
+    {
+        return true;
     }
 
     private void Hover()
@@ -138,6 +146,12 @@ public class Tile : MonoBehaviour
             isSelected = true;
             hoverMesh.SetActive(true);
             tileRenderer.material.SetColor("_Color", Color.red);
+
+            if(BuildingsController.buildingsController.buildingInProgress != null)
+            {
+                building = BuildingsController.buildingsController.buildingInProgress;
+                BuildingsController.buildingsController.buildingInProgress.ShowOnTile(gameObject.transform.position, isClickable);
+            }
         }
     }
 

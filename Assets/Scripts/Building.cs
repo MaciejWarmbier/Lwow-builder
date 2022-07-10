@@ -31,11 +31,14 @@ public class Building : MonoBehaviour
     public Action HoveredOver;
     public Action StoppedHover;
 
-    public bool isGhosted = true;
+    private BoxCollider collider;
 
     public void Awake()
     {
         Assert.IsFalse(string.IsNullOrEmpty(buildingName));
+
+        collider = GetComponent<BoxCollider>();
+        collider.enabled = false;
     }
 
     private void OnMouseEnter()
@@ -67,6 +70,18 @@ public class Building : MonoBehaviour
         return true;
     }
 
+    public void ShowOnTile(Vector3 position, bool canBePlaced)
+    {
+        gameObject.transform.position = position;
+    }
+
+    public void PlaceOnTile(Transform transform)
+    {
+        gameObject.transform.position = transform.position;
+        gameObject.transform.parent = transform;
+        BuildingsController.buildingsController.buildingInProgress = null;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -76,14 +91,6 @@ public class Building : MonoBehaviour
     // Update is called once per frame
     public void Update()
     {
-        if (isGhosted)
-        {
-            gameObject.transform.position = Input.mousePosition;
-        }
 
-        if(Input.GetMouseButtonDown(0) && isGhosted)
-        {
-            isGhosted = false;
-        }
     }
 }
