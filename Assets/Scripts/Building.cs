@@ -31,14 +31,9 @@ public class Building : MonoBehaviour
     public Action HoveredOver;
     public Action StoppedHover;
 
-    private BoxCollider collider;
-
     public void Awake()
     {
         Assert.IsFalse(string.IsNullOrEmpty(buildingName));
-
-        collider = GetComponent<BoxCollider>();
-        collider.enabled = false;
     }
 
     private void OnMouseEnter()

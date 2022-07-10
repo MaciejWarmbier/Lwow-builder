@@ -32,7 +32,7 @@ public class BuildingsController : MonoBehaviour
         if (isBought)
         {
             Vector3 buildingPosition = transform.position;
-            buildingPosition.y += 2;
+            buildingPosition.y += 5;
             GameObject createdBuilding = boughtBuilding.CreateBuilding(boughtBuilding, buildingPosition);
             if (createdBuilding != null)
             {

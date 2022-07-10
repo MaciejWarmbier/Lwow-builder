@@ -27,9 +27,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8396534493602894793}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.8638, y: 0.0033, z: 0.7795}
+  m_LocalScale: {x: 1.4564979, y: 1.289, z: -1.2344}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 647168090374487585}
@@ -96,7 +96,7 @@ MeshCollider:
   m_GameObject: {fileID: 8396534493602894793}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
@@ -190,6 +190,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SmallHouse_07
       objectReference: {fileID: 0}
+    - target: {fileID: 3323626097198001143, guid: b42502ca7860b564295d11d3c3d900f7, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b42502ca7860b564295d11d3c3d900f7, type: 3}
 --- !u!4 &2971538770679565161 stripped
@@ -204,6 +208,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8396534493602926569}
     m_Modifications:
+    - target: {fileID: 2685449130487226051, guid: 2593e574951468347acc11bf1681987b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6337678271057039667, guid: 2593e574951468347acc11bf1681987b, type: 3}
       propertyPath: m_RootOrder
       value: 0
