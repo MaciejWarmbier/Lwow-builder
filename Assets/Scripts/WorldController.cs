@@ -14,6 +14,7 @@ public class WorldController : MonoBehaviour
     public Tile lastTile = null;
 
     private Queue<GameEvent> queuedEvents = new Queue<GameEvent>();
+    public float clickCooldown;
     private bool isEventActive = false;
     private bool isCycleActive = false;
     private bool isPaused = false;

@@ -107,7 +107,7 @@ public class Tile : MonoBehaviour
         int number = Random.Range(1, 2);
         VillageResources.villageResources.ChangeResources(number);
         soundEffect.Play();
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(WorldController.worldController.clickCooldown);
         isTreeSmashed = false;
     }
 
@@ -117,7 +117,7 @@ public class Tile : MonoBehaviour
         int number = Random.Range(0, 3);
         VillageResources.villageResources.ChangeResources(number);
         soundEffect.Play();
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(WorldController.worldController.clickCooldown);
         isRockSmashed = false;
     }
 

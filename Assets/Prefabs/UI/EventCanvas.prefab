@@ -1849,7 +1849,7 @@ MonoBehaviour:
   rightChoiceButton: {fileID: 3996232180180230934}
   leftChoiceButton: {fileID: 1152083384174778770}
   continueButton: {fileID: 4148213197752803490}
-  eventImage: {fileID: 0}
   rightChoiceLabel: {fileID: 3231940687245101998}
   leftChoiceLabel: {fileID: 3179770824907662046}
   description: {fileID: 3906130064436364095}
+  name: {fileID: 2767580409220525084}

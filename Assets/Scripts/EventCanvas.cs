@@ -12,14 +12,13 @@ public class EventCanvas : MonoBehaviour
     [SerializeField] private Button rightChoiceButton;
     [SerializeField] private Button leftChoiceButton;
     [SerializeField] private Button continueButton;
-    [SerializeField] private Image eventImage;
     [SerializeField] private TextMeshProUGUI rightChoiceLabel;
     [SerializeField] private TextMeshProUGUI leftChoiceLabel;
     [SerializeField] private TextMeshProUGUI description;
     [SerializeField] private TextMeshProUGUI name;
 
 
-    private List<string> descriptions;
+    private List<string> descriptions = new List<string>();
     private int descriptionIndex = 0;
     private bool hasEnded = false;
     public bool HasEnded { get { return hasEnded; } }
@@ -32,7 +31,6 @@ public class EventCanvas : MonoBehaviour
         Assert.IsNotNull(rightChoiceButton);
         Assert.IsNotNull(leftChoiceButton);
         Assert.IsNotNull(continueButton);
-        Assert.IsNotNull(eventImage);
         Assert.IsNotNull(rightChoiceLabel);
         Assert.IsNotNull(leftChoiceLabel);
         Assert.IsNotNull(description);
@@ -78,7 +76,6 @@ public class EventCanvas : MonoBehaviour
 
                 hasEnded = false;
                 description.text = eventData.description;
-                eventImage.sprite = eventData.image;
                 rightChoiceLabel.text = eventData.rightChoice.choiceText;
                 leftChoiceLabel.text = eventData.leftChoice.choiceText;
                 name.text = eventData.title;
@@ -102,7 +99,7 @@ public class EventCanvas : MonoBehaviour
 
         hasEnded = false;
         description.text = descriptions[0];
-        eventImage.sprite = _event.image;
+        name.text = _event.title;
         ShowContinueButton();
     }
 

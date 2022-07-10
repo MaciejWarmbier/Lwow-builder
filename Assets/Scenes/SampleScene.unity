@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44992036, g: 0.49997658, b: 0.575558, a: 1}
+  m_IndirectSpecularColor: {r: 0.44991827, g: 0.49997628, b: 0.57555836, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -897,6 +897,10 @@ PrefabInstance:
       propertyPath: resourceProductionCycle
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3729858378180792986, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: resourceConsumptionCycle
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3729858378180792987, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -1030,6 +1034,10 @@ PrefabInstance:
     - target: {fileID: 4824830326147435777, guid: 61cf7d58ff296834ba8c62955202676f, type: 3}
       propertyPath: eventTimer
       value: 50000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4824830326147435777, guid: 61cf7d58ff296834ba8c62955202676f, type: 3}
+      propertyPath: clickCooldown
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 4824830326147435777, guid: 61cf7d58ff296834ba8c62955202676f, type: 3}
       propertyPath: eventCooldown

@@ -15,7 +15,6 @@ public class GameEvent
     public string description4;
     public Choice rightChoice;
     public Choice leftChoice;
-    public Sprite image;
     public bool skipChoice;
 
     public bool isPerunEvent; //rightChoiceRozwala Mila i odblokowuje altar
