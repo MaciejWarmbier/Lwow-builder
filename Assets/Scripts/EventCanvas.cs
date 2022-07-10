@@ -84,9 +84,9 @@ public class EventCanvas : MonoBehaviour
                 }
 
                 hasEnded = false;
-                description.text = eventData.description;
-                rightChoiceLabel.text = eventData.rightChoice.choiceText;
-                leftChoiceLabel.text = eventData.leftChoice.choiceText;
+                description.text = ChangeStrings(eventData.description);
+                rightChoiceLabel.text = ChangeStrings(eventData.rightChoice.choiceText);
+                leftChoiceLabel.text = ChangeStrings(eventData.leftChoice.choiceText);
                 name.text = eventData.title;
             }
             else
@@ -107,7 +107,7 @@ public class EventCanvas : MonoBehaviour
             descriptions.Add(ChangeStrings(_event.rightChoice.choiceResultText4));
 
         hasEnded = false;
-        description.text = descriptions[0];
+        description.text = ChangeStrings(descriptions[0]);
         name.text = _event.title;
         ShowContinueButton();
     }
@@ -163,7 +163,7 @@ public class EventCanvas : MonoBehaviour
         VillageResources.villageResources.ChangeFood(selectedChoice.foodChange);
         VillageResources.villageResources.ChangeMorale(selectedChoice.moraleChange);
         VillageResources.villageResources.ChangeResources(selectedChoice.resourcesChange);
-        description.text = selectedChoice.choiceResultText;
+        description.text = ChangeStrings(selectedChoice.choiceResultText);
         ShowContinueButton();
     }
 
