@@ -12,11 +12,14 @@ public class Tile : MonoBehaviour
     [SerializeField] GameObject hoverMesh;
     [SerializeField] AudioSource soundEffect;
 
-
+    public bool IsTree { get { return isTree; } }
+    
     private Building building;
     private Renderer tileRenderer;
     private GridManager gridManager;
     private Vector2Int coordinates = new Vector2Int();
+    public Vector2Int Coordinates { get { return coordinates; } }
+
     private Vector3 corner = new Vector3();
     private List<Tile> neighbors = new List<Tile>();
 
@@ -116,6 +119,20 @@ public class Tile : MonoBehaviour
         soundEffect.Play();
         yield return new WaitForSeconds(1);
         isRockSmashed = false;
+    }
+
+    public bool CheckIfMil()
+    {
+        if (building == null) return false;
+        if(building.name == "Mill") return true;
+        return false;
+    }
+
+    public bool CheckIfWheat()
+    {
+        if (building == null) return false;
+        if (building.name == "Wheat Field") return true;
+        return false;
     }
 
     //private void OnBuildingSelection(bool isBought, Building boughtBuilding)

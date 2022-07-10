@@ -52,11 +52,105 @@ public class Building : MonoBehaviour
         }
     }
 
-    public void CheckForMil()
+    public int CheckForMil()
     {
         Tile tile = tiles[0];
+        int millTiles = 0;
+        int x = tile.Coordinates.x;
+        int y = tile.Coordinates.y;
 
-        //if()
+        var neighborTile = GameObject.Find($"({x - 1}, {y-1})").GetComponent<Tile>();
+        if (neighborTile.CheckIfMil()) millTiles ++;
+
+        neighborTile = GameObject.Find($"({x - 1}, {y})").GetComponent<Tile>();
+        if (neighborTile.CheckIfMil()) millTiles++;
+
+         neighborTile = GameObject.Find($"({x - 1}, {y + 1})").GetComponent<Tile>();
+        if (neighborTile.CheckIfMil()) millTiles++;
+
+         neighborTile = GameObject.Find($"({x}, {y + 1})").GetComponent<Tile>();
+        if (neighborTile.CheckIfMil()) millTiles++;
+
+         neighborTile = GameObject.Find($"({x}, {y - 1})").GetComponent<Tile>();
+        if (neighborTile.CheckIfMil()) millTiles++;
+
+         neighborTile = GameObject.Find($"({x + 1}, {y + 1})").GetComponent<Tile>();
+        if (neighborTile.CheckIfMil()) millTiles++;
+
+         neighborTile = GameObject.Find($"({x + 1}, {y})").GetComponent<Tile>();
+        if (neighborTile.CheckIfMil()) millTiles++;
+
+        neighborTile = GameObject.Find($"({x + 1}, {y - 1})").GetComponent<Tile>();
+        if (neighborTile.CheckIfMil()) millTiles++;
+
+        return millTiles;
+    }
+
+    public bool CheckForTrees()
+    {
+        Tile tile = tiles[0];
+        int x = tile.Coordinates.x;
+        int y = tile.Coordinates.y;
+
+        var neighborTile = GameObject.Find($"({x - 1}, {y - 1})").GetComponent<Tile>();
+        if (neighborTile.IsTree) return true;
+
+        neighborTile = GameObject.Find($"({x - 1}, {y})").GetComponent<Tile>();
+        if (neighborTile.IsTree) return true;
+
+        neighborTile = GameObject.Find($"({x - 1}, {y + 1})").GetComponent<Tile>();
+        if (neighborTile.IsTree) return true;
+
+        neighborTile = GameObject.Find($"({x}, {y + 1})").GetComponent<Tile>();
+        if (neighborTile.IsTree) return true;
+
+        neighborTile = GameObject.Find($"({x}, {y - 1})").GetComponent<Tile>();
+        if (neighborTile.IsTree) return true;
+
+        neighborTile = GameObject.Find($"({x + 1}, {y + 1})").GetComponent<Tile>();
+        if (neighborTile.IsTree) return true;
+
+        neighborTile = GameObject.Find($"({x + 1}, {y})").GetComponent<Tile>();
+        if (neighborTile.IsTree) return true;
+
+        neighborTile = GameObject.Find($"({x + 1}, {y - 1})").GetComponent<Tile>();
+        if (neighborTile.IsTree) return true;
+
+        return false;
+    }
+
+    public int CheckForWheat()
+    {
+        Tile tile = tiles[0];
+        int wheatTiles = 0;
+        int x = tile.Coordinates.x;
+        int y = tile.Coordinates.y;
+
+        var neighborTile = GameObject.Find($"({x - 1}, {y - 1})").GetComponent<Tile>();
+        if (neighborTile.CheckIfWheat()) wheatTiles++;
+
+        neighborTile = GameObject.Find($"({x - 1}, {y})").GetComponent<Tile>();
+        if (neighborTile.CheckIfWheat()) wheatTiles++;
+
+        neighborTile = GameObject.Find($"({x - 1}, {y + 1})").GetComponent<Tile>();
+        if (neighborTile.CheckIfWheat()) wheatTiles++;
+
+        neighborTile = GameObject.Find($"({x}, {y + 1})").GetComponent<Tile>();
+        if (neighborTile.CheckIfWheat()) wheatTiles++;
+
+        neighborTile = GameObject.Find($"({x}, {y - 1})").GetComponent<Tile>();
+        if (neighborTile.CheckIfWheat()) wheatTiles++;
+
+        neighborTile = GameObject.Find($"({x + 1}, {y + 1})").GetComponent<Tile>();
+        if (neighborTile.CheckIfWheat()) wheatTiles++;
+
+        neighborTile = GameObject.Find($"({x + 1}, {y})").GetComponent<Tile>();
+        if (neighborTile.CheckIfWheat()) wheatTiles++;
+
+        neighborTile = GameObject.Find($"({x + 1}, {y - 1})").GetComponent<Tile>();
+        if (neighborTile.CheckIfWheat()) wheatTiles++;
+
+        return wheatTiles;
     }
 
     public virtual void PassiveEffect()
@@ -87,6 +181,7 @@ public class Building : MonoBehaviour
         gameObject.transform.position = position;
         gameObject.transform.parent = BuildingsController.buildingsController.buildingsObject.transform;
         BuildingsController.buildingsController.buildingInProgress = null;
+        this.PassiveEffect();
 
         VillageResources.villageResources.ChangeBuildingScore(BuildingScore);
         VillageResources.villageResources.ChangeFoodProduction(FoodProduction);

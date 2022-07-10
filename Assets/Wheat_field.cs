@@ -6,14 +6,17 @@ public class Wheat_field : Building
 {
     public override void PassiveEffect()
     {
-        base.PassiveEffect();
-        //+5 mil
+        int mills = CheckForMil();
+        if (WorldController.worldController.isWheatBetter)
+        {
+            VillageResources.villageResources.ChangeFoodProduction(mills * 10);
+        }
+        else
+        {
+            VillageResources.villageResources.ChangeFoodProduction(mills * 5);
+        }
     }
 
-    public bool CheckIfNearMil()
-    {
-        return false;
-    }
     // Start is called before the first frame update
     void Start()
     {

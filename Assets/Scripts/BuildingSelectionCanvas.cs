@@ -23,6 +23,7 @@ public class BuildingSelectionCanvas : MonoBehaviour
     private BuildingsController buildingsController;
     private VillageResources villageResources;
     private List<Building> buildings = new List<Building>();
+    private Color defaultColor;
 
     private void Awake()
     {
@@ -36,6 +37,7 @@ public class BuildingSelectionCanvas : MonoBehaviour
 
         buildingsController = FindObjectOfType<BuildingsController>();
         villageResources = FindObjectOfType<VillageResources>();
+        defaultColor = foodPriceLabel.color;
     }
     // Start is called before the first frame update
     void Start()
@@ -58,6 +60,20 @@ public class BuildingSelectionCanvas : MonoBehaviour
             resourcesPriceLabel.text = building.ResourcesCost.ToString();
             foodPriceLabel.text = building.FoodCost.ToString();
             description.text = building.Description.ToString();
+
+            buyButton.enabled = true;
+            foodPriceLabel.color = defaultColor;
+            foodPriceLabel.color = defaultColor;
+            if (buildings[buildingIndex].FoodCost > villageResources.Food)
+            {
+                foodPriceLabel.color = Color.red;
+                buyButton.enabled = false;
+            }
+            if (buildings[buildingIndex].ResourcesCost > villageResources.Resources)
+            {
+                foodPriceLabel.color = Color.red;
+                buyButton.enabled = false;
+            }
         }
     }
 
@@ -91,22 +107,20 @@ public class BuildingSelectionCanvas : MonoBehaviour
 
     public void BuyBuilding()
     {
+        buyButton.enabled = true;
         ////TODO popup
-        //if (buildings[buildingIndex].FoodCost > villageResources.Food)
-        //{
-        //    Debug.LogError("NotEnough Food");
-        //    OnCanvasClosed.Invoke(false, null);
-        //    return;
-        //}
-        //if (buildings[buildingIndex].ResourcesCost > villageResources.Resources)
-        //{
-        //    Debug.LogError("NotEnough Resources");
-        //    OnCanvasClosed.Invoke(false, null);
-        //    return;
-        //}
-
-        //VillageResources.villageResources.ChangeFood(-buildings[buildingIndex].FoodCost);
-        //VillageResources.villageResources.ChangeResources(-buildings[buildingIndex].ResourcesCost);
+        if (buildings[buildingIndex].FoodCost > villageResources.Food)
+        {
+            foodPriceLabel.color = Color.red;
+            OnCanvasClosed.Invoke(false, null);
+            buyButton.enabled = false;
+        }
+        if (buildings[buildingIndex].ResourcesCost > villageResources.Resources)
+        {
+            foodPriceLabel.color = Color.red;
+            OnCanvasClosed.Invoke(false, null);
+            buyButton.enabled = false;
+        }
 
         OnCanvasClosed?.Invoke(true, buildings[buildingIndex]);
         Destroy(gameObject);

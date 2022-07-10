@@ -16,6 +16,7 @@ public class EventCanvas : MonoBehaviour
     [SerializeField] private TextMeshProUGUI rightChoiceLabel;
     [SerializeField] private TextMeshProUGUI leftChoiceLabel;
     [SerializeField] private TextMeshProUGUI description;
+    [SerializeField] private TextMeshProUGUI name;
 
 
     private List<string> descriptions;
@@ -80,6 +81,7 @@ public class EventCanvas : MonoBehaviour
                 eventImage.sprite = eventData.image;
                 rightChoiceLabel.text = eventData.rightChoice.choiceText;
                 leftChoiceLabel.text = eventData.leftChoice.choiceText;
+                name.text = eventData.title;
             }
             else
             {

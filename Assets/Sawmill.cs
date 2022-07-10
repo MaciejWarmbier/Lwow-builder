@@ -6,7 +6,8 @@ public class Sawmill : Building
 {
     public override void PassiveEffect()
     {
-        base.PassiveEffect();
+        if(CheckForTrees())
+            VillageResources.villageResources.ChangeResourcesProduction(10);
         //+10 jesli obok drzewo
     }
     // Start is called before the first frame update

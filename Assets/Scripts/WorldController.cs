@@ -84,7 +84,8 @@ public class WorldController : MonoBehaviour
         Wheat_field[] fields = GameObject.FindObjectsOfType<Wheat_field>();
         foreach(Wheat_field field in fields)
         {
-            if (field.CheckIfNearMil()) VillageResources.villageResources.ChangeFoodProduction(5);
+            int mills = field.CheckForMil();
+            VillageResources.villageResources.ChangeFoodProduction(mills*5);
         }
     }
     public void BeginStorm()

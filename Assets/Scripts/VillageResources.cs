@@ -112,10 +112,10 @@ public class VillageResources : MonoBehaviour
     {
         if (value < 0)
         {
-            if (resources + value < 0)
-            {
-                return false;
-            }
+            //if (resources + value < 0)
+            //{
+            //    return false;
+            //}
             resources += value;
             UpdateLabels();
             return true;
@@ -132,10 +132,10 @@ public class VillageResources : MonoBehaviour
     {
         if (value < 0)
         {
-            if (resourceProduction + value < 0)
-            {
-                return false;
-            }
+            //if (resourceProduction + value < 0)
+            //{
+            //    return false;
+            //}
             resourceProduction += value;
             UpdateLabels();
             return true;
@@ -152,10 +152,10 @@ public class VillageResources : MonoBehaviour
     {
         if (value < 0)
         {
-            if (resourceConsumption + value < 0)
-            {
-                return false;
-            }
+            //if (resourceConsumption + value < 0)
+            //{
+            //    return false;
+            //}
             resourceConsumption += value;
             UpdateLabels();
             return true;
@@ -172,10 +172,10 @@ public class VillageResources : MonoBehaviour
     {
         if(value < 0)
         {
-            if (food + value < 0)
-            {
-                return false;
-            }
+            //if (food + value < 0)
+            //{
+            //    return false;
+            //}
             food += value;
             UpdateLabels();
             return true;
@@ -192,10 +192,10 @@ public class VillageResources : MonoBehaviour
     {
         if (value < 0)
         {
-            if (foodProduction + value < 0)
-            {
-                return false;
-            }
+            //if (foodProduction + value < 0)
+            //{
+            //    return false;
+            //}
             foodProduction += value;
             UpdateLabels();
             return true;
@@ -212,10 +212,10 @@ public class VillageResources : MonoBehaviour
     {
         if (value < 0)
         {
-            if (foodConsumption + value < 0)
-            {
-                return false;
-            }
+            //if (foodConsumption + value < 0)
+            //{
+            //    return false;
+            //}
             foodConsumption += value;
             UpdateLabels();
             return true;
@@ -254,10 +254,10 @@ public class VillageResources : MonoBehaviour
     {
         if (value < 0)
         {
-            if (moraleProduction + value < 0)
-            {
-                return false;
-            }
+            //if (moraleProduction + value < 0)
+            //{
+            //    return false;
+            //}
             moraleProduction += value;
             UpdateLabels();
             return true;
@@ -274,11 +274,11 @@ public class VillageResources : MonoBehaviour
     {
         if (value < 0)
         {
-            if (moraleConsumption + value < 0)
-            {
+            //if (moraleConsumption + value < 0)
+            //{
                 
-                return false;
-            }
+            //    return false;
+            //}
             moraleConsumption += value;
             UpdateLabels();
             return true;
