@@ -86,7 +86,7 @@ public class Tile : MonoBehaviour
                         neighbors.Add(this);
                         BuildingsController.buildingsController.buildingInProgress.PlaceOnTile(gameObject.transform.position, neighbors);
                         neighbors.Clear();
-                        isClickable = false;
+                        NonClickable();
                     }
                 }
             }
