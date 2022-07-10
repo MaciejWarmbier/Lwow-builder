@@ -12,6 +12,7 @@ public class BuildingsController : MonoBehaviour
     public static BuildingsController buildingsController;
 
     public Building buildingInProgress = null;
+    private bool isCanvasActive = false;
 
     private void Awake()
     {
@@ -19,12 +20,13 @@ public class BuildingsController : MonoBehaviour
         buildingsController = GetComponent<BuildingsController>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.B))
+        if (Input.GetKeyUp(KeyCode.B) && !isCanvasActive)
         {
             if (!FindObjectOfType<BuildingSelectionCanvas>())
             {
+                isCanvasActive = true;
                 var canvas = Instantiate(buildingSelectionCanvas);
                 canvas.OnCanvasClosed += OnBuildingSelection;
             }
@@ -45,6 +47,8 @@ public class BuildingsController : MonoBehaviour
                 buildingInProgress = building;
             }
         }
+
+        isCanvasActive = false;
     }
 
     public List<Building> GetAvailableBuildings()

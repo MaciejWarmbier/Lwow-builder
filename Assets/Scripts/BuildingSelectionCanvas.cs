@@ -37,7 +37,7 @@ public class BuildingSelectionCanvas : MonoBehaviour
 
         buildingsController = FindObjectOfType<BuildingsController>();
         villageResources = FindObjectOfType<VillageResources>();
-        defaultColor = foodPriceLabel.color;
+        defaultColor = Color.white;
     }
     // Start is called before the first frame update
     void Start()
@@ -63,10 +63,10 @@ public class BuildingSelectionCanvas : MonoBehaviour
 
             buyButton.enabled = true;
             foodPriceLabel.color = defaultColor;
-            foodPriceLabel.color = defaultColor;
+            resourcesPriceLabel.color = defaultColor;
             if (buildings[buildingIndex].FoodCost > villageResources.Food)
             {
-                foodPriceLabel.color = Color.red;
+                resourcesPriceLabel.color = Color.red;
                 buyButton.enabled = false;
             }
             if (buildings[buildingIndex].ResourcesCost > villageResources.Resources)
@@ -117,7 +117,7 @@ public class BuildingSelectionCanvas : MonoBehaviour
         }
         if (buildings[buildingIndex].ResourcesCost > villageResources.Resources)
         {
-            foodPriceLabel.color = Color.red;
+            resourcesPriceLabel.color = Color.red;
             OnCanvasClosed.Invoke(false, null);
             buyButton.enabled = false;
         }
