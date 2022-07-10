@@ -27,9 +27,7 @@ public class Building : MonoBehaviour
     public int MoraleProduction { get { return moraleProduction; } }
     public int ResourcesProduction { get { return resourcesProduction; } }
     public int FoodProduction { get { return foodProduction; } }
-
-    public Action HoveredOver;
-    public Action StoppedHover;
+    public bool IsBig { get { return isBig; } }
 
     public void Awake()
     {
@@ -41,7 +39,6 @@ public class Building : MonoBehaviour
         if (!EventSystem.current.IsPointerOverGameObject())
         {
             Debug.Log(buildingName);
-            HoveredOver?.Invoke();
         }
     }
 
@@ -50,7 +47,6 @@ public class Building : MonoBehaviour
         if (!EventSystem.current.IsPointerOverGameObject())
         {
             Debug.Log("Exit" + buildingName);
-            StoppedHover?.Invoke();
         }
     }
 
@@ -70,11 +66,20 @@ public class Building : MonoBehaviour
         gameObject.transform.position = position;
     }
 
-    public void PlaceOnTile(Transform transform)
+    public void PlaceOnTile(Vector3 position)
     {
-        gameObject.transform.position = transform.position;
-        gameObject.transform.parent = transform;
+        //TODO check costs
+        gameObject.transform.position = position;
+        gameObject.transform.parent = BuildingsController.buildingsController.buildingsObject.transform;
         BuildingsController.buildingsController.buildingInProgress = null;
+
+        VillageResources.villageResources.ChangeBuildingScore(BuildingScore);
+        VillageResources.villageResources.ChangeFoodProduction(FoodProduction);
+        VillageResources.villageResources.ChangeResourcesProduction(ResourcesProduction);
+        VillageResources.villageResources.ChangeMoraleProduction(MoraleProduction);
+        VillageResources.villageResources.ChangeFood(-FoodCost);
+        VillageResources.villageResources.ChangeResources(-ResourcesCost);
+        WorldController.worldController.CheckEvent();
     }
 
     // Start is called before the first frame update

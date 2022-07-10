@@ -7,6 +7,7 @@ public class BuildingsController : MonoBehaviour
 {
     [SerializeField] private List<Building> buildingPrefabs;
     [SerializeField] BuildingSelectionCanvas buildingSelectionCanvas;
+    [SerializeField] public GameObject buildingsObject;
 
     public static BuildingsController buildingsController;
 
@@ -18,12 +19,15 @@ public class BuildingsController : MonoBehaviour
         buildingsController = GetComponent<BuildingsController>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (Input.GetKeyUp(KeyCode.B))
         {
-            var canvas = Instantiate(buildingSelectionCanvas);
-            canvas.OnCanvasClosed += OnBuildingSelection;
+            if (!FindObjectOfType<BuildingSelectionCanvas>())
+            {
+                var canvas = Instantiate(buildingSelectionCanvas);
+                canvas.OnCanvasClosed += OnBuildingSelection;
+            }
         }
     }
 
@@ -31,27 +35,15 @@ public class BuildingsController : MonoBehaviour
     {
         if (isBought)
         {
-            Vector3 buildingPosition = transform.position;
-            buildingPosition.y += 5;
+            Vector3 buildingPosition = WorldController.worldController.lastTile.transform.position;
+            WorldController.worldController.lastTile.UnHoveredByBuilding();
+            buildingPosition.y += 2;
             GameObject createdBuilding = boughtBuilding.CreateBuilding(boughtBuilding, buildingPosition);
             if (createdBuilding != null)
             {
                 var building = createdBuilding.GetComponent<Building>();
                 buildingInProgress = building;
-            //    building.HoveredOver += Hover;
-            //    building.StoppedHover += StopHover;
-            //    gridManager.BlockNode(coordinates);
-            //    StopHover();
-            //    VillageResources.villageResources.ChangeBuildingScore(boughtBuilding.BuildingScore);
-            //    VillageResources.villageResources.ChangeFoodProduction(boughtBuilding.FoodProduction);
-            //    VillageResources.villageResources.ChangeResourcesProduction(boughtBuilding.ResourcesProduction);
-            //    VillageResources.villageResources.ChangeMoraleProduction(boughtBuilding.MoraleProduction);
-            //    WorldController.worldController.CheckEvent();
             }
-        }
-        else
-        {
-            //StopHover();
         }
     }
 

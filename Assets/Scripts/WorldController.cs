@@ -11,6 +11,7 @@ public class WorldController : MonoBehaviour
     [SerializeField] private Canvas gameUI;
     [SerializeField] private Canvas pauseUI;
     [SerializeField] private Canvas endGameUI;
+    public Tile lastTile = null;
 
     private Queue<GameEvent> queuedEvents = new Queue<GameEvent>();
     private bool isEventActive = false;
