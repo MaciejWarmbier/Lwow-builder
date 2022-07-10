@@ -52,6 +52,15 @@ public class BuildingSelectionCanvas : MonoBehaviour
         ShowBuilding(buildings[0]);
     }
 
+    public string ChangeStrings(string text)
+    {
+        string newText = text.Replace("{f}", "<sprite=1>");
+        newText = newText.Replace("{m}", "<sprite=2>");
+        newText = newText.Replace("{r}", "<sprite=0>");
+
+        return newText;
+    }
+
     private void ShowBuilding(Building building)
     {
         if(building != null)
@@ -59,19 +68,19 @@ public class BuildingSelectionCanvas : MonoBehaviour
             buildingImage.sprite = building.BuildingImage;
             resourcesPriceLabel.text = building.ResourcesCost.ToString();
             foodPriceLabel.text = building.FoodCost.ToString();
-            description.text = building.Description.ToString();
+            description.text = ChangeStrings(building.Description);
 
             buyButton.enabled = true;
             foodPriceLabel.color = defaultColor;
             resourcesPriceLabel.color = defaultColor;
             if (buildings[buildingIndex].FoodCost > villageResources.Food)
             {
-                resourcesPriceLabel.color = Color.red;
+                foodPriceLabel.color = Color.red;
                 buyButton.enabled = false;
             }
             if (buildings[buildingIndex].ResourcesCost > villageResources.Resources)
             {
-                foodPriceLabel.color = Color.red;
+                resourcesPriceLabel.color = Color.red;
                 buyButton.enabled = false;
             }
         }

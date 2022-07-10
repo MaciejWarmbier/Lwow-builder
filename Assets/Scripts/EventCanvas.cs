@@ -45,6 +45,15 @@ public class EventCanvas : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public string ChangeStrings(string text)
+    {
+        string newText = text.Replace("{f}", "<sprite=1>");
+        newText = newText.Replace("{m}", "<sprite=2>");
+        newText = newText.Replace("{r}", "<sprite=0>");
+
+        return newText;
+    }
+
     public void ShowEvent(GameEvent eventData)
     {
         if (eventData != null)
@@ -52,13 +61,13 @@ public class EventCanvas : MonoBehaviour
             _event = eventData;
             if (!eventData.skipChoice)
             {
-                descriptions.Add(eventData.description);
+                descriptions.Add(ChangeStrings(eventData.description));
                 if (!string.IsNullOrEmpty(eventData.description2))
-                    descriptions.Add(eventData.description2);
-                if (!string.IsNullOrEmpty(eventData.description3))
-                    descriptions.Add(eventData.description3);
+                    descriptions.Add(ChangeStrings(eventData.description2));
+                if (!string.IsNullOrEmpty(ChangeStrings(eventData.description3)))
+                    descriptions.Add(ChangeStrings(eventData.description3));
                 if (!string.IsNullOrEmpty(eventData.description4))
-                    descriptions.Add(eventData.description4);
+                    descriptions.Add(ChangeStrings(eventData.description4));
 
                 if (eventData.isGreatHunt)
                 {
@@ -89,13 +98,13 @@ public class EventCanvas : MonoBehaviour
     
     private void SkipChoice()
     {
-        descriptions.Add(_event.rightChoice.choiceResultText);
+        descriptions.Add(ChangeStrings(_event.rightChoice.choiceResultText));
         if (!string.IsNullOrEmpty(_event.rightChoice.choiceResultText2))
-            descriptions.Add(_event.rightChoice.choiceResultText2);
+            descriptions.Add(ChangeStrings(_event.rightChoice.choiceResultText2));
         if (!string.IsNullOrEmpty(_event.rightChoice.choiceResultText4))
-            descriptions.Add(_event.rightChoice.choiceResultText3);
+            descriptions.Add(ChangeStrings(_event.rightChoice.choiceResultText3));
         if (!string.IsNullOrEmpty(_event.rightChoice.choiceResultText3))
-            descriptions.Add(_event.rightChoice.choiceResultText4);
+            descriptions.Add(ChangeStrings(_event.rightChoice.choiceResultText4));
 
         hasEnded = false;
         description.text = descriptions[0];
@@ -117,13 +126,13 @@ public class EventCanvas : MonoBehaviour
         }
 
         descriptions.Clear();
-        descriptions.Add(selectedChoice.choiceResultText);
+        descriptions.Add(ChangeStrings(selectedChoice.choiceResultText));
         if(!string.IsNullOrEmpty(selectedChoice.choiceResultText2))
-            descriptions.Add(selectedChoice.choiceResultText2);
-        if (!string.IsNullOrEmpty(selectedChoice.choiceResultText4))
-            descriptions.Add(selectedChoice.choiceResultText3);
+            descriptions.Add(ChangeStrings(selectedChoice.choiceResultText2));
         if (!string.IsNullOrEmpty(selectedChoice.choiceResultText3))
-            descriptions.Add(selectedChoice.choiceResultText4);
+            descriptions.Add(ChangeStrings(selectedChoice.choiceResultText3));
+        if (!string.IsNullOrEmpty(selectedChoice.choiceResultText4))
+            descriptions.Add(ChangeStrings(selectedChoice.choiceResultText4));
 
         if (_event.isGreatHunt && WorldController.worldController.hasSword && isRight)
             descriptions.Add("The sword of Perun sparked with the lightning power enchanted within the blade, and Daniel was confident that this day will be the last of this enormous Lion.");
