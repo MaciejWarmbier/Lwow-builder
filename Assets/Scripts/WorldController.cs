@@ -19,8 +19,17 @@ public class WorldController : MonoBehaviour
     private bool isPaused = false;
     private bool isEventOnCooldown = false;
 
+    //Sekcja Fabularna
+    public bool hasKupalaFlower = false;
+    public bool hasSword = false;
+    public bool isArmoryUnlocked = false;
+    public bool isWheatBetter = false;
     public bool isPerunActivated = false;
+    public bool isPerunHappy = false;
     public bool isCityHallBuilt = false;
+    public bool isMilBuilt = false;
+    public Mill destroyMill = null;
+
 
 
     private float eventTime = 0;
@@ -68,6 +77,34 @@ public class WorldController : MonoBehaviour
         VillageResources.villageResources.ProcessCycle(cycle);
         yield return new WaitForSeconds(cycleTime);
         isCycleActive = false;
+    }
+
+    public void IncreaseWheat()
+    {
+        Wheat_field[] fields = GameObject.FindObjectsOfType<Wheat_field>();
+        foreach(Wheat_field field in fields)
+        {
+            if (field.CheckIfNearMil()) VillageResources.villageResources.ChangeFoodProduction(5);
+        }
+    }
+    public void BeginStorm()
+    {
+        
+    }
+
+    public void GetNamedEvent(bool devilishWell, bool perunSword, bool slayerOfTheBeast2)
+    {
+        GameEvent gameEvent = GameEventsController.gameEventsController.GetNamedEvent(devilishWell, perunSword, slayerOfTheBeast2);
+        if (gameEvent == null) return;
+        else
+        {
+            queuedEvents.Enqueue(gameEvent);
+
+            if (!isEventOnCooldown)
+            {
+                StartCoroutine("StartEvent");
+            }
+        }
     }
 
     public void CheckEvent()

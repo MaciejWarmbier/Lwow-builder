@@ -232,6 +232,7 @@ public class VillageResources : MonoBehaviour
     {
         if (value < 0)
         {
+            if (WorldController.worldController.isCityHallBuilt) value = Mathf.FloorToInt(value / 2);
             if (morale + value < 0)
             {
                 WorldController.worldController.EndGame();

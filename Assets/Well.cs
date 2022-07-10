@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Well : Building
 {
+
+    public override void PassiveEffect()
+    {
+
+        WorldController.worldController.GetNamedEvent(true, false, false);
+    }
     // Start is called before the first frame update
     void Start()
     {

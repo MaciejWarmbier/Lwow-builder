@@ -70,7 +70,9 @@ public class Tile : MonoBehaviour
                                 neighbor.NonClickable();
                             }
                             StopHover();
-                            BuildingsController.buildingsController.buildingInProgress.PlaceOnTile(corner);
+                            neighbors.Add(this);
+                            BuildingsController.buildingsController.buildingInProgress.PlaceOnTile(corner, neighbors);
+                            neighbors.Clear();
                             NonClickable();
                             gridManager.BlockNode(coordinates);
                         }
@@ -78,7 +80,9 @@ public class Tile : MonoBehaviour
                     else
                     {
                         building = BuildingsController.buildingsController.buildingInProgress;
-                        BuildingsController.buildingsController.buildingInProgress.PlaceOnTile(gameObject.transform.position);
+                        neighbors.Add(this);
+                        BuildingsController.buildingsController.buildingInProgress.PlaceOnTile(gameObject.transform.position, neighbors);
+                        neighbors.Clear();
                         isClickable = false;
                     }
                 }

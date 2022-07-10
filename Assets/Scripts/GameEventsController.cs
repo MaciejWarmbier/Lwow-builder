@@ -13,6 +13,42 @@ public class GameEventsController : MonoBehaviour
         gameEventsController = GetComponent<GameEventsController>();
     }
 
+    public GameEvent GetNamedEvent(bool devilishWell, bool perunSword, bool slayerOfTheBeast2)
+    {
+        for (int i = 0; i < events.Count; i++)
+        {
+            if (devilishWell)
+            {
+                if (!events[i].wasUsed && events[i].isDevilishWell)
+                {
+                    events[i].wasUsed = true;
+                    return events[i];
+                }
+            }
+
+            if (perunSword)
+            {
+                if (!events[i].wasUsed && events[i].isPerunSword)
+                {
+                    events[i].wasUsed = true;
+                    return events[i];
+                }
+            }
+
+            if (slayerOfTheBeast2)
+            {
+                if (!events[i].wasUsed && events[i].isSlayerOfTheBeast2)
+                {
+                    events[i].wasUsed = true;
+                    return events[i];
+                }
+            }
+
+        }
+
+        return null;
+    }
+
     public List<GameEvent> GetEvent()
     {
         List<GameEvent> possibleEvents = new List<GameEvent>();

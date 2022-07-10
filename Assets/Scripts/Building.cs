@@ -29,6 +29,8 @@ public class Building : MonoBehaviour
     public int FoodProduction { get { return foodProduction; } }
     public bool IsBig { get { return isBig; } }
 
+    private List<Tile> tiles;
+
     public void Awake()
     {
         Assert.IsFalse(string.IsNullOrEmpty(buildingName));
@@ -50,6 +52,18 @@ public class Building : MonoBehaviour
         }
     }
 
+    public void CheckForMil()
+    {
+        Tile tile = tiles[0];
+
+        //if()
+    }
+
+    public virtual void PassiveEffect()
+    {
+
+    }
+
     public GameObject CreateBuilding(Building building, Vector3 position)
     {
         var instantiatedBuilding = Instantiate(building.gameObject, position, Quaternion.identity);
@@ -66,9 +80,10 @@ public class Building : MonoBehaviour
         gameObject.transform.position = position;
     }
 
-    public void PlaceOnTile(Vector3 position)
+    public void PlaceOnTile(Vector3 position, List<Tile> listOfTiles)
     {
         //TODO check costs
+        tiles = listOfTiles;
         gameObject.transform.position = position;
         gameObject.transform.parent = BuildingsController.buildingsController.buildingsObject.transform;
         BuildingsController.buildingsController.buildingInProgress = null;

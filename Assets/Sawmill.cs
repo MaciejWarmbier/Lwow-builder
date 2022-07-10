@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Sawmill : Building
 {
+    public override void PassiveEffect()
+    {
+        base.PassiveEffect();
+        //+10 jesli obok drzewo
+    }
     // Start is called before the first frame update
     void Start()
     {
