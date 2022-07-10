@@ -55,7 +55,7 @@ MonoBehaviour:
   moraleProduction: 0
   resourcesProduction: 0
   foodProduction: 10
-  buildingImage: {fileID: 0}
+  buildingImage: {fileID: 21300000, guid: ae5e997a8e740a6489a7a48dff79ed28, type: 3}
   description: +10 {f}
 --- !u!1001 &4513005799495042978
 PrefabInstance:

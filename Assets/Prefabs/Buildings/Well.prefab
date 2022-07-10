@@ -119,5 +119,5 @@ MonoBehaviour:
   moraleProduction: 0
   resourcesProduction: 0
   foodProduction: 0
-  buildingImage: {fileID: 0}
+  buildingImage: {fileID: 21300000, guid: 6ded10769ce348a48b4187b97f96e532, type: 3}
   description: +5 {f} if the well will be filled with water

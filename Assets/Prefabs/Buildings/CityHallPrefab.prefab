@@ -53,7 +53,7 @@ MonoBehaviour:
   moraleProduction: 15
   resourcesProduction: 0
   foodProduction: 0
-  buildingImage: {fileID: 0}
+  buildingImage: {fileID: 21300000, guid: 8e9151fc5a5a2d045b4be1f1bf1d83bf, type: 3}
   description: +15 {m} and Morale costs -50% from events
 --- !u!1001 &2809064395388143329
 PrefabInstance:

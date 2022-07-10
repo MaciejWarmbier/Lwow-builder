@@ -223,7 +223,7 @@ MonoBehaviour:
   moraleProduction: 0
   resourcesProduction: 0
   foodProduction: 5
-  buildingImage: {fileID: 0}
+  buildingImage: {fileID: 21300000, guid: 0adfaa757bb86454c9022049208857bd, type: 3}
   description: +5 {f}
 --- !u!1 &7541235099272269803
 GameObject:

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44991827, g: 0.49997628, b: 0.57555836, a: 1}
+  m_IndirectSpecularColor: {r: 0.44992036, g: 0.49997658, b: 0.575558, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -842,9 +842,21 @@ PrefabInstance:
       value: Village
       objectReference: {fileID: 0}
     - target: {fileID: 3729858378180792986, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: food
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729858378180792986, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: morale
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729858378180792986, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
       propertyPath: foodLabel
       value: 
       objectReference: {fileID: 924073330}
+    - target: {fileID: 3729858378180792986, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: resources
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3729858378180792986, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
       propertyPath: moraleLabel
       value: 
@@ -853,6 +865,38 @@ PrefabInstance:
       propertyPath: resourcesLabel
       value: 
       objectReference: {fileID: 719369846}
+    - target: {fileID: 3729858378180792986, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: foodConsumption
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729858378180792986, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: moraleConsumption
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729858378180792986, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: resourceProduction
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729858378180792986, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: foodProductionCycle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729858378180792986, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: foodConsumptionCycle
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729858378180792986, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: moraleProductionCycle
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729858378180792986, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: moraleConsumptionCycle
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729858378180792986, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
+      propertyPath: resourceProductionCycle
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3729858378180792987, guid: 89e149b6c48669c48abb92d0016c8fb3, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -1090,7 +1134,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.size
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[0].title
@@ -1141,6 +1185,10 @@ PrefabInstance:
       value: 'The Great Hunt '
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[10].title
+      value: Devilish Well
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[0].eventLevel
       value: 3
       objectReference: {fileID: 0}
@@ -1155,6 +1203,10 @@ PrefabInstance:
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[3].eventLevel
       value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[3].skipChoice
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[4].eventLevel
@@ -1177,6 +1229,10 @@ PrefabInstance:
       value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[8].skipChoice
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[9].eventLevel
       value: 25
       objectReference: {fileID: 0}
@@ -1185,6 +1241,10 @@ PrefabInstance:
       value: "When Daniel was collecting wood from the nearby forest, suddenly he
         heard something worrying between the trees. At first, he thought that was
         just some boars, but the growling of that beast was different\u2026"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[10].eventLevel
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[1].description
@@ -1204,9 +1264,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[3].description
-      value: After building this magnificent building, Daniel heard the crackling
-        of lightning from the nearby field. He approached the field and found the
-        sword for the brave warrior as a gift from Perun.
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[4].description
@@ -1229,6 +1287,10 @@ PrefabInstance:
         traditional Night of Kupala for their entertainment and tribute to ancestors.
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[6].isNocKupaly
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[7].description
       value: "Another night passed as one of the villagers was taken by the beast
         in the forest. Daniel was stressed and hopeless about this situation. He
@@ -1242,23 +1304,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[8].description
-      value: "Armory has been built. The armor has been smith. Now there is the last
-        part to fullfil - the blood of women. Daniel told the people of the town
-        about the Unknown soldier and people were more than happy to help. Every
-        woman in the town gave three drops of their blood to the sluggish vat, and
-        Unknown Soldier painted his armor and the blade in that greasy liquid. He
-        started incantation of some spell to harden his weapon and his armor.After
-        that, he embarked towards the beasts\u2019 hill in the morning. He reached
-        the lair of the beast. Surrounded by rotten flesh and naked bones he faced
-        the monster. The lion roared, but he didn\u2019t flee. The soldier put his
-        shield up and run toward the creature! Lion struck his armor with his deadly
-        claws, but they did not pierce that armor. The soldier was precise and decided
-        to tire the beast, so he was cutting the lion inch by inch until the beast
-        was exhausted. In the end, both Soldier and the Lion were exhausted, but
-        the Soldier prepared the final blow, and beheaded the beast!People in the
-        town watched when the soldier came down the hill with the head of a lion
-        in his hand. The cheering and applauding rose and the soldier became a legend!
-        That is how the town was saved and was named Leviv after that act of bravery."
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[9].description
@@ -1266,6 +1312,56 @@ PrefabInstance:
         be slain! Daniel gathered all the men in the town and wanted to decide what
         to do with that foul creature. Men chanted one statement: \u201CWe should
         fight!\u201D, but there is a chance of losing this battle\u2026 "
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[9].isGreatHunt
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[10].description
+      value: "One day, Daniel decided to build a well, but even though he dug down
+        84 meters, it was completely dry\u2026 The next night Daniel was woken up
+        by weird sounds from the newly built structure. As he approached the well,
+        he realized a devil was sitting on the edge of the well\u2019s railing. \u201CDaniel,
+        oh\u2026 Daniel\u2026\u201D - said the devil.  \u201CI see that you have
+        no water in your well\u2026 so sad, but don\u2019t be worried! I can help
+        you.\u201D - the devil continued with an eerie smile - \u201CAll I want from
+        you is a bag full of gold, and your well will be gushing with water, hahaha. "
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[10].isGreatHunt
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[2].isPerunEvent
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[3].isPerunSword
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[5].isNymphEvent
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[10].description2
+      value: "Daniel was about to run away, but he knew that pure water would soon
+        be necessary for the town\u2026 A bag filled with gold is a lot, but there
+        is a way to deceive the devil. What if the bag would be small enough to contain
+        only two coins?"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[10].isDevilishWell
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[7].isSlayerOfTheBeast
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[8].isSlayerOfTheBeast2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[0].leftChoice.choiceText
@@ -1348,6 +1444,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[10].leftChoice.choiceText
+      value: Give him a proper bag full of coins (-100 {r})
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[1].rightChoice.choiceText
       value: Allow it (-40 {f})
       objectReference: {fileID: 0}
@@ -1405,11 +1505,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[8].rightChoice.choiceText
-      value: "Game over. You\u2019ve built the Leviv. "
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[9].rightChoice.choiceText
       value: Fight
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[9].rightChoice.foodChange
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[10].rightChoice.choiceText
+      value: Deceive the Devil(-5 {r})
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[1].leftChoice.moraleChange
@@ -1445,11 +1553,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[9].leftChoice.moraleChange
-      value: -40
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[0].rightChoice.moraleChange
       value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[10].leftChoice.moraleChange
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[1].rightChoice.moraleChange
@@ -1529,6 +1641,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[10].leftChoice.resourcesChange
+      value: -100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[1].leftChoice.choiceResultText
       value: Daniel refused to store the food on the doorsteps of the households,
         and that was a big mistake. This night was the coldest night of the whole
@@ -1545,7 +1661,8 @@ PrefabInstance:
         dead, but shortly after a small mist disappeared the man was still standing.
         After a few seconds, he reached his hand to the sky and grabbed the lightning
         in his fist. He threw this lightning into two other buildings and then vanished\u2026
-        That was Perun the God of Storm! We are doomed! -50 {m}"
+        That was Perun the God of Storm! We are doomed! -50 {m} (Mill was destroyed
+        as well as 2 other buildings)"
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[2].rightChoice.resourcesChange
@@ -1607,11 +1724,27 @@ PrefabInstance:
         Game Over. You fleed.
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[9].rightChoice.resourcesChange
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[0].rightChoice.choiceResultText
       value: "As Daniel went into the woods he found tracks of some bigger animal
         with large claws.  \u201CA bear? No\u2026 it looks like a \u2026 like a Lion!\u201D
         - Daniel thought. Fortunately, the beast fled, and Daniel was safe, but this
         beast is still a threat to the village.  -20 {m}"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[10].leftChoice.choiceResultText
+      value: "Daniel returned with a large bag filled with coins and gave it to the
+        devil. The devil was jumping out of happiness and said: \u201CGood boy! There,
+        there! The well is full of water for you, for now, and forever!\u201D. Shortly
+        after, the devil turned into ashes and disappeared.   Well now generates
+        +5 food "
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[10].rightChoice.resourcesChange
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[1].rightChoice.choiceResultText
@@ -1620,19 +1753,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[2].rightChoice.choiceResultText
-      value: "Daniel rushed through the doors and ran to the mill. As he approached
-        this person in front of the mill he realized that this person is 3 meters
-        tall and he sparks with the lightning itself. Daniel slipped to the ground
-        when he realized that he was looking at the God of Storm - Perun.Perun looked
-        at Daniel and said: \u201CBuild me an Altar and I will help you survive my
-        warrior!\u201D After that words lightning struck the place the God of Storm
-        was standing and the God vanished. Mill was lost, but Daniel wasn\u2019t
-        worried about it. It looks like now he should build an altar for Perun. Who
-        knows what will happen if he would not fullfil that demand. -30 {m}"
+      value: Daniel rushed through the doors and ran to the mill. As he approached
+        the misterious silhouette, he realized that this person is a 3 meters tall,
+        athletic man, and he sparks with lightning himself. Daniel fell on his knees
+        when he realized that at that moment, he was looking at the God of Storm
+        - Perun.
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[3].rightChoice.choiceResultText
-      value: 'You''ve received the sword of Perun +10 {m} '
+      value: 'After building this magnificent building, Daniel heard the crackling
+        of lightning from the nearby field. He approached the field and found the
+        sword for the brave warrior as a gift from Perun. You''ve received the sword
+        of Perun. +10 {m} '
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[4].rightChoice.choiceResultText
@@ -1655,20 +1787,12 @@ PrefabInstance:
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[6].rightChoice.choiceResultText
       value: In a few hours, all the women from the town dressed up in the long white
-        dresses with flower ornaments and wore the flower crowns made by nearby may
-        flowers and daisies. As the night began people created a fire in the middle
-        of the field to scare away the evil spirits, and started to sing along with
-        merry dances. Few of the younger villages jumped over the fire holding hands
-        with their partners, and others were bathing in the lake to heal their bodies. 
-        This event was truly magical, but in the end, they dart into the woods to
-        find a fern flower that will grant them the biggest wishes they could dream
-        of. As the women disappeared into the woods Daniel heard the growling of
-        the beast. He wanted to go after Darya - his woman, but he was stopped by
-        an elderly woman that was keeping the spirit of the tradition. After a few
-        minutes, not all women returned, but Darya was holding the fern flower that
-        was supposed to grant the founder the biggest wishes.You may use the Fern
-        flower -> choose 100 resources or 150 food or keep the flower for later.
-        -10 {m}
+        dresses with flower ornaments and wore the flower crowns made with nearby
+        may flowers and daisies. As the night came, villagers started a fire in the
+        middle of the field to scare away the evil spirits, and began singing and
+        dancing merrily. A few of the younger villagers jumped over the fire holding
+        hands with their partners, and others were bathing in the lake to heal their
+        bodies.
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[7].rightChoice.choiceResultText
@@ -1678,7 +1802,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[8].rightChoice.choiceResultText
-      value: THANK YOU FOR PLAYING OUR GAME
+      value: Armory has been built. The armor has been forged. Now there is the last
+        part to fulfill - the blood of women. Daniel told the people of the town
+        about the Unknown Soldier and people were more than happy to help. Every
+        woman in the town gave three drops of her blood to the heavy pot, and the
+        Unknown Soldier used it to paint his armor and the blade. He started an incantation
+        of some spell to harden his weapon and his armor.
       objectReference: {fileID: 0}
     - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: events.Array.data[9].rightChoice.choiceResultText
@@ -1687,6 +1816,67 @@ PrefabInstance:
         flesh and naked bones he faced the monster. The lion roared, and some of
         the men fled in fear back to the town, but Daniel was standing his ground
         with his bravest warriors.
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[10].rightChoice.choiceResultText
+      value: "Daniel returned with a small bag full of two coins that were barely
+        held inside. \u201CThere you go!\u201D- said Daniel. The Devil got furious
+        and started to yell at him. \u201CIs that a joke!? You know exactly what
+        I meant by the bag full of coins! Now you will perish!\u201D - Devil chanted,
+        but as soon as he jumped to attack Daniel, he evaporated into ashes, and
+        the well filled with water. Well now generates +5 food "
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[2].rightChoice.choiceResultText2
+      value: "Perun looked at Daniel and said: \u201CBuild me an Altar and I will
+        help you survive, my warrior!\u201D As if to emphasize those words, lightning
+        struck the place where Perun himself was standing, and the God of Storm vanished.
+        The mill was beyond repair, but Daniel couldn\u2019t be bothered. He had
+        a new mission - to build an altar for Perun. Who knows what could happen
+        if he would not fulfill that demand.  (Mill was destroyed) (Altar of Perun
+        unlocked)  -30 {m}"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[2].rightChoice.choiceResultText3
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[6].rightChoice.choiceResultText2
+      value: This event was truly magical, but in the end, they darted into the woods
+        to find a fern flower that would grant them the boldest wishes they could
+        dream of. As the women disappeared in the woods, Daniel heard the growling
+        of the beast. He wanted to go after Darya - his wife, but he was stopped
+        by an elderly woman who was keeping the spirit of the tradition. After a
+        few minutes, not all women returned, but Darya was holding the fern flower
+        that was supposed to grant her biggest wishes. -10 {m} You've received the
+        Fern Flower.
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[8].rightChoice.choiceResultText2
+      value: "After that, he embarked towards the beasts\u2019 hill in the morning.
+        He reached the lair of the beast. Surrounded by rotten flesh and naked bones
+        he faced the monster. The lion roared, but did not flee. The Soldier put
+        his shield up and ran towards the creature! The lion struck his armor with
+        his deadly claws, but they did not pierce its surface. The Soldier was precise
+        and decided to tire the beast, so he cut the lion lightly, inch by inch,
+        until the beast was exhausted. In the end, both Soldier and the Lion were
+        worn out, but the Soldier mustered his strength, struck one final blow, and
+        beheaded the beast!"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[8].rightChoice.choiceResultText3
+      value: People in the town were watching the soldier, as he was coming down
+        the hill with the head of a lion in his hand. The cheering and applause rose
+        and the soldier became a legend! That is how the town was saved and got the
+        name Leviv after that act of bravery.
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525053113662928720, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
+      propertyPath: events.Array.data[9].rightChoice.choiceResultText2
+      value: The fight was long and tiring. Few of the villagers fell, but Daniel
+        did not stop attacking the beast. The lion was jumping all over the place,
+        but it began to growl out of pain. Suddenly the Lion jumped on Daniel and
+        tried to bite his head off when Daniel grabbed his fangs and was trying to
+        wrestle the beast.
       objectReference: {fileID: 0}
     - target: {fileID: 4748767427713360022, guid: 415936b6dc4a8cb488fa1cfd8b81a5ff, type: 3}
       propertyPath: m_Name

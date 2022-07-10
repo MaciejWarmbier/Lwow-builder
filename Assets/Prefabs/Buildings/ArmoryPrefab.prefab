@@ -53,7 +53,7 @@ MonoBehaviour:
   moraleProduction: 0
   resourcesProduction: 0
   foodProduction: 0
-  buildingImage: {fileID: 0}
+  buildingImage: {fileID: 21300000, guid: c9e2a66daff07684eb6bf7277c7bdf5d, type: 3}
   description: Allows you to create Armor
 --- !u!1001 &2120348651831555250
 PrefabInstance:

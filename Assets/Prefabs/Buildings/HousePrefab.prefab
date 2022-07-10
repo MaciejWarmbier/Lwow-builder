@@ -471,5 +471,5 @@ MonoBehaviour:
   moraleProduction: 0
   resourcesProduction: 10
   foodProduction: 0
-  buildingImage: {fileID: 0}
+  buildingImage: {fileID: 21300000, guid: 9f41ce5e756645543bbca4a2439790df, type: 3}
   description: +10 {r}
