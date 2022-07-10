@@ -172,9 +172,12 @@ public class Tile : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (!EventSystem.current.IsPointerOverGameObject() && hoverMesh.activeSelf)
+        if (!EventSystem.current.IsPointerOverGameObject() && (isClickable || isTree || isRock))
         {
-            StopHover();
+            if (hoverMesh.activeSelf)
+            {
+                StopHover();
+            }
         }
     }
 

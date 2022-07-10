@@ -59,25 +59,26 @@ public class Building : MonoBehaviour
         int x = tile.Coordinates.x;
         int y = tile.Coordinates.y;
 
-        var neighborTile = GameObject.Find($"({x - 1}, {y-1})").GetComponent<Tile>();
-        if (neighborTile.CheckIfMil()) millTiles ++;
+        
+        var neighborTile = GameObject.Find($"({x - 1}, {y - 1})").GetComponent<Tile>();
+        if (neighborTile.CheckIfMil()) millTiles++;
 
         neighborTile = GameObject.Find($"({x - 1}, {y})").GetComponent<Tile>();
         if (neighborTile.CheckIfMil()) millTiles++;
 
-         neighborTile = GameObject.Find($"({x - 1}, {y + 1})").GetComponent<Tile>();
+        neighborTile = GameObject.Find($"({x - 1}, {y + 1})").GetComponent<Tile>();
         if (neighborTile.CheckIfMil()) millTiles++;
 
-         neighborTile = GameObject.Find($"({x}, {y + 1})").GetComponent<Tile>();
+        neighborTile = GameObject.Find($"({x}, {y + 1})").GetComponent<Tile>();
         if (neighborTile.CheckIfMil()) millTiles++;
 
-         neighborTile = GameObject.Find($"({x}, {y - 1})").GetComponent<Tile>();
+        neighborTile = GameObject.Find($"({x}, {y - 1})").GetComponent<Tile>();
         if (neighborTile.CheckIfMil()) millTiles++;
 
-         neighborTile = GameObject.Find($"({x + 1}, {y + 1})").GetComponent<Tile>();
+        neighborTile = GameObject.Find($"({x + 1}, {y + 1})").GetComponent<Tile>();
         if (neighborTile.CheckIfMil()) millTiles++;
 
-         neighborTile = GameObject.Find($"({x + 1}, {y})").GetComponent<Tile>();
+        neighborTile = GameObject.Find($"({x + 1}, {y})").GetComponent<Tile>();
         if (neighborTile.CheckIfMil()) millTiles++;
 
         neighborTile = GameObject.Find($"({x + 1}, {y - 1})").GetComponent<Tile>();
