@@ -325,6 +325,7 @@ MonoBehaviour:
   isRock: 0
   buildingSelectionCanvas: {fileID: 4276697632863640977, guid: a10f71fadf455604d93a03644218785d, type: 3}
   hoverMesh: {fileID: 6095185676694195245}
+  soundEffect: {fileID: 0}
 --- !u!65 &5503434025645111032
 BoxCollider:
   m_ObjectHideFlags: 0
