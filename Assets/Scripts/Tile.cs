@@ -10,7 +10,8 @@ public class Tile : MonoBehaviour
     [SerializeField] bool isRock;
     [SerializeField] BuildingSelectionCanvas buildingSelectionCanvas;
     [SerializeField] GameObject hoverMesh;
-    
+    [SerializeField] AudioSource soundEffect;
+
 
     private Building building;
     private Renderer tileRenderer;
@@ -72,7 +73,7 @@ public class Tile : MonoBehaviour
         isTreeSmashed = true;
         int number = Random.Range(1, 2);
         VillageResources.villageResources.ChangeResources(number);
-
+        soundEffect.Play();
         yield return new WaitForSeconds(1);
         isTreeSmashed = false;
     }
@@ -82,7 +83,7 @@ public class Tile : MonoBehaviour
         isRockSmashed = true;
         int number = Random.Range(0, 3);
         VillageResources.villageResources.ChangeResources(number);
-
+        soundEffect.Play();
         yield return new WaitForSeconds(1);
         isRockSmashed = false;
     }
