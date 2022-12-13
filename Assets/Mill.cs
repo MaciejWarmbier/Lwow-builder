@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using static BuildingConfig;
 
 public class Mill : Building
 {
     public override void PassiveEffect()
     {
-        int wheats = CheckForWheat();
+        int wheats = CheckForNeighbor(BuildingType.Wheat);
         if (WorldController.worldController.isWheatBetter)
         {
             VillageResources.villageResources.ChangeFoodProduction(wheats * 10);

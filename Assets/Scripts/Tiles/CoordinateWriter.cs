@@ -7,10 +7,9 @@ using UnityEngine;
 [RequireComponent(typeof(TextMeshPro))]
 public class CoordinateWriter : MonoBehaviour
 {
-    [SerializeField] Color defaultColor = Color.white;
+    [SerializeField] Color freeColor = Color.white;
     [SerializeField] Color blockedColor = Color.red;
-    [SerializeField] Color pathColor = Color.blue;
-    [SerializeField] Color exploredColor = Color.yellow;
+    [SerializeField] Color usedColor = Color.yellow;
 
     TextMeshPro coordinateLabel;
     Vector2Int coordinates = new Vector2Int();
@@ -33,7 +32,6 @@ public class CoordinateWriter : MonoBehaviour
             coordinateLabel.enabled = true;
         }
 
-
         SetLabelColor();
         ToggleLabels();
     }
@@ -53,16 +51,16 @@ public class CoordinateWriter : MonoBehaviour
             return;
         }
 
-        ObjectNode node = gridManager.GetNode(coordinates);
-        if (node == null) return;
+        Tile tile = gridManager.GetTile(coordinates);
+        if (tile == null) return;
 
-        if (node.isClickable)
+        if (tile.Type == Tile.TileType.Free)
         {
-            coordinateLabel.color = defaultColor;
+            coordinateLabel.color = freeColor;
         }
-        else if (node.isTree || node.isRock)
+        else if (tile.Type == Tile.TileType.Tree || tile.Type == Tile.TileType.Rock || tile.Type == Tile.TileType.Built)
         {
-            coordinateLabel.color = exploredColor;
+            coordinateLabel.color = usedColor;
         }
         else 
         {

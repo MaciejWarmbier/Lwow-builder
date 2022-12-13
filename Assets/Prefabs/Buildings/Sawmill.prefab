@@ -48,7 +48,6 @@ Transform:
   - {fileID: 6663493238319727815}
   - {fileID: 7997504267445773366}
   - {fileID: 6209743538319465372}
-  - {fileID: 5678634628957794416}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -138,6 +137,7 @@ MonoBehaviour:
   foodProduction: 0
   buildingImage: {fileID: 21300000, guid: 41e3ea633e23be34e9eee143994d09b6, type: 3}
   description: +20 {r} and +10 {r} if there are any trees nearby
+  Type: 0
 --- !u!1001 &65147849940523504
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1033,72 +1033,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 9112147280823235733, guid: 81eacb81d80f411468da8db5092f89c4, type: 3}
   m_PrefabInstance: {fileID: 4981006954423689606}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &5678634628957924080
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1602534005799782810}
-    m_Modifications:
-    - target: {fileID: 100000, guid: 4ed58bc0a48919b4c9efba18e617ea72, type: 3}
-      propertyPath: m_Name
-      value: Sawmill
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 4ed58bc0a48919b4c9efba18e617ea72, type: 3}
-      propertyPath: m_RootOrder
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 4ed58bc0a48919b4c9efba18e617ea72, type: 3}
-      propertyPath: m_LocalScale.z
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 4ed58bc0a48919b4c9efba18e617ea72, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 3.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 4ed58bc0a48919b4c9efba18e617ea72, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.53999996
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 4ed58bc0a48919b4c9efba18e617ea72, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -3.37
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 4ed58bc0a48919b4c9efba18e617ea72, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.03846955
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 4ed58bc0a48919b4c9efba18e617ea72, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 4ed58bc0a48919b4c9efba18e617ea72, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.9992598
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 4ed58bc0a48919b4c9efba18e617ea72, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 4ed58bc0a48919b4c9efba18e617ea72, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 4ed58bc0a48919b4c9efba18e617ea72, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -175.591
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 4ed58bc0a48919b4c9efba18e617ea72, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4ed58bc0a48919b4c9efba18e617ea72, type: 3}
---- !u!4 &5678634628957794416 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 400000, guid: 4ed58bc0a48919b4c9efba18e617ea72, type: 3}
-  m_PrefabInstance: {fileID: 5678634628957924080}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5843524967682660527
 PrefabInstance:

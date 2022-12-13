@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static BuildingConfig;
+using static Tile;
 
 public class Building : MonoBehaviour
 {
@@ -17,8 +19,9 @@ public class Building : MonoBehaviour
     [SerializeField] int resourcesProduction;
     [SerializeField] int foodProduction;
     [SerializeField] Sprite buildingImage; 
-    [SerializeField] string description; 
+    [SerializeField] string description;
 
+    public BuildingType Type;
     public int FoodCost { get { return foodCost; } }
     public int ResourcesCost { get { return resourcesCost; } }
     public Sprite BuildingImage { get { return buildingImage; } }
@@ -29,7 +32,7 @@ public class Building : MonoBehaviour
     public int FoodProduction { get { return foodProduction; } }
     public bool IsBig { get { return isBig; } }
 
-    private List<Tile> tiles;
+    private List<Tile> neighbors;
 
     public void Awake()
     {
@@ -52,106 +55,32 @@ public class Building : MonoBehaviour
         }
     }
 
-    public int CheckForMil()
+    public int CheckForNeighbor(BuildingType buildingType)
     {
-        Tile tile = tiles[0];
-        int millTiles = 0;
-        int x = tile.Coordinates.x;
-        int y = tile.Coordinates.y;
+        int buildingTiles = 0;
+        foreach(var neighbor in neighbors)
+        {
+            if(neighbor.PlacedBuilding.Type == buildingType)
+            {
+                buildingTiles++;
+            }
+        }
 
-        
-        var neighborTile = GameObject.Find($"({x - 1}, {y - 1})").GetComponent<Tile>();
-        if (neighborTile.CheckIfMil()) millTiles++;
-
-        neighborTile = GameObject.Find($"({x - 1}, {y})").GetComponent<Tile>();
-        if (neighborTile.CheckIfMil()) millTiles++;
-
-        neighborTile = GameObject.Find($"({x - 1}, {y + 1})").GetComponent<Tile>();
-        if (neighborTile.CheckIfMil()) millTiles++;
-
-        neighborTile = GameObject.Find($"({x}, {y + 1})").GetComponent<Tile>();
-        if (neighborTile.CheckIfMil()) millTiles++;
-
-        neighborTile = GameObject.Find($"({x}, {y - 1})").GetComponent<Tile>();
-        if (neighborTile.CheckIfMil()) millTiles++;
-
-        neighborTile = GameObject.Find($"({x + 1}, {y + 1})").GetComponent<Tile>();
-        if (neighborTile.CheckIfMil()) millTiles++;
-
-        neighborTile = GameObject.Find($"({x + 1}, {y})").GetComponent<Tile>();
-        if (neighborTile.CheckIfMil()) millTiles++;
-
-        neighborTile = GameObject.Find($"({x + 1}, {y - 1})").GetComponent<Tile>();
-        if (neighborTile.CheckIfMil()) millTiles++;
-
-        return millTiles;
+        return buildingTiles;
     }
 
-    public bool CheckForTrees()
+    public int CheckForNeighbor(TileType tileType)
     {
-        Tile tile = tiles[0];
-        int x = tile.Coordinates.x;
-        int y = tile.Coordinates.y;
+        int neighborTiles = 0;
+        foreach (var neighbor in neighbors)
+        {
+            if (neighbor.Type == tileType)
+            {
+                neighborTiles++;
+            }
+        }
 
-        var neighborTile = GameObject.Find($"({x - 1}, {y - 1})").GetComponent<Tile>();
-        if (neighborTile.IsTree) return true;
-
-        neighborTile = GameObject.Find($"({x - 1}, {y})").GetComponent<Tile>();
-        if (neighborTile.IsTree) return true;
-
-        neighborTile = GameObject.Find($"({x - 1}, {y + 1})").GetComponent<Tile>();
-        if (neighborTile.IsTree) return true;
-
-        neighborTile = GameObject.Find($"({x}, {y + 1})").GetComponent<Tile>();
-        if (neighborTile.IsTree) return true;
-
-        neighborTile = GameObject.Find($"({x}, {y - 1})").GetComponent<Tile>();
-        if (neighborTile.IsTree) return true;
-
-        neighborTile = GameObject.Find($"({x + 1}, {y + 1})").GetComponent<Tile>();
-        if (neighborTile.IsTree) return true;
-
-        neighborTile = GameObject.Find($"({x + 1}, {y})").GetComponent<Tile>();
-        if (neighborTile.IsTree) return true;
-
-        neighborTile = GameObject.Find($"({x + 1}, {y - 1})").GetComponent<Tile>();
-        if (neighborTile.IsTree) return true;
-
-        return false;
-    }
-
-    public int CheckForWheat()
-    {
-        Tile tile = tiles[0];
-        int wheatTiles = 0;
-        int x = tile.Coordinates.x;
-        int y = tile.Coordinates.y;
-
-        var neighborTile = GameObject.Find($"({x - 1}, {y - 1})").GetComponent<Tile>();
-        if (neighborTile.CheckIfWheat()) wheatTiles++;
-
-        neighborTile = GameObject.Find($"({x - 1}, {y})").GetComponent<Tile>();
-        if (neighborTile.CheckIfWheat()) wheatTiles++;
-
-        neighborTile = GameObject.Find($"({x - 1}, {y + 1})").GetComponent<Tile>();
-        if (neighborTile.CheckIfWheat()) wheatTiles++;
-
-        neighborTile = GameObject.Find($"({x}, {y + 1})").GetComponent<Tile>();
-        if (neighborTile.CheckIfWheat()) wheatTiles++;
-
-        neighborTile = GameObject.Find($"({x}, {y - 1})").GetComponent<Tile>();
-        if (neighborTile.CheckIfWheat()) wheatTiles++;
-
-        neighborTile = GameObject.Find($"({x + 1}, {y + 1})").GetComponent<Tile>();
-        if (neighborTile.CheckIfWheat()) wheatTiles++;
-
-        neighborTile = GameObject.Find($"({x + 1}, {y})").GetComponent<Tile>();
-        if (neighborTile.CheckIfWheat()) wheatTiles++;
-
-        neighborTile = GameObject.Find($"({x + 1}, {y - 1})").GetComponent<Tile>();
-        if (neighborTile.CheckIfWheat()) wheatTiles++;
-
-        return wheatTiles;
+        return neighborTiles;
     }
 
     public virtual void PassiveEffect()
@@ -178,7 +107,7 @@ public class Building : MonoBehaviour
     public void PlaceOnTile(Vector3 position, List<Tile> listOfTiles)
     {
         //TODO check costs
-        tiles = listOfTiles;
+        neighbors = listOfTiles;
         gameObject.transform.position = position;
         gameObject.transform.parent = BuildingsController.buildingsController.buildingsObject.transform;
         BuildingsController.buildingsController.buildingInProgress = null;
@@ -191,17 +120,5 @@ public class Building : MonoBehaviour
         VillageResources.villageResources.ChangeFood(-FoodCost);
         VillageResources.villageResources.ChangeResources(-ResourcesCost);
         WorldController.worldController.CheckEvent();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    public void Update()
-    {
-
     }
 }

@@ -9,13 +9,18 @@ public class Tile : MonoBehaviour
     [SerializeField] TileType type;
     [SerializeField] GameObject tileMesh;
     [SerializeField] GameObject objectMesh;
-    [SerializeField] MeshRenderer tileMeshRenderer;    
+    [SerializeField] MeshRenderer tileMeshRenderer;
+    [SerializeField] AudioSource audioSource;
+    private Vector2Int coordinates;
+    public Vector2Int Coordinates { get { return coordinates; } }
+    public TileType Type { get { return type; } }
+
     private SoundConfig soundConfig;
 
     private Building placedBuilding;
+    public Building PlacedBuilding { get { return placedBuilding; } }
     private List<Tile> bigBuildingTiles= new List<Tile>();
 
-    private List<Tile> neighbors = new List<Tile>();
     private List<Tile> cornerTiles = new List<Tile>();
 
     private GridManager gridManager;
@@ -36,8 +41,19 @@ public class Tile : MonoBehaviour
     {
         if (gridManager != null)
         {
+            coordinates = gridManager.GetCoordinatesFromPosition(this.transform.position);
             gridManager.AddTile(this);
             cornerPosition = new Vector3(gameObject.transform.position.x - 5, 0, gameObject.transform.position.z + 5);
+        }
+
+        if(type == TileType.Tree)
+        {
+            audioSource.clip = soundConfig.GetSound(SoundConfig.SoundType.Tree);
+        }
+
+        if (type == TileType.Rock)
+        {
+            audioSource.clip = soundConfig.GetSound(SoundConfig.SoundType.Rock);
         }
     }
 
@@ -95,7 +111,7 @@ public class Tile : MonoBehaviour
         }
         else
         {
-            tileMeshRenderer.material.SetColor("_Color", Color.green);
+            tileMeshRenderer.material.SetColor("_Color", Color.red);
             return false;
         }
     }
@@ -104,8 +120,10 @@ public class Tile : MonoBehaviour
     {
         isHoveredOver = true;
         tileMesh.SetActive(true);
+        WorldController.worldController.lastTile = this;
+
         //TODO color config
-        if(type == TileType.Free)
+        if (type == TileType.Free)
         {
             tileMeshRenderer.material.SetColor("_Color", Color.green);
         }
@@ -119,7 +137,7 @@ public class Tile : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (!EventSystem.current.IsPointerOverGameObject() && type != TileType.NonInteractive && !isHoveredOver)
+        if (!EventSystem.current.IsPointerOverGameObject() && type != TileType.NonInteractive && isHoveredOver)
         {
             if (BuildingsController.buildingsController.buildingInProgress != null 
                 && BuildingsController.buildingsController.buildingInProgress.IsBig)
@@ -138,7 +156,7 @@ public class Tile : MonoBehaviour
         }
     }
 
-    private void StopHover()
+    public void StopHover()
     {
         isHoveredOver = false;
         tileMesh.SetActive(false);
@@ -172,13 +190,12 @@ public class Tile : MonoBehaviour
     {
         var building = BuildingsController.buildingsController.buildingInProgress;
 
-        if(building.IsBig)
+        if (building.IsBig)
         {
-            List<Tile> bigBuildingNeighbors = new List<Tile>();
+            
             foreach(var tile in cornerTiles)
             {
                 tile.BuildingPlaced(building, cornerTiles);
-                bigBuildingNeighbors.AddRange(gridManager.GetNeighbors(tile));
             }
             
             BuildingsController.buildingsController.buildingInProgress.PlaceOnTile(gameObject.transform.position, gridManager.GetBigTileNeighbors(cornerTiles));
@@ -186,8 +203,10 @@ public class Tile : MonoBehaviour
         else
         {
             BuildingPlaced(building);
-            BuildingsController.buildingsController.buildingInProgress.PlaceOnTile(gameObject.transform.position, neighbors);
+            BuildingsController.buildingsController.buildingInProgress.PlaceOnTile(gameObject.transform.position, gridManager.GetNeighbors(this));
         }
+
+        StopHover();
     }
     public void BuildingPlaced(Building building, List<Tile> tiles = null)
     {
@@ -204,7 +223,7 @@ public class Tile : MonoBehaviour
         isTreeSmashed = true;
         int number = Random.Range(1, 2);
         VillageResources.villageResources.ChangeResources(number);
-        soundConfig.GetSound(SoundConfig.SoundType.Tree).Play();
+        audioSource.Play();
         yield return new WaitForSeconds(WorldController.worldController.clickCooldown);
         isTreeSmashed = false;
     }
@@ -214,7 +233,7 @@ public class Tile : MonoBehaviour
         isRockSmashed = true;
         int number = Random.Range(0, 3);
         VillageResources.villageResources.ChangeResources(number);
-        soundConfig.GetSound(SoundConfig.SoundType.Rock).Play();
+        audioSource.Play();
         yield return new WaitForSeconds(WorldController.worldController.clickCooldown);
         isRockSmashed = false;
     }

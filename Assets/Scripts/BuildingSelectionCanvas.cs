@@ -131,6 +131,7 @@ public class BuildingSelectionCanvas : MonoBehaviour
             buyButton.enabled = false;
         }
 
+        WorldController.worldController.lastTile.StopHover();
         OnCanvasClosed?.Invoke(true, buildings[buildingIndex]);
         Destroy(gameObject);
     }

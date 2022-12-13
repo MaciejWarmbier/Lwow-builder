@@ -5,12 +5,12 @@ using UnityEditor;
 using System;
 using System.Linq;
 
-[CreateAssetMenu(fileName = "Sound Config", menuName = "Configs/Sound Config", order = 1)]
+[CreateAssetMenu(fileName = "SoundConfig", menuName = "Configs/SoundConfig", order = 1)]
 public class SoundConfig : ScriptableObject
 {
     [SerializeField] List<Sound> soundList;
 
-    public AudioSource GetSound(SoundType type)
+    public AudioClip GetSound(SoundType type)
     {
         return soundList.FirstOrDefault(r => r.type == type).soundEffect;
     }
@@ -19,7 +19,7 @@ public class SoundConfig : ScriptableObject
     private class Sound
     {
         [SerializeField] public SoundType type;
-        [SerializeField] public AudioSource soundEffect;
+        [SerializeField] public AudioClip soundEffect;
     }
 
     public enum SoundType

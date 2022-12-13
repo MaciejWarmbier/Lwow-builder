@@ -58,7 +58,7 @@ public class WorldController : MonoBehaviour
 
         if (!isEventActive && Time.time > cycleTime && !isPaused && !isCycleActive)
         {
-            StartCoroutine("MakeCycle");
+            StartCoroutine(MakeCycle());
         }
 
         if(isEventOnCooldown && Time.time > eventTime + eventCooldown)
@@ -66,7 +66,7 @@ public class WorldController : MonoBehaviour
             isEventOnCooldown = false;
             if(queuedEvents.Count > 0)
             {
-                StartCoroutine("StartEvent");
+                StartCoroutine(StartEvent());
             }
         }
     }
@@ -85,7 +85,7 @@ public class WorldController : MonoBehaviour
         Wheat_field[] fields = GameObject.FindObjectsOfType<Wheat_field>();
         foreach(Wheat_field field in fields)
         {
-            int mills = field.CheckForMil();
+            int mills = field.CheckForNeighbor(BuildingConfig.BuildingType.Mill);
             VillageResources.villageResources.ChangeFoodProduction(mills*5);
         }
     }

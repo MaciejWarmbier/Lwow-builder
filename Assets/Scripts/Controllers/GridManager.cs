@@ -28,15 +28,13 @@ public class GridManager : MonoBehaviour
 
     public void AddTile(Tile tile)
     {
-        var tilePosition = tile.gameObject.transform.position;
-        var coordinates = GetCoordinatesFromPosition(tilePosition);
-        if (grid.ContainsKey(coordinates))
+        if (grid.ContainsKey(tile.Coordinates))
         {
-            grid[coordinates] = tile;
+            grid[tile.Coordinates] = tile;
         }
         else
         {
-            grid.Add(coordinates, tile);
+            grid.Add(tile.Coordinates, tile);
         }
     }
 
@@ -51,12 +49,9 @@ public class GridManager : MonoBehaviour
 
     public List<Tile> GetNeighbors(Tile tile)
     {
-        var tilePosition = tile.gameObject.transform.position;
-        var coordinates = GetCoordinatesFromPosition(tilePosition);
-
         List<Tile> neighbors = new List<Tile>();
 
-        if (grid.ContainsKey(coordinates))
+        if (grid.ContainsKey(tile.Coordinates))
         {
             for(int i = -1; i < 2; i++)
             {
@@ -64,7 +59,7 @@ public class GridManager : MonoBehaviour
                 {
                     if(i != 0 && j != 0)
                     {
-                        neighbors.Add(grid[new Vector2(coordinates.x - i, coordinates.y - j)]);
+                        neighbors.Add(grid[new Vector2(tile.Coordinates.x - i, tile.Coordinates.y - j)]);
                     }
                 }
             }
@@ -91,18 +86,15 @@ public class GridManager : MonoBehaviour
 
     public List<Tile> GetBigBuildingTiles(Tile tile)
     {
-        var tilePosition = tile.gameObject.transform.position;
-        var coordinates = GetCoordinatesFromPosition(tilePosition);
-
         List<Tile> bigBuildingList = new List<Tile>();
 
-        if (grid.ContainsKey(coordinates))
+        if (grid.ContainsKey(tile.Coordinates))
         {
             for (int i = -1; i < 1; i++)
             {
                 for (int j = -1; j < 1; j++)
                 {
-                    bigBuildingList.Add(grid[new Vector2(coordinates.x - i, coordinates.y - j)]);
+                    bigBuildingList.Add(grid[new Vector2(tile.Coordinates.x - i, tile.Coordinates.y - j)]);
                 }
             }
         }
@@ -113,7 +105,6 @@ public class GridManager : MonoBehaviour
     public Vector2Int GetCoordinatesFromPosition(Vector3 position)
     {
         Vector2Int coordinates = new Vector2Int();
-
 
         coordinates.x = Mathf.RoundToInt(position.x / unityGridSizeSnap);
         coordinates.y = Mathf.RoundToInt(position.z / unityGridSizeSnap);

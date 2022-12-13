@@ -15,7 +15,7 @@ public class EventCanvas : MonoBehaviour
     [SerializeField] private TextMeshProUGUI rightChoiceLabel;
     [SerializeField] private TextMeshProUGUI leftChoiceLabel;
     [SerializeField] private TextMeshProUGUI description;
-    [SerializeField] private TextMeshProUGUI name;
+    [SerializeField] private TextMeshProUGUI eventName;
 
 
     private List<string> descriptions = new List<string>();
@@ -87,7 +87,7 @@ public class EventCanvas : MonoBehaviour
                 description.text = ChangeStrings(eventData.description);
                 rightChoiceLabel.text = ChangeStrings(eventData.rightChoice.choiceText);
                 leftChoiceLabel.text = ChangeStrings(eventData.leftChoice.choiceText);
-                name.text = eventData.title;
+                eventName.text = eventData.title;
             }
             else
             {
@@ -108,7 +108,7 @@ public class EventCanvas : MonoBehaviour
 
         hasEnded = false;
         description.text = ChangeStrings(descriptions[0]);
-        name.text = _event.title;
+        eventName.text = _event.title;
         ShowContinueButton();
     }
 

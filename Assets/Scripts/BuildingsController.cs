@@ -38,7 +38,7 @@ public class BuildingsController : MonoBehaviour
         if (isBought)
         {
             Vector3 buildingPosition = WorldController.worldController.lastTile.transform.position;
-            WorldController.worldController.lastTile.UnHoveredByBuilding();
+            WorldController.worldController.lastTile.StopHover();
             GameObject createdBuilding = boughtBuilding.CreateBuilding(boughtBuilding, buildingPosition);
             if (createdBuilding != null)
             {

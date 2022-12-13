@@ -1058,6 +1058,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8177456868070247488, guid: 5255bc81c20f10d42a2f65357d0fb149, type: 3}
+      propertyPath: type
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8177456868070247488, guid: 5255bc81c20f10d42a2f65357d0fb149, type: 3}
+      propertyPath: objectMesh
+      value: 
+      objectReference: {fileID: 2270806563653532179}
+    - target: {fileID: 8177456868070247488, guid: 5255bc81c20f10d42a2f65357d0fb149, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 5268550113419541641}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5255bc81c20f10d42a2f65357d0fb149, type: 3}
 --- !u!4 &4530825380086678824 stripped
