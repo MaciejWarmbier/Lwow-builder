@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -23,6 +22,7 @@ public class BuildingSelectionCanvas : MonoBehaviour
     private BuildingsController buildingsController;
     private VillageResources villageResources;
     private List<Building> buildings = new List<Building>();
+    private Building shownBuilding;
     private Color defaultColor;
 
     private void Awake()
@@ -37,9 +37,10 @@ public class BuildingSelectionCanvas : MonoBehaviour
 
         buildingsController = FindObjectOfType<BuildingsController>();
         villageResources = FindObjectOfType<VillageResources>();
+        //TODO color manager
         defaultColor = Color.white;
     }
-    // Start is called before the first frame update
+    
     void Start()
     {
         buildings = buildingsController.GetAvailableBuildings();
@@ -49,10 +50,11 @@ public class BuildingSelectionCanvas : MonoBehaviour
             CloseCanvas();
         }
 
-        ShowBuilding(buildings[0]);
+        shownBuilding = buildings[0];
+        ShowBuilding();
     }
 
-    public string ChangeStrings(string text)
+    public string PopulateStringsWithSprites(string text)
     {
         string newText = text.Replace("{f}", "<sprite=1>");
         newText = newText.Replace("{m}", "<sprite=2>");
@@ -61,24 +63,25 @@ public class BuildingSelectionCanvas : MonoBehaviour
         return newText;
     }
 
-    private void ShowBuilding(Building building)
+    private void ShowBuilding()
     {
-        if(building != null)
+        if(shownBuilding != null)
         {
-            buildingImage.sprite = building.BuildingImage;
-            resourcesPriceLabel.text = building.ResourcesCost.ToString();
-            foodPriceLabel.text = building.FoodCost.ToString();
-            description.text = ChangeStrings(building.Description);
+            buildingImage.sprite = shownBuilding.Data.BuildingImage;
+            resourcesPriceLabel.text = shownBuilding.Data.ResourcesCost.ToString();
+            foodPriceLabel.text = shownBuilding.Data.FoodCost.ToString();
+            description.text = PopulateStringsWithSprites(shownBuilding.Data.Description);
 
             buyButton.enabled = true;
             foodPriceLabel.color = defaultColor;
             resourcesPriceLabel.color = defaultColor;
-            if (buildings[buildingIndex].FoodCost > villageResources.Food)
+
+            if (shownBuilding.Data.FoodCost > villageResources.Food)
             {
                 foodPriceLabel.color = Color.red;
                 buyButton.enabled = false;
             }
-            if (buildings[buildingIndex].ResourcesCost > villageResources.Resources)
+            if (shownBuilding.Data.ResourcesCost > villageResources.Resources)
             {
                 resourcesPriceLabel.color = Color.red;
                 buyButton.enabled = false;
@@ -97,7 +100,8 @@ public class BuildingSelectionCanvas : MonoBehaviour
             buildingIndex++;
         }
 
-        ShowBuilding(buildings[buildingIndex]);
+        shownBuilding = buildings[buildingIndex];
+        ShowBuilding();
     }
 
     public void ShowPreviousBuilding()
@@ -111,32 +115,17 @@ public class BuildingSelectionCanvas : MonoBehaviour
             buildingIndex--;
         }
 
-        ShowBuilding(buildings[buildingIndex]);
+        shownBuilding = buildings[buildingIndex];
+        ShowBuilding();
     }
 
     public void BuyBuilding()
     {
-        buyButton.enabled = true;
-        ////TODO popup
-        if (buildings[buildingIndex].FoodCost > villageResources.Food)
-        {
-            foodPriceLabel.color = Color.red;
-            OnCanvasClosed.Invoke(false, null);
-            buyButton.enabled = false;
-        }
-        if (buildings[buildingIndex].ResourcesCost > villageResources.Resources)
-        {
-            resourcesPriceLabel.color = Color.red;
-            OnCanvasClosed.Invoke(false, null);
-            buyButton.enabled = false;
-        }
-
         WorldController.worldController.lastTile.StopHover();
-        OnCanvasClosed?.Invoke(true, buildings[buildingIndex]);
+        OnCanvasClosed?.Invoke(true, shownBuilding);
         Destroy(gameObject);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(Input.GetKey(KeyCode.Escape))

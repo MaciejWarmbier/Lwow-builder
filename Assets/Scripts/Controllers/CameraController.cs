@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private float cameraSpeed = 20f;
-    [SerializeField] private float cameraMovementMargin = 20f;
+    [SerializeField] private float cameraMovementMargin = 25f;
     [SerializeField] private float minPositionX = 0;
     [SerializeField] private float maxPositionX = 80;
     [SerializeField] private float minPositionZ = -40;

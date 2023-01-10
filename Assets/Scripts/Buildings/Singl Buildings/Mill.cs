@@ -13,17 +13,13 @@ public class Mill : Building
         {
             VillageResources.villageResources.ChangeFoodProduction(wheats * 5);
         }
-    }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if(!WorldController.worldController.isPerunActivated &&
+           !WorldController.worldController.isMillBuilt &&
+            WorldController.worldController.destroyMill == null)
+        {
+            WorldController.worldController.destroyMill = this;
+            WorldController.worldController.isMillBuilt = true;
+        }
     }
 }

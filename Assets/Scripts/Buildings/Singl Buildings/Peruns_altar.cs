@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Peruns_altar : Building
 {
-    public override bool CheckIfPossibleToBuild()
+    public override bool CheckIfUnlocked()
     {
         return WorldController.worldController.isPerunActivated;
     }
@@ -13,19 +13,7 @@ public class Peruns_altar : Building
     {
         if (WorldController.worldController.isPerunHappy)
         {
-             WorldController.worldController.GetNamedEvent(false, true, false);
+             WorldController.worldController.GetNamedEvent(EventType.AltarOfPerun);
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

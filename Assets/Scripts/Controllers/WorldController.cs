@@ -20,7 +20,7 @@ public class WorldController : MonoBehaviour
     private bool isPaused = false;
     private bool isEventOnCooldown = false;
 
-    //Sekcja Fabularna
+    [Header("Fabularne")]
     public bool hasKupalaFlower = false;
     public bool hasSword = false;
     public bool isArmoryUnlocked = false;
@@ -28,14 +28,11 @@ public class WorldController : MonoBehaviour
     public bool isPerunActivated = false;
     public bool isPerunHappy = false;
     public bool isCityHallBuilt = false;
-    public bool isMilBuilt = false;
+    public bool isMillBuilt = false;
     public Mill destroyMill = null;
 
-
-
-    private float eventTime = 0;
+    private float eventEndTime = 0;
     private int cycle = 0;
-    private IEnumerator coroutine;
     public static WorldController worldController;
 
     private void Awake()
@@ -43,10 +40,6 @@ public class WorldController : MonoBehaviour
         Assert.IsNotNull(eventCanvas);
         
         worldController = GetComponent<WorldController>();
-    }
-    void Start()
-    {
-        coroutine = StartEvent();
     }
 
     private void Update()
@@ -61,7 +54,7 @@ public class WorldController : MonoBehaviour
             StartCoroutine(MakeCycle());
         }
 
-        if(isEventOnCooldown && Time.time > eventTime + eventCooldown)
+        if(isEventOnCooldown && Time.time > eventEndTime + eventCooldown && !isPaused)
         {
             isEventOnCooldown = false;
             if(queuedEvents.Count > 0)
@@ -80,23 +73,9 @@ public class WorldController : MonoBehaviour
         isCycleActive = false;
     }
 
-    public void IncreaseWheat()
+    public void GetNamedEvent(EventType type)
     {
-        Wheat_field[] fields = GameObject.FindObjectsOfType<Wheat_field>();
-        foreach(Wheat_field field in fields)
-        {
-            int mills = field.CheckForNeighbor(BuildingConfig.BuildingType.Mill);
-            VillageResources.villageResources.ChangeFoodProduction(mills*5);
-        }
-    }
-    public void BeginStorm()
-    {
-        
-    }
-
-    public void GetNamedEvent(bool devilishWell, bool perunSword, bool slayerOfTheBeast2)
-    {
-        GameEvent gameEvent = GameEventsController.gameEventsController.GetNamedEvent(devilishWell, perunSword, slayerOfTheBeast2);
+        GameEvent gameEvent = GameEventsController.gameEventsController.GetNamedEvent(type);
         if (gameEvent == null) return;
         else
         {
@@ -104,7 +83,7 @@ public class WorldController : MonoBehaviour
 
             if (!isEventOnCooldown)
             {
-                StartCoroutine("StartEvent");
+                StartCoroutine(StartEvent());
             }
         }
     }
@@ -122,7 +101,7 @@ public class WorldController : MonoBehaviour
 
             if (!isEventOnCooldown)
             {
-                StartCoroutine("StartEvent");
+                StartCoroutine(StartEvent());
             }
         }
     }
@@ -134,9 +113,10 @@ public class WorldController : MonoBehaviour
         var canvas = Instantiate(eventCanvas);
         canvas.ShowEvent(queuedEvents.Dequeue());
         PauseGame();
-        yield return new WaitUntil(() => canvas.HasEnded);
+        yield return new WaitUntil(() => canvas.EventHasEnded);
+
         isEventOnCooldown = true;
-        eventTime = Time.time;
+        eventEndTime = Time.time;
         isEventActive = false;
     }
 
@@ -170,6 +150,7 @@ public class WorldController : MonoBehaviour
             Time.timeScale = 0.0f;
         }
     }
+
     public void UnPauseGame()
     {
         if (Time.timeScale == 0.0f)

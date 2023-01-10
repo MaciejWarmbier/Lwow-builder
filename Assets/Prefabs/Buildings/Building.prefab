@@ -79,12 +79,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingName: BuildingUno
-  levelRequirement: 4
+  isBig: 0
   foodCost: 1
   resourcesCost: 1
   buildingScore: 5
+  moraleProduction: 0
+  resourcesProduction: 0
+  foodProduction: 0
   buildingImage: {fileID: 21300000, guid: f68937b328f8fc646a94ff3be250c810, type: 3}
   description: opis budynku 1
+  overlay: {fileID: 0}
+  overlayMaterial: {fileID: 0}
+  Type: 0
 --- !u!65 &4573526451380532754
 BoxCollider:
   m_ObjectHideFlags: 0

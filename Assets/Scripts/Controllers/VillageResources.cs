@@ -59,13 +59,11 @@ public class VillageResources : MonoBehaviour
                 return false;
             }
             buildingScore += value;
-            UpdateLabels();
             return true;
         }
         else
         {
             buildingScore += value;
-            UpdateLabels();
             return true;
         }
     }
@@ -110,122 +108,69 @@ public class VillageResources : MonoBehaviour
 
     public bool ChangeResources(int value)
     {
-        if (value < 0)
+        if (resources + value < 0)
         {
-            //if (resources + value < 0)
-            //{
-            //    return false;
-            //}
-            resources += value;
-            UpdateLabels();
-            return true;
+            return false;
         }
-        else
-        {
-            resources += value;
-            UpdateLabels();
-            return true;
-        }
+            
+        resources += value;
+        UpdateLabels();
+        return true;
     }
 
     public bool ChangeResourcesProduction(int value)
     {
-        if (value < 0)
+        if (resourceProduction + value < 0)
         {
-            //if (resourceProduction + value < 0)
-            //{
-            //    return false;
-            //}
-            resourceProduction += value;
-            UpdateLabels();
-            return true;
+            return false;
         }
-        else
-        {
-            resourceProduction += value;
-            UpdateLabels();
-            return true;
-        }
+        resourceProduction += value;
+        UpdateLabels();
+        return true;
     }
 
     public bool ChangeResourcesConsumption(int value)
     {
-        if (value < 0)
+        if (resourceConsumption + value < 0)
         {
-            //if (resourceConsumption + value < 0)
-            //{
-            //    return false;
-            //}
-            resourceConsumption += value;
-            UpdateLabels();
-            return true;
+            return false;
         }
-        else
-        {
-            resourceConsumption += value;
-            UpdateLabels();
-            return true;
-        }
+        resourceConsumption += value;
+        UpdateLabels();
+        return true;
     }
 
     public bool ChangeFood(int value)
     {
-        if(value < 0)
+        if (food + value < 0)
         {
-            //if (food + value < 0)
-            //{
-            //    return false;
-            //}
-            food += value;
-            UpdateLabels();
-            return true;
+            return false;
         }
-        else
-        {
-            food += value;
-            UpdateLabels();
-            return true;
-        }
+        food += value;
+        UpdateLabels();
+        return true;
     }
 
     public bool ChangeFoodProduction(int value)
     {
-        if (value < 0)
+        if (foodProduction + value < 0)
         {
-            //if (foodProduction + value < 0)
-            //{
-            //    return false;
-            //}
-            foodProduction += value;
-            UpdateLabels();
-            return true;
+            return false;
         }
-        else
-        {
-            foodProduction += value;
-            UpdateLabels();
-            return true;
-        }
+        foodProduction += value;
+        UpdateLabels();
+        return true;
     }
 
     public bool ChangeFoodConsumption(int value)
     {
-        if (value < 0)
+        if (foodConsumption + value < 0)
         {
-            //if (foodConsumption + value < 0)
-            //{
-            //    return false;
-            //}
-            foodConsumption += value;
-            UpdateLabels();
-            return true;
+            return false;
         }
-        else
-        {
-            foodConsumption += value;
-            UpdateLabels();
-            return true;
-        }
+        foodConsumption += value;
+        UpdateLabels();
+        return true;
     }
 
     public bool ChangeMorale(int value)
@@ -252,43 +197,24 @@ public class VillageResources : MonoBehaviour
 
     public bool ChangeMoraleProduction(int value)
     {
-        if (value < 0)
+        if (moraleProduction + value < 0)
         {
-            //if (moraleProduction + value < 0)
-            //{
-            //    return false;
-            //}
-            moraleProduction += value;
-            UpdateLabels();
-            return true;
+            return false;
         }
-        else
-        {
-            moraleProduction += value;
-            UpdateLabels();
-            return true;
-        }
+        moraleProduction += value;
+        UpdateLabels();
+        return true;
     }
 
     public bool ChangeMoraleConsumption(int value)
     {
-        if (value < 0)
+        if (moraleConsumption + value < 0)
         {
-            //if (moraleConsumption + value < 0)
-            //{
-                
-            //    return false;
-            //}
-            moraleConsumption += value;
-            UpdateLabels();
-            return true;
+            return false;
         }
-        else
-        {
-            moraleConsumption += value;
-            UpdateLabels();
-            return true;
-        }
+        moraleConsumption += value;
+        UpdateLabels();
+        return true;
     }
 
     public void UpdateLabels()

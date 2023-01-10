@@ -20,10 +20,11 @@ public class EventCanvas : MonoBehaviour
 
     private List<string> descriptions = new List<string>();
     private int descriptionIndex = 0;
-    private bool hasEnded = false;
-    public bool HasEnded { get { return hasEnded; } }
+    private bool eventHasEnded = false;
+    public bool EventHasEnded { get { return eventHasEnded; } }
     private GameEvent _event;
     private int pageNumber = 1;
+
     private void Awake()
     {
         Assert.IsNotNull(nextButton);
@@ -40,12 +41,12 @@ public class EventCanvas : MonoBehaviour
 
     public void CloseCanvas()
     {
-        hasEnded = true;
+        eventHasEnded = true;
         WorldController.worldController.UnPauseGame();
         Destroy(gameObject);
     }
 
-    public string ChangeStrings(string text)
+    public string AddSpriteTextToStrings(string text)
     {
         string newText = text.Replace("{f}", "<sprite=1>");
         newText = newText.Replace("{m}", "<sprite=2>");
@@ -61,15 +62,15 @@ public class EventCanvas : MonoBehaviour
             _event = eventData;
             if (!eventData.skipChoice)
             {
-                descriptions.Add(ChangeStrings(eventData.description));
+                descriptions.Add(AddSpriteTextToStrings(eventData.description));
                 if (!string.IsNullOrEmpty(eventData.description2))
-                    descriptions.Add(ChangeStrings(eventData.description2));
-                if (!string.IsNullOrEmpty(ChangeStrings(eventData.description3)))
-                    descriptions.Add(ChangeStrings(eventData.description3));
+                    descriptions.Add(AddSpriteTextToStrings(eventData.description2));
+                if (!string.IsNullOrEmpty(AddSpriteTextToStrings(eventData.description3)))
+                    descriptions.Add(AddSpriteTextToStrings(eventData.description3));
                 if (!string.IsNullOrEmpty(eventData.description4))
-                    descriptions.Add(ChangeStrings(eventData.description4));
+                    descriptions.Add(AddSpriteTextToStrings(eventData.description4));
 
-                if (eventData.isGreatHunt)
+                if (eventData.type == EventType.TheGreatHunt)
                 {
                     if(WorldController.worldController.hasSword)
                         descriptions.Add("... but we have the sword of Perun. This beast can’t stand the true gift from the God.");
@@ -77,16 +78,16 @@ public class EventCanvas : MonoBehaviour
                         descriptions.Add("Let’s not forget that we still have the Daryas’ Fern flower. It could help with the battle.");
 
                 }
-
-                if (eventData.isPerunEvent)
+                 
+                if (eventData.type == EventType.StormOfPerun)
                 {
                     WorldController.worldController.isPerunActivated = true;
                 }
 
-                hasEnded = false;
-                description.text = ChangeStrings(eventData.description);
-                rightChoiceLabel.text = ChangeStrings(eventData.rightChoice.choiceText);
-                leftChoiceLabel.text = ChangeStrings(eventData.leftChoice.choiceText);
+                eventHasEnded = false;
+                description.text = AddSpriteTextToStrings(eventData.description);
+                rightChoiceLabel.text = AddSpriteTextToStrings(eventData.rightChoice.choiceText);
+                leftChoiceLabel.text = AddSpriteTextToStrings(eventData.leftChoice.choiceText);
                 eventName.text = eventData.title;
             }
             else
@@ -98,16 +99,16 @@ public class EventCanvas : MonoBehaviour
     
     private void SkipChoice()
     {
-        descriptions.Add(ChangeStrings(_event.rightChoice.choiceResultText));
+        descriptions.Add(AddSpriteTextToStrings(_event.rightChoice.choiceResultText));
         if (!string.IsNullOrEmpty(_event.rightChoice.choiceResultText2))
-            descriptions.Add(ChangeStrings(_event.rightChoice.choiceResultText2));
+            descriptions.Add(AddSpriteTextToStrings(_event.rightChoice.choiceResultText2));
         if (!string.IsNullOrEmpty(_event.rightChoice.choiceResultText4))
-            descriptions.Add(ChangeStrings(_event.rightChoice.choiceResultText3));
+            descriptions.Add(AddSpriteTextToStrings(_event.rightChoice.choiceResultText3));
         if (!string.IsNullOrEmpty(_event.rightChoice.choiceResultText3))
-            descriptions.Add(ChangeStrings(_event.rightChoice.choiceResultText4));
+            descriptions.Add(AddSpriteTextToStrings(_event.rightChoice.choiceResultText4));
 
-        hasEnded = false;
-        description.text = ChangeStrings(descriptions[0]);
+        eventHasEnded = false;
+        description.text = AddSpriteTextToStrings(descriptions[0]);
         eventName.text = _event.title;
         ShowContinueButton();
     }
@@ -118,73 +119,64 @@ public class EventCanvas : MonoBehaviour
         if (isRight)
         {
             selectedChoice = _event.rightChoice;
-            RightChoiceResults();
+            GameEventsController.gameEventsController.RightEventResults(_event);
         }
         else
         {
             selectedChoice = _event.leftChoice;
+            GameEventsController.gameEventsController.WrongEventResults(_event);
         }
 
-        descriptions.Clear();
-        descriptions.Add(ChangeStrings(selectedChoice.choiceResultText));
-        if(!string.IsNullOrEmpty(selectedChoice.choiceResultText2))
-            descriptions.Add(ChangeStrings(selectedChoice.choiceResultText2));
-        if (!string.IsNullOrEmpty(selectedChoice.choiceResultText3))
-            descriptions.Add(ChangeStrings(selectedChoice.choiceResultText3));
-        if (!string.IsNullOrEmpty(selectedChoice.choiceResultText4))
-            descriptions.Add(ChangeStrings(selectedChoice.choiceResultText4));
 
-        if (_event.isGreatHunt && WorldController.worldController.hasSword && isRight)
+        descriptions.Clear();
+        descriptions.Add(AddSpriteTextToStrings(selectedChoice.choiceResultText));
+        if(!string.IsNullOrEmpty(selectedChoice.choiceResultText2))
+            descriptions.Add(AddSpriteTextToStrings(selectedChoice.choiceResultText2));
+        if (!string.IsNullOrEmpty(selectedChoice.choiceResultText3))
+            descriptions.Add(AddSpriteTextToStrings(selectedChoice.choiceResultText3));
+        if (!string.IsNullOrEmpty(selectedChoice.choiceResultText4))
+            descriptions.Add(AddSpriteTextToStrings(selectedChoice.choiceResultText4));
+
+        if(_event.type == EventType.TheGreatHunt && isRight)
+        {
+            EndGameDialogue();
+        }
+
+        descriptionIndex = 0;
+
+        //TODO Resource check
+        VillageResources.villageResources.ChangeFood(selectedChoice.foodChange);
+        VillageResources.villageResources.ChangeMorale(selectedChoice.moraleChange);
+        VillageResources.villageResources.ChangeResources(selectedChoice.resourcesChange);
+        description.text = AddSpriteTextToStrings(selectedChoice.choiceResultText);
+        ShowContinueButton();
+    }
+
+    private void EndGameDialogue()
+    {
+        if (WorldController.worldController.hasSword)
             descriptions.Add("The sword of Perun sparked with the lightning power enchanted within the blade, and Daniel was confident that this day will be the last of this enormous Lion.");
-        if (_event.isGreatHunt && WorldController.worldController.hasKupalaFlower && isRight)
+        if (WorldController.worldController.hasKupalaFlower)
             descriptions.Add("The Fern flower disappeared as the soldiers felt unstoppable.");
-        if(_event.isGreatHunt && isRight)
+
             descriptions.Add("The fight was long and tiring. Few of the villagers fell, but Daniel did not stop attacking the beast. The lion was jumping all over the place, but it began to growl out of pain. Suddenly the Lion jumped on Daniel and tried to bite his head off when Daniel grabbed his fangs and was trying to wrestle the beast.");
-        if (_event.isGreatHunt && WorldController.worldController.hasSword && isRight)
+
+        if (WorldController.worldController.hasSword)
         {
             descriptions.Add("He managed to toss the beast to the ground when one of the villagers swung a final blow to the beast. The Lion was dead.");
             descriptions.Add("People in the town watched when the villagers came down the hill with the head of a lion. The cheering and applauding rose and Daniel became a legend! That is how the town was saved and was named Leviv after that act of bravery.");
             descriptions.Add("Game Over. You killed the Lion. Thank you for playing <3");
         }
-        else if (_event.isGreatHunt && WorldController.worldController.hasKupalaFlower && isRight)
+        else if (WorldController.worldController.hasKupalaFlower)
         {
             descriptions.Add("He managed to toss the beast to the ground as he reached for the blade of the God, and sink it into his throat. The Lion was dead.");
             descriptions.Add("People in the town watched when the villagers came down the hill with the head of a lion. The cheering and applauding rose and Daniel became a legend! That is how the town was saved and was named Leviv after that act of bravery. ");
             descriptions.Add("Game Over. You killed the Lion. Thank you for playing <3");
         }
-        else if(_event.isGreatHunt && isRight)
+        else
         {
             descriptions.Add("but… the beast was stronger… Daniel died in the battle. Darya was waiting for her husband to return, but he never did… and the beast was still alive.");
             descriptions.Add("Game Over. You died. Thank you for playing <3");
-        }
-
-        descriptionIndex = 0;
-
-        VillageResources.villageResources.ChangeFood(selectedChoice.foodChange);
-        VillageResources.villageResources.ChangeMorale(selectedChoice.moraleChange);
-        VillageResources.villageResources.ChangeResources(selectedChoice.resourcesChange);
-        description.text = ChangeStrings(selectedChoice.choiceResultText);
-        ShowContinueButton();
-    }
-
-    public void RightChoiceResults()
-    {
-        if (_event.isNocKupaly)
-        {
-            WorldController.worldController.hasKupalaFlower = true;
-        }else if (_event.isSlayerOfTheBeast)
-        {
-            WorldController.worldController.isArmoryUnlocked = true;
-        }
-        else if (_event.isNymphEvent)
-        {
-            WorldController.worldController.isWheatBetter = true;
-            WorldController.worldController.IncreaseWheat();
-        }
-        else if (_event.isPerunEvent)
-        {
-            WorldController.worldController.isPerunHappy = true;
-            WorldController.worldController.BeginStorm();
         }
     }
 
@@ -197,6 +189,7 @@ public class EventCanvas : MonoBehaviour
 
     public void GoToNextPage()
     {
+        //TODO
         int pageCount = description.textInfo.pageCount;
         if (pageNumber == pageCount)
         {

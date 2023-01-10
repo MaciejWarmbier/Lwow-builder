@@ -19,6 +19,7 @@ public class Tile : MonoBehaviour
 
     private Building placedBuilding;
     public Building PlacedBuilding { get { return placedBuilding; } }
+
     private List<Tile> bigBuildingTiles= new List<Tile>();
 
     private List<Tile> cornerTiles = new List<Tile>();
@@ -80,7 +81,7 @@ public class Tile : MonoBehaviour
         tileMesh.SetActive(true);
         isBuildingPossibleToPlaceOnTile = true;
 
-        if (building.IsBig)
+        if (building.Data.IsBig)
         {
             cornerTiles = gridManager.GetBigBuildingTiles(this);
             foreach (var tile in cornerTiles)
@@ -96,7 +97,7 @@ public class Tile : MonoBehaviour
         else
         {
             isBuildingPossibleToPlaceOnTile = HoverWhileBuilding();
-            BuildingsController.buildingsController.buildingInProgress.ShowOnTile(transform.position, isBuildingPossibleToPlaceOnTile);
+            building.ShowOnTile(transform.position, isBuildingPossibleToPlaceOnTile);
         }
     }
 
@@ -140,7 +141,7 @@ public class Tile : MonoBehaviour
         if (!EventSystem.current.IsPointerOverGameObject() && type != TileType.NonInteractive && isHoveredOver)
         {
             if (BuildingsController.buildingsController.buildingInProgress != null 
-                && BuildingsController.buildingsController.buildingInProgress.IsBig)
+                && BuildingsController.buildingsController.buildingInProgress.Data.IsBig)
             {
                 if(cornerTiles == null) cornerTiles = gridManager.GetBigBuildingTiles(this);
                 
@@ -190,7 +191,7 @@ public class Tile : MonoBehaviour
     {
         var building = BuildingsController.buildingsController.buildingInProgress;
 
-        if (building.IsBig)
+        if (building.Data.IsBig)
         {
             
             foreach(var tile in cornerTiles)

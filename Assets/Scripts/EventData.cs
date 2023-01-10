@@ -6,6 +6,8 @@ using UnityEngine;
 [Serializable]
 public class GameEvent 
 {
+    public EventType type;
+    public Building script;
     public int eventLevel;
     public bool wasUsed = false;
     public string title;
@@ -16,16 +18,6 @@ public class GameEvent
     public Choice rightChoice;
     public Choice leftChoice;
     public bool skipChoice;
-
-    public bool isPerunEvent; //rightChoiceRozwala Mila i odblokowuje altar
-    //left choice rozwala mila i 2 random budynki i odblokowuje altar
-    public bool isNymphEvent;
-    public bool isNocKupaly;
-    public bool isSlayerOfTheBeast; 
-    public bool isGreatHunt; 
-    public bool isDevilishWell;
-    public bool isPerunSword;
-    public bool isSlayerOfTheBeast2;
 }
 
 [Serializable]
@@ -39,4 +31,20 @@ public class Choice
     public string choiceResultText2;
     public string choiceResultText3;
     public string choiceResultText4;
+}
+
+[Serializable]
+public enum EventType
+{
+    GrowlingInTheWoods,
+    BreakOfWinter,
+    StormOfPerun,
+    AltarOfPerun,
+    TheNightKiller,
+    ForestNymph,
+    KupalaNight,
+    SlayerOfTheBeast,
+    SlayerOfTheBeast2,
+    TheGreatHunt,
+    DevilishWell
 }

@@ -9,9 +9,20 @@ public class BuildingConfig : ScriptableObject
 {
     [SerializeField] List<BuildingConfiguration> buildingList;
 
-    public Building GetBuilding(BuildingType type)
+    public Building GetBuildingPrefab(BuildingType type)
     {
         return buildingList.FirstOrDefault(r => r.type == type).buildingPrefab;
+    }
+
+    public List<Building> GetBuildingPrefabList()
+    {
+        var buildings = new List<Building>();
+        foreach(var building in buildingList)
+        {
+            buildings.Add(building.buildingPrefab);
+        }
+
+        return buildings;
     }
 
     [Serializable]
@@ -25,6 +36,14 @@ public class BuildingConfig : ScriptableObject
     {
         Mill,
         Wheat,
-        Well
+        Well,
+        Animal_Pen,
+        Armory,
+        City_Hall,
+        House,
+        Peruns_Altar,
+        Sawmill,
+        Tavern,
+        Temple
     }
 }
