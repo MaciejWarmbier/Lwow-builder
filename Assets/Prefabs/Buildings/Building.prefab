@@ -78,18 +78,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1388e525c7f7714983509823180d32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingName: BuildingUno
-  isBig: 0
-  foodCost: 1
-  resourcesCost: 1
-  buildingScore: 5
-  moraleProduction: 0
-  resourcesProduction: 0
-  foodProduction: 0
-  buildingImage: {fileID: 21300000, guid: f68937b328f8fc646a94ff3be250c810, type: 3}
-  description: opis budynku 1
-  overlay: {fileID: 0}
-  overlayMaterial: {fileID: 0}
+  OverlayObject: {fileID: 0}
+  OverlayMeshList: []
+  buildingData:
+    Name: 
+    FoodCost: 0
+    ResourcesCost: 0
+    BuildingImage: {fileID: 0}
+    Description: 
+    BuildingScore: 0
+    MoraleProduction: 0
+    ResourcesProduction: 0
+    FoodProduction: 0
+    IsBig: 0
   Type: 0
 --- !u!65 &4573526451380532754
 BoxCollider:

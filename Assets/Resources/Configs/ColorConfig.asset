@@ -14,12 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorList:
   - type: 0
-    color: {r: 0.27387816, g: 0.8113208, b: 0.14848696, a: 1}
+    color: {r: 0.27387816, g: 0.8113208, b: 0.14848696, a: 0.627451}
+    material: {fileID: 2100000, guid: b0f6fd24d8c8fc3498e58902b139f041, type: 2}
   - type: 1
-    color: {r: 0.7924528, g: 0.08522601, b: 0.24070515, a: 1}
+    color: {r: 0.7924528, g: 0.08522601, b: 0.24070515, a: 0.627451}
+    material: {fileID: 2100000, guid: e44bf15751925f34d8ab30a7092a15e6, type: 2}
   - type: 2
-    color: {r: 0.8396226, g: 0.7129803, b: 0.12198288, a: 1}
+    color: {r: 0.8396226, g: 0.7129803, b: 0.12198288, a: 0.61960787}
+    material: {fileID: 2100000, guid: 7ce08a315c602cb47a2b3edaa267220d, type: 2}
   - type: 3
-    color: {r: 0.6320754, g: 0.53030735, b: 0.05008895, a: 1}
+    color: {r: 0.6320754, g: 0.53030735, b: 0.05008895, a: 0.627451}
+    material: {fileID: 2100000, guid: cf18328486fc634499d29d7408ba5cdb, type: 2}
   - type: 4
     color: {r: 1, g: 1, b: 1, a: 1}
+    material: {fileID: 0}
+  - type: 5
+    color: {r: 0.035672426, g: 1, b: 0, a: 1}
+    material: {fileID: 0}
+  - type: 6
+    color: {r: 1, g: 0, b: 0.009487629, a: 1}
+    material: {fileID: 0}

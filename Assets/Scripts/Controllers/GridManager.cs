@@ -57,7 +57,7 @@ public class GridManager : MonoBehaviour
             {
                 for(int j=-1; j<2;j++)
                 {
-                    if(i != 0 && j != 0)
+                    if (!(i == 0 && j == 0))
                     {
                         neighbors.Add(grid[new Vector2(tile.Coordinates.x - i, tile.Coordinates.y - j)]);
                     }
@@ -90,9 +90,9 @@ public class GridManager : MonoBehaviour
 
         if (grid.ContainsKey(tile.Coordinates))
         {
-            for (int i = -1; i < 1; i++)
+            for (int i = 0; i < 2; i++)
             {
-                for (int j = -1; j < 1; j++)
+                for (int j = 0; j < 2; j++)
                 {
                     bigBuildingList.Add(grid[new Vector2(tile.Coordinates.x - i, tile.Coordinates.y - j)]);
                 }

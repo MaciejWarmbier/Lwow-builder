@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
@@ -12,6 +13,9 @@ public class Building : MonoBehaviour
     [SerializeField] GameObject OverlayObject;
     [SerializeField] List<MeshRenderer> OverlayMeshList;
     [SerializeField] BuildingData buildingData;
+    [SerializeField] BuildingCanvas buildingCanvas;
+
+    [SerializeField] GameObject constructionObject;
 
     public BuildingData Data { get { return buildingData; } }
     public BuildingType Type;
@@ -22,11 +26,12 @@ public class Building : MonoBehaviour
     public void Awake()
     {
         Assert.IsNotNull(buildingData);
-        // TODO uncomment
-       // Assert.IsNotNull(overlay);
-       // Assert.IsNotNull(overlayMaterial);
+        Assert.IsNotNull(OverlayObject);
+        Assert.IsNotNull(buildingCanvas);
+        Assert.IsTrue(OverlayMeshList.Count>0);
 
         _colorConfig = ConfigController.GetConfig<ColorConfig>();
+        buildingCanvas.Setup(this);
     }
 
     private void OnMouseEnter()
@@ -50,7 +55,7 @@ public class Building : MonoBehaviour
         int buildingTiles = 0;
         foreach(var neighbor in neighbors)
         {
-            if(neighbor.PlacedBuilding.Type == buildingType)
+            if(neighbor.PlacedBuilding?.Type == buildingType)
             {
                 buildingTiles++;
             }
@@ -78,9 +83,20 @@ public class Building : MonoBehaviour
 
     }
 
+    public virtual string Description()
+    {
+        string description = "";
+        if (buildingData.ResourcesProduction != 0) description = description + $"<r>{buildingData.ResourcesProduction} ";
+        if (buildingData.FoodProduction != 0) description = description + $"<f>{buildingData.FoodProduction} ";
+        if (buildingData.MoraleProduction != 0) description = description + $"<m>{buildingData.MoraleProduction} ";
+
+
+        return description;
+    }
+
     public GameObject CreateBuilding(Building building, Vector3 position)
     {
-        var instantiatedBuilding = Instantiate(building.gameObject, position, Quaternion.identity);
+        var instantiatedBuilding = Instantiate(building.gameObject, new Vector3(position.x, 5, position.z) , Quaternion.identity);
         return instantiatedBuilding;
     }
 
@@ -91,50 +107,70 @@ public class Building : MonoBehaviour
 
     public void ShowOnTile(Vector3 position, bool canBePlaced)
     {
-        // TODO uncomment
         if (canBePlaced)
         {
-            gameObject.transform.position = position;
-            //SetOverlay(true, ColorType.Positive);
+            gameObject.transform.position = new Vector3(position.x, 5, position.z);
+            SetOverlay(true, ColorType.Positive);
         }
         else
         {
-            //SetOverlay(true, ColorType.Negative);
+            gameObject.transform.position = new Vector3(position.x, 5, position.z);
+            SetOverlay(true, ColorType.Negative);
         }
     }
 
     public void SetOverlay(bool isActive, ColorType colorType)
     {
-        OverlayObject.SetActive(isActive);
-        foreach(var mesh in OverlayMeshList)
+        if (isActive)
         {
-            //TODO Material Config
-           // mesh.material = 
+            var material = _colorConfig.GetMaterial(colorType);
+            foreach (var mesh in OverlayMeshList)
+            {
+                mesh.material = material;
+            }
         }
+        OverlayObject.SetActive(isActive);
     }
 
-    public void PlaceOnTile(Vector3 position, List<Tile> listOfTiles)
+    public async void PlaceOnTile(Vector3 position, List<Tile> listOfTiles)
     {
         if (CheckCosts())
         {
             neighbors = listOfTiles;
-            gameObject.transform.position = position;
+            gameObject.transform.position = new Vector3(position.x, 5, position.z);
             //TODO think if not under tiles
-
+            
             gameObject.transform.parent = BuildingsController.buildingsController.gameObject.transform;
+            SetOverlay(false, ColorType.Positive);
             BuildingsController.buildingsController.buildingInProgress = null;
+            VillageResources.villageResources.ChangeFood(-buildingData.FoodCost);
+            VillageResources.villageResources.ChangeResources(-buildingData.ResourcesCost);
+
+            await StartConstructionTimer();
+
             this.PassiveEffect();
 
             VillageResources.villageResources.ChangeBuildingScore(buildingData.BuildingScore);
             VillageResources.villageResources.ChangeFoodProduction(buildingData.FoodProduction);
             VillageResources.villageResources.ChangeResourcesProduction(buildingData.ResourcesProduction);
             VillageResources.villageResources.ChangeMoraleProduction(buildingData.MoraleProduction);
-            VillageResources.villageResources.ChangeFood(-buildingData.FoodCost);
-            VillageResources.villageResources.ChangeResources(-buildingData.ResourcesCost);
 
             WorldController.worldController.CheckEvent();
         }
     }
+
+    public async Task StartConstructionTimer()
+    {
+        var part = (int)(((float)buildingData.TimeToBuild / 9) * 1000);
+        for (int i=0; i<9; i++)
+        {
+            buildingCanvas.UpdateConstructionTimer(i);
+            await Task.Delay(part);
+        }
+        buildingCanvas.HideConstructionTimer();
+    }
+
+    
 
     private bool CheckCosts()
     {
@@ -152,8 +188,10 @@ public class Building : MonoBehaviour
         return true;
     }
 
+
     public void DestroyBuilding(bool isDestroyedByStorm)
     {
+
         //TODO
         if (isDestroyedByStorm)
         {
@@ -175,6 +213,7 @@ public class Building : MonoBehaviour
         public int MoraleProduction;
         public int ResourcesProduction;
         public int FoodProduction;
+        public int TimeToBuild;
         public bool IsBig;
     }
 }

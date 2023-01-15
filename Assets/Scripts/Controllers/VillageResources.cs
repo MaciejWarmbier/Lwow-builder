@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -12,7 +13,6 @@ public class VillageResources : MonoBehaviour
     [SerializeField] private int resourceProduction;
     [SerializeField] private int resourceConsumptionCycle;
     [SerializeField] private int resourceProductionCycle;
-    [SerializeField] TextMeshProUGUI resourcesLabel;
 
     [Header("Food")]
     [SerializeField] int food;
@@ -20,7 +20,6 @@ public class VillageResources : MonoBehaviour
     [SerializeField] private int foodProduction;
     [SerializeField] private int foodConsumptionCycle;
     [SerializeField] private int foodProductionCycle;
-    [SerializeField] TextMeshProUGUI foodLabel;
 
     [Header("Morale")]
     [SerializeField] int morale;
@@ -28,10 +27,24 @@ public class VillageResources : MonoBehaviour
     [SerializeField] private int moraleProduction;
     [SerializeField] private int moraleConsumptionCycle;
     [SerializeField] private int moraleProductionCycle;
-    [SerializeField] TextMeshProUGUI moraleLabel;
 
+    [SerializeField] int NormalMoraleBorder;
+    [SerializeField] int LowMoraleBorder;
+
+
+    [Space(5)]
+    [SerializeField] GameUICanvas gameCanvas;
     [SerializeField] int buildingScore;
 
+    public MoraleState VillageMorale
+    {
+        get
+        {
+            if (morale < LowMoraleBorder) return MoraleState.Low;
+            else if (morale < NormalMoraleBorder) return MoraleState.Normal;
+            else return MoraleState.High;
+        }
+    }
 
     public static VillageResources villageResources;
     public int Resources { get { return resources; } }
@@ -40,13 +53,10 @@ public class VillageResources : MonoBehaviour
     public int BuildingScore { get { return buildingScore; } }
    
     
-
+    //TODO look at
     private void Awake()
     {
-        Assert.IsNotNull(resourcesLabel);
-        Assert.IsNotNull(foodLabel);
-        Assert.IsNotNull(moraleLabel);
-
+        Assert.IsNotNull(gameCanvas);
         villageResources = GetComponent<VillageResources>();
     }
 
@@ -103,7 +113,15 @@ public class VillageResources : MonoBehaviour
 
     private void Start()
     {
-        UpdateLabels();
+        gameCanvas.UpdateResources(0, resources);
+        gameCanvas.UpdateFood(0, food);
+        gameCanvas.UpdateMorale(0, morale);
+
+        gameCanvas.UpdateResourcesProduction(resourceProduction);
+        gameCanvas.UpdateMoraleProduction(foodProduction);
+        gameCanvas.UpdateFoodProduction(moraleProduction );
+
+
     }
 
     public bool ChangeResources(int value)
@@ -114,7 +132,7 @@ public class VillageResources : MonoBehaviour
         }
             
         resources += value;
-        UpdateLabels();
+        gameCanvas.UpdateResources(value, resources);
         return true;
     }
 
@@ -125,7 +143,7 @@ public class VillageResources : MonoBehaviour
             return false;
         }
         resourceProduction += value;
-        UpdateLabels();
+        gameCanvas.UpdateResourcesProduction(resourceProduction);
         return true;
     }
 
@@ -136,7 +154,6 @@ public class VillageResources : MonoBehaviour
             return false;
         }
         resourceConsumption += value;
-        UpdateLabels();
         return true;
     }
 
@@ -147,7 +164,7 @@ public class VillageResources : MonoBehaviour
             return false;
         }
         food += value;
-        UpdateLabels();
+        gameCanvas.UpdateFood(value, food);
         return true;
     }
 
@@ -158,7 +175,8 @@ public class VillageResources : MonoBehaviour
             return false;
         }
         foodProduction += value;
-        UpdateLabels();
+
+        gameCanvas.UpdateFoodProduction(foodProduction);
         return true;
     }
 
@@ -169,7 +187,6 @@ public class VillageResources : MonoBehaviour
             return false;
         }
         foodConsumption += value;
-        UpdateLabels();
         return true;
     }
 
@@ -184,13 +201,24 @@ public class VillageResources : MonoBehaviour
                 return false;
             }
             morale += value;
-            UpdateLabels();
+            gameCanvas.UpdateMorale(value, morale);
             return true;
+        }
+        else if(morale + value > 100)
+        {
+            value = 100-morale;
+            if (value == 0) return true;
+            else
+            {
+                morale += value;
+                gameCanvas.UpdateMorale(value, morale);
+                return true;
+            }
         }
         else
         {
             morale += value;
-            UpdateLabels();
+            gameCanvas.UpdateMorale(value, morale);
             return true;
         }
     }
@@ -202,7 +230,7 @@ public class VillageResources : MonoBehaviour
             return false;
         }
         moraleProduction += value;
-        UpdateLabels();
+        gameCanvas.UpdateMoraleProduction(moraleProduction);
         return true;
     }
 
@@ -213,14 +241,13 @@ public class VillageResources : MonoBehaviour
             return false;
         }
         moraleConsumption += value;
-        UpdateLabels();
         return true;
     }
-
-    public void UpdateLabels()
-    {
-        foodLabel.text = food.ToString();
-        moraleLabel.text = morale.ToString();
-        resourcesLabel.text = resources.ToString();
-    }
+       
+}
+public enum MoraleState
+{
+    Low,
+    Normal,
+    High
 }

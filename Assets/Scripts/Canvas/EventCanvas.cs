@@ -46,15 +46,6 @@ public class EventCanvas : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public string AddSpriteTextToStrings(string text)
-    {
-        string newText = text.Replace("{f}", "<sprite=1>");
-        newText = newText.Replace("{m}", "<sprite=2>");
-        newText = newText.Replace("{r}", "<sprite=0>");
-
-        return newText;
-    }
-
     public void ShowEvent(GameEvent eventData)
     {
         if (eventData != null)
@@ -62,13 +53,13 @@ public class EventCanvas : MonoBehaviour
             _event = eventData;
             if (!eventData.skipChoice)
             {
-                descriptions.Add(AddSpriteTextToStrings(eventData.description));
+                descriptions.Add(eventData.description.AddSpriteTextToStrings());
                 if (!string.IsNullOrEmpty(eventData.description2))
-                    descriptions.Add(AddSpriteTextToStrings(eventData.description2));
-                if (!string.IsNullOrEmpty(AddSpriteTextToStrings(eventData.description3)))
-                    descriptions.Add(AddSpriteTextToStrings(eventData.description3));
+                    descriptions.Add(eventData.description2.AddSpriteTextToStrings());
+                if (!string.IsNullOrEmpty(eventData.description3))
+                    descriptions.Add(eventData.description3.AddSpriteTextToStrings());
                 if (!string.IsNullOrEmpty(eventData.description4))
-                    descriptions.Add(AddSpriteTextToStrings(eventData.description4));
+                    descriptions.Add(eventData.description4.AddSpriteTextToStrings());
 
                 if (eventData.type == EventType.TheGreatHunt)
                 {
@@ -85,9 +76,9 @@ public class EventCanvas : MonoBehaviour
                 }
 
                 eventHasEnded = false;
-                description.text = AddSpriteTextToStrings(eventData.description);
-                rightChoiceLabel.text = AddSpriteTextToStrings(eventData.rightChoice.choiceText);
-                leftChoiceLabel.text = AddSpriteTextToStrings(eventData.leftChoice.choiceText);
+                description.text = eventData.description.AddSpriteTextToStrings();
+                rightChoiceLabel.text = eventData.rightChoice.choiceText.AddSpriteTextToStrings();
+                leftChoiceLabel.text = eventData.leftChoice.choiceText.AddSpriteTextToStrings();
                 eventName.text = eventData.title;
             }
             else
@@ -99,16 +90,16 @@ public class EventCanvas : MonoBehaviour
     
     private void SkipChoice()
     {
-        descriptions.Add(AddSpriteTextToStrings(_event.rightChoice.choiceResultText));
+        descriptions.Add(_event.rightChoice.choiceResultText.AddSpriteTextToStrings());
         if (!string.IsNullOrEmpty(_event.rightChoice.choiceResultText2))
-            descriptions.Add(AddSpriteTextToStrings(_event.rightChoice.choiceResultText2));
-        if (!string.IsNullOrEmpty(_event.rightChoice.choiceResultText4))
-            descriptions.Add(AddSpriteTextToStrings(_event.rightChoice.choiceResultText3));
+            descriptions.Add(_event.rightChoice.choiceResultText2.AddSpriteTextToStrings());
         if (!string.IsNullOrEmpty(_event.rightChoice.choiceResultText3))
-            descriptions.Add(AddSpriteTextToStrings(_event.rightChoice.choiceResultText4));
+            descriptions.Add(_event.rightChoice.choiceResultText3.AddSpriteTextToStrings());
+        if (!string.IsNullOrEmpty(_event.rightChoice.choiceResultText4))
+            descriptions.Add(_event.rightChoice.choiceResultText4.AddSpriteTextToStrings());
 
         eventHasEnded = false;
-        description.text = AddSpriteTextToStrings(descriptions[0]);
+        description.text = descriptions[0].AddSpriteTextToStrings();
         eventName.text = _event.title;
         ShowContinueButton();
     }
@@ -129,13 +120,13 @@ public class EventCanvas : MonoBehaviour
 
 
         descriptions.Clear();
-        descriptions.Add(AddSpriteTextToStrings(selectedChoice.choiceResultText));
+        descriptions.Add(selectedChoice.choiceResultText.AddSpriteTextToStrings());
         if(!string.IsNullOrEmpty(selectedChoice.choiceResultText2))
-            descriptions.Add(AddSpriteTextToStrings(selectedChoice.choiceResultText2));
+            descriptions.Add(selectedChoice.choiceResultText2.AddSpriteTextToStrings());
         if (!string.IsNullOrEmpty(selectedChoice.choiceResultText3))
-            descriptions.Add(AddSpriteTextToStrings(selectedChoice.choiceResultText3));
+            descriptions.Add(selectedChoice.choiceResultText3.AddSpriteTextToStrings());
         if (!string.IsNullOrEmpty(selectedChoice.choiceResultText4))
-            descriptions.Add(AddSpriteTextToStrings(selectedChoice.choiceResultText4));
+            descriptions.Add(selectedChoice.choiceResultText4.AddSpriteTextToStrings());
 
         if(_event.type == EventType.TheGreatHunt && isRight)
         {
@@ -148,7 +139,7 @@ public class EventCanvas : MonoBehaviour
         VillageResources.villageResources.ChangeFood(selectedChoice.foodChange);
         VillageResources.villageResources.ChangeMorale(selectedChoice.moraleChange);
         VillageResources.villageResources.ChangeResources(selectedChoice.resourcesChange);
-        description.text = AddSpriteTextToStrings(selectedChoice.choiceResultText);
+        description.text = selectedChoice.choiceResultText.AddSpriteTextToStrings();
         ShowContinueButton();
     }
 

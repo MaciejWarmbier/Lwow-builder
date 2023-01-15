@@ -14,11 +14,17 @@ public class ColorConfig : ScriptableObject
         return colorList.FirstOrDefault(r => r.type == type).color;
     }
 
+    public Material GetMaterial(ColorType type)
+    {
+        return colorList.FirstOrDefault(r => r.type == type).material;
+    }
+
     [Serializable]
     private class ColorConfiguration
     {
-        [SerializeField] public ColorType type;
-        [SerializeField] public Color color;
+        public ColorType type;
+        public Color color;
+        public Material material;
     }
 
     public enum ColorType
@@ -27,6 +33,8 @@ public class ColorConfig : ScriptableObject
         Negative,
         Selected,
         Clicked,
-        FontDefault
+        FontDefault,
+        FontPositive,
+        FontNegative,
     }
 }

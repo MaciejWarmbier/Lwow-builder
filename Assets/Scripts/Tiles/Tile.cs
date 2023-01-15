@@ -3,19 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
+using static ColorConfig;
 
 public class Tile : MonoBehaviour
 {
     [SerializeField] TileType type;
     [SerializeField] GameObject tileMesh;
-    [SerializeField] GameObject objectMesh;
     [SerializeField] MeshRenderer tileMeshRenderer;
     [SerializeField] AudioSource audioSource;
+
+    [SerializeField] GameObject foliageObject;
+    [SerializeField] GameObject destructionObject;
+    [SerializeField] GameObject destructionThunderObject;
+
     private Vector2Int coordinates;
     public Vector2Int Coordinates { get { return coordinates; } }
     public TileType Type { get { return type; } }
 
     private SoundConfig soundConfig;
+    private ColorConfig colorConfig;
 
     private Building placedBuilding;
     public Building PlacedBuilding { get { return placedBuilding; } }
@@ -36,6 +42,7 @@ public class Tile : MonoBehaviour
     {
         gridManager = FindObjectOfType<GridManager>();
         soundConfig = ConfigController.GetConfig<SoundConfig>();
+        colorConfig = ConfigController.GetConfig<ColorConfig>();
     }
 
     private void Start()
@@ -77,7 +84,6 @@ public class Tile : MonoBehaviour
     {
         Building building = BuildingsController.buildingsController.buildingInProgress;
 
-        //TODO color config
         tileMesh.SetActive(true);
         isBuildingPossibleToPlaceOnTile = true;
 
@@ -107,12 +113,12 @@ public class Tile : MonoBehaviour
         tileMesh.SetActive(true);
         if (type == TileType.Free)
         {
-            tileMeshRenderer.material.SetColor("_Color", Color.green);
+            tileMeshRenderer.material = colorConfig.GetMaterial(ColorConfig.ColorType.Positive);
             return true;
         }
         else
         {
-            tileMeshRenderer.material.SetColor("_Color", Color.red);
+            tileMeshRenderer.material = colorConfig.GetMaterial(ColorConfig.ColorType.Negative);
             return false;
         }
     }
@@ -123,17 +129,29 @@ public class Tile : MonoBehaviour
         tileMesh.SetActive(true);
         WorldController.worldController.lastTile = this;
 
-        //TODO color config
         if (type == TileType.Free)
         {
-            tileMeshRenderer.material.SetColor("_Color", Color.green);
+            SetOverlay(ColorType.Positive);
+        }
+        else if(type == TileType.Built)
+        {
+            foreach (var bigTile in bigBuildingTiles) bigTile.SetOverlay(ColorType.Selected);
+            if (placedBuilding != null) placedBuilding.SetOverlay(true, ColorType.Selected);
+        }
+        else if(type == TileType.Tree || type == TileType.Rock)
+        {
+            SetOverlay(ColorType.Selected);
         }
         else
         {
-            tileMeshRenderer.material.SetColor("_Color", Color.yellow);
-            objectMesh.SetActive(true);
+            tileMeshRenderer.material = colorConfig.GetMaterial(ColorType.Negative);
         }
             
+    }
+
+    public void SetOverlay(ColorType type)
+    {
+        tileMeshRenderer.material = colorConfig.GetMaterial(type);
     }
 
     private void OnMouseExit()
@@ -161,12 +179,11 @@ public class Tile : MonoBehaviour
     {
         isHoveredOver = false;
         tileMesh.SetActive(false);
-        if(objectMesh!= null) objectMesh.SetActive(false);
+        if(placedBuilding != null) placedBuilding.SetOverlay(false, ColorConfig.ColorType.Negative);
     }
 
     void OnMouseDown()
     {
-        //TODO -=
         if (!EventSystem.current.IsPointerOverGameObject())
         {
             if (BuildingsController.buildingsController.buildingInProgress != null)
