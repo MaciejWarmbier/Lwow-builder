@@ -10,13 +10,12 @@ using static Tile;
 
 public class Building : MonoBehaviour
 {
-    [SerializeField] GameObject OverlayObject;
-    [SerializeField] List<MeshRenderer> OverlayMeshList;
     [SerializeField] BuildingData buildingData;
     [SerializeField] BuildingCanvas buildingCanvas;
 
     [SerializeField] GameObject constructionObject;
 
+    private bool _isInConstruction = false;
     public BuildingData Data { get { return buildingData; } }
     public BuildingType Type;
 
@@ -26,9 +25,7 @@ public class Building : MonoBehaviour
     public void Awake()
     {
         Assert.IsNotNull(buildingData);
-        Assert.IsNotNull(OverlayObject);
         Assert.IsNotNull(buildingCanvas);
-        Assert.IsTrue(OverlayMeshList.Count>0);
 
         _colorConfig = ConfigController.GetConfig<ColorConfig>();
         buildingCanvas.Setup(this);
@@ -86,9 +83,9 @@ public class Building : MonoBehaviour
     public virtual string Description()
     {
         string description = "";
-        if (buildingData.ResourcesProduction != 0) description = description + $"<r>{buildingData.ResourcesProduction} ";
-        if (buildingData.FoodProduction != 0) description = description + $"<f>{buildingData.FoodProduction} ";
-        if (buildingData.MoraleProduction != 0) description = description + $"<m>{buildingData.MoraleProduction} ";
+        if (buildingData.ResourcesProduction != 0) description = description + $"{{r}}{buildingData.ResourcesProduction} ";
+        if (buildingData.FoodProduction != 0) description = description + $"{{f}}{buildingData.FoodProduction} ";
+        if (buildingData.MoraleProduction != 0) description = description + $"{{m}}{buildingData.MoraleProduction} ";
 
 
         return description;
@@ -109,27 +106,23 @@ public class Building : MonoBehaviour
     {
         if (canBePlaced)
         {
-            gameObject.transform.position = new Vector3(position.x, 5, position.z);
-            SetOverlay(true, ColorType.Positive);
+            gameObject.transform.position = new Vector3(position.x, 4, position.z);
         }
         else
         {
-            gameObject.transform.position = new Vector3(position.x, 5, position.z);
-            SetOverlay(true, ColorType.Negative);
+            gameObject.transform.position = new Vector3(position.x, 4, position.z);
         }
     }
 
-    public void SetOverlay(bool isActive, ColorType colorType)
+    public void ShowDescriptionCanvas(bool isShown)
     {
-        if (isActive)
+        if (!_isInConstruction)
         {
-            var material = _colorConfig.GetMaterial(colorType);
-            foreach (var mesh in OverlayMeshList)
-            {
-                mesh.material = material;
-            }
+            if (isShown)
+                buildingCanvas.ShowBuildingDescription();
+            else
+                buildingCanvas.HideBuildingDescription();
         }
-        OverlayObject.SetActive(isActive);
     }
 
     public async void PlaceOnTile(Vector3 position, List<Tile> listOfTiles)
@@ -137,11 +130,10 @@ public class Building : MonoBehaviour
         if (CheckCosts())
         {
             neighbors = listOfTiles;
-            gameObject.transform.position = new Vector3(position.x, 5, position.z);
+            gameObject.transform.position = new Vector3(position.x, 4, position.z);
             //TODO think if not under tiles
             
             gameObject.transform.parent = BuildingsController.buildingsController.gameObject.transform;
-            SetOverlay(false, ColorType.Positive);
             BuildingsController.buildingsController.buildingInProgress = null;
             VillageResources.villageResources.ChangeFood(-buildingData.FoodCost);
             VillageResources.villageResources.ChangeResources(-buildingData.ResourcesCost);
@@ -161,6 +153,8 @@ public class Building : MonoBehaviour
 
     public async Task StartConstructionTimer()
     {
+        _isInConstruction = true;
+        constructionObject.SetActive(true);
         var part = (int)(((float)buildingData.TimeToBuild / 9) * 1000);
         for (int i=0; i<9; i++)
         {
@@ -168,6 +162,8 @@ public class Building : MonoBehaviour
             await Task.Delay(part);
         }
         buildingCanvas.HideConstructionTimer();
+        constructionObject.SetActive(false);
+        _isInConstruction= false;
     }
 
     

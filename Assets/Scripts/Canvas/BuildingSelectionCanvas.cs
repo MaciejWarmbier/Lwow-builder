@@ -121,7 +121,7 @@ public class BuildingSelectionCanvas : MonoBehaviour
 
     public void BuyBuilding()
     {
-        WorldController.worldController.lastTile.StopHover();
+        WorldController.worldController.lastTile?.StopHover();
         OnCanvasClosed?.Invoke(true, shownBuilding);
         Destroy(gameObject);
     }

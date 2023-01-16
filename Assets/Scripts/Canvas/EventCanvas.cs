@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -24,6 +25,7 @@ public class EventCanvas : MonoBehaviour
     public bool EventHasEnded { get { return eventHasEnded; } }
     private GameEvent _event;
     private int pageNumber = 1;
+    private int previousPage = 1;
 
     private void Awake()
     {
@@ -80,6 +82,7 @@ public class EventCanvas : MonoBehaviour
                 rightChoiceLabel.text = eventData.rightChoice.choiceText.AddSpriteTextToStrings();
                 leftChoiceLabel.text = eventData.leftChoice.choiceText.AddSpriteTextToStrings();
                 eventName.text = eventData.title;
+                CheckButtonFunctionality();
             }
             else
             {
@@ -101,6 +104,7 @@ public class EventCanvas : MonoBehaviour
         eventHasEnded = false;
         description.text = descriptions[0].AddSpriteTextToStrings();
         eventName.text = _event.title;
+        CheckButtonFunctionality();
         ShowContinueButton();
     }
 
@@ -140,6 +144,7 @@ public class EventCanvas : MonoBehaviour
         VillageResources.villageResources.ChangeMorale(selectedChoice.moraleChange);
         VillageResources.villageResources.ChangeResources(selectedChoice.resourcesChange);
         description.text = selectedChoice.choiceResultText.AddSpriteTextToStrings();
+        CheckButtonFunctionality();
         ShowContinueButton();
     }
 
@@ -180,33 +185,67 @@ public class EventCanvas : MonoBehaviour
 
     public void GoToNextPage()
     {
-        //TODO
+        nextButton.interactable = true;
         int pageCount = description.textInfo.pageCount;
         if (pageNumber == pageCount)
         {
             if (descriptions.Count > descriptionIndex + 1)
             {
+                previousPage = pageCount;
                 descriptionIndex++;
-                description.text = descriptions[descriptionIndex];
-            }
-            else if(descriptionIndex == descriptions.Count - 1)
-            {
-                descriptionIndex = 0;
                 description.text = descriptions[descriptionIndex];
             }
             pageNumber = 1;
         }
         else pageNumber++;
-       
+
         description.pageToDisplay = pageNumber;
+
+        CheckButtonFunctionality();
     }
 
     public void GoToPreviousPage()
     {
-        //TODO
-        if (pageNumber == 0) pageNumber = description.textInfo.pageCount;
+        previousButton.interactable = true;
+        if (pageNumber == 1)
+        {
+            if(descriptionIndex > 0)
+            {
+                descriptionIndex--;
+                description.text = descriptions[descriptionIndex];
+            }
+
+            pageNumber = previousPage;
+        }
         else pageNumber--;
         
         description.pageToDisplay = pageNumber;
+
+        CheckButtonFunctionality();
+    }
+
+    private async void CheckButtonFunctionality()
+    {
+        await Task.Delay(100);
+        if (descriptionIndex == 0 && pageNumber == 1)
+        {
+            previousButton.interactable = false;
+        }
+        else
+        {
+            previousButton.interactable = true;
+        }
+
+
+        var pageCount = description.textInfo.pageCount;
+        if (descriptionIndex == descriptions.Count - 1 && pageCount == pageNumber)
+        {
+            nextButton.interactable = false;
+        }
+        else
+        {
+            nextButton.interactable = true;
+        }
+
     }
 }

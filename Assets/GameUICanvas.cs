@@ -46,8 +46,6 @@ public class GameUICanvas : MonoBehaviour
         //TODO All asserts
     }
     
-
-    //TODO font color changing too fast
     void Start()
     {
     }

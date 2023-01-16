@@ -1844,8 +1844,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8862d1ddbaa1cea46a5dfc9adbe6a73a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextButton: {fileID: 6452219415090786506}
-  previousButton: {fileID: 5450966235665850568}
+  nextButton: {fileID: 5450966235665850568}
+  previousButton: {fileID: 6452219415090786506}
   rightChoiceButton: {fileID: 3996232180180230934}
   leftChoiceButton: {fileID: 1152083384174778770}
   continueButton: {fileID: 4148213197752803490}

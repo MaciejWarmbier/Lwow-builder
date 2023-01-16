@@ -9,7 +9,7 @@ public class Tile : MonoBehaviour
 {
     [SerializeField] TileType type;
     [SerializeField] GameObject tileMesh;
-    [SerializeField] MeshRenderer tileMeshRenderer;
+    [SerializeField] List<MeshRenderer> tileMeshRenderers;
     [SerializeField] AudioSource audioSource;
 
     [SerializeField] GameObject foliageObject;
@@ -51,7 +51,7 @@ public class Tile : MonoBehaviour
         {
             coordinates = gridManager.GetCoordinatesFromPosition(this.transform.position);
             gridManager.AddTile(this);
-            cornerPosition = new Vector3(gameObject.transform.position.x - 5, 0, gameObject.transform.position.z + 5);
+            cornerPosition = new Vector3(gameObject.transform.position.x - 5, 0, gameObject.transform.position.z - 5);
         }
 
         if(type == TileType.Tree)
@@ -84,6 +84,7 @@ public class Tile : MonoBehaviour
     {
         Building building = BuildingsController.buildingsController.buildingInProgress;
 
+        isHoveredOver = true;
         tileMesh.SetActive(true);
         isBuildingPossibleToPlaceOnTile = true;
 
@@ -113,12 +114,12 @@ public class Tile : MonoBehaviour
         tileMesh.SetActive(true);
         if (type == TileType.Free)
         {
-            tileMeshRenderer.material = colorConfig.GetMaterial(ColorConfig.ColorType.Positive);
+            SetOverlay(ColorType.Positive);
             return true;
         }
         else
         {
-            tileMeshRenderer.material = colorConfig.GetMaterial(ColorConfig.ColorType.Negative);
+            SetOverlay(ColorType.Negative);
             return false;
         }
     }
@@ -126,7 +127,6 @@ public class Tile : MonoBehaviour
     private void Hover()
     {
         isHoveredOver = true;
-        tileMesh.SetActive(true);
         WorldController.worldController.lastTile = this;
 
         if (type == TileType.Free)
@@ -136,7 +136,10 @@ public class Tile : MonoBehaviour
         else if(type == TileType.Built)
         {
             foreach (var bigTile in bigBuildingTiles) bigTile.SetOverlay(ColorType.Selected);
-            if (placedBuilding != null) placedBuilding.SetOverlay(true, ColorType.Selected);
+            if (placedBuilding != null)
+            {
+                placedBuilding.ShowDescriptionCanvas(true);
+            }
         }
         else if(type == TileType.Tree || type == TileType.Rock)
         {
@@ -144,14 +147,23 @@ public class Tile : MonoBehaviour
         }
         else
         {
-            tileMeshRenderer.material = colorConfig.GetMaterial(ColorType.Negative);
+            SetOverlay(ColorType.Negative);
         }
             
     }
 
     public void SetOverlay(ColorType type)
     {
-        tileMeshRenderer.material = colorConfig.GetMaterial(type);
+        tileMesh.SetActive(true);
+        foreach (var renderer in tileMeshRenderers)
+        {
+            renderer.material = colorConfig.GetMaterial(type);
+        }
+    }
+
+    public void HideOverlay()
+    {
+        tileMesh.SetActive(false);
     }
 
     private void OnMouseExit()
@@ -179,7 +191,14 @@ public class Tile : MonoBehaviour
     {
         isHoveredOver = false;
         tileMesh.SetActive(false);
-        if(placedBuilding != null) placedBuilding.SetOverlay(false, ColorConfig.ColorType.Negative);
+        if (type == TileType.Built)
+        {
+            foreach (var bigTile in bigBuildingTiles) bigTile.HideOverlay();
+            if (placedBuilding != null)
+            {
+                placedBuilding.ShowDescriptionCanvas(false);
+            }
+        }
     }
 
     void OnMouseDown()
@@ -216,7 +235,7 @@ public class Tile : MonoBehaviour
                 tile.BuildingPlaced(building, cornerTiles);
             }
             
-            BuildingsController.buildingsController.buildingInProgress.PlaceOnTile(gameObject.transform.position, gridManager.GetBigTileNeighbors(cornerTiles));
+            BuildingsController.buildingsController.buildingInProgress.PlaceOnTile(cornerPosition, gridManager.GetBigTileNeighbors(cornerTiles));
         }
         else
         {
@@ -226,6 +245,7 @@ public class Tile : MonoBehaviour
 
         StopHover();
     }
+
     public void BuildingPlaced(Building building, List<Tile> tiles = null)
     {
         placedBuilding = building;
