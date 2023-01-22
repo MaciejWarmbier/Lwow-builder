@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using static ColorConfig;
+using static UnityEditor.Experimental.GraphView.Port;
 
 public class Tile : MonoBehaviour
 {
@@ -15,6 +17,13 @@ public class Tile : MonoBehaviour
     [SerializeField] GameObject foliageObject;
     [SerializeField] GameObject destructionObject;
     [SerializeField] GameObject destructionThunderObject;
+    [SerializeField] List<GameObject> materialObjects;
+    [SerializeField] List<GameObject> destructionMaterials;
+    [SerializeField] List<GameObject> foliageObjects;
+
+    [SerializeField] List<GameObject> stompsList;
+    [SerializeField] List<GameObject> foliageList;
+    [SerializeField] float fadeDuration;
 
     private Vector2Int coordinates;
     public Vector2Int Coordinates { get { return coordinates; } }
@@ -37,6 +46,7 @@ public class Tile : MonoBehaviour
     bool isBuildingPossibleToPlaceOnTile = false;
     bool isTreeSmashed = false;
     bool isRockSmashed = false;
+    bool isMaterialsGathered = false;
 
     private void Awake()
     {
@@ -56,7 +66,7 @@ public class Tile : MonoBehaviour
             cornerPosition = new Vector3(gameObject.transform.position.x - 5, 0, gameObject.transform.position.z - 5);
         }
 
-        if(type == TileType.Tree)
+        if(type == TileType.Tree || type == TileType.Materials)
         {
             audioSource.clip = soundConfig.GetSound(SoundConfig.SoundType.Tree);
         }
@@ -64,6 +74,16 @@ public class Tile : MonoBehaviour
         if (type == TileType.Rock)
         {
             audioSource.clip = soundConfig.GetSound(SoundConfig.SoundType.Rock);
+        }
+
+        if(type== TileType.Materials)
+        {
+            foreach(var foliage in foliageObjects)
+            {
+                int index = Random.Range(0, foliageObjects.Count - 1);
+                foliage.GetComponent<MeshFilter>().mesh = foliageList[index].GetComponent<MeshFilter>().sharedMesh;
+                foliage.transform.Rotate(new Vector3(0, Random.Range(0, 360), 0));
+            }
         }
     }
 
@@ -144,7 +164,7 @@ public class Tile : MonoBehaviour
                 placedBuilding.ShowDescriptionCanvas(true);
             }
         }
-        else if(type == TileType.Tree || type == TileType.Rock)
+        else if(type == TileType.Tree || type == TileType.Rock || type == TileType.Materials || type == TileType.DestructionMaterials)
         {
             SetOverlay(ColorType.Selected);
         }
@@ -222,6 +242,23 @@ public class Tile : MonoBehaviour
             {
                 StartCoroutine(SmashThatRock());
             }
+            else if(type == TileType.Materials && !isMaterialsGathered)
+            {
+                int number = Random.Range(2, 3);
+                VillageResources.villageResources.ChangeResources(number);
+                StartCoroutine(GatherMaterials());
+                for(int i=0; i < number; i++)
+                {
+                    StartCoroutine(FadeMaterials(materialObjects, stompsList));
+                }
+            }
+            else if (type == TileType.DestructionMaterials && !isMaterialsGathered)
+            {
+                int number = Random.Range(5, 10);
+                VillageResources.villageResources.ChangeResources(number);
+                StartCoroutine(GatherMaterials());
+                StartCoroutine(FadeMaterials(destructionMaterials));
+            }
         }
     }
 
@@ -253,6 +290,8 @@ public class Tile : MonoBehaviour
         placedBuilding = building;
         destructionThunderObject.SetActive(false);
         destructionObject.SetActive(false);
+        foliageObject.SetActive(false);
+        
         if (tiles != null && tiles.Count != 0)
         {
             bigBuildingTiles = tiles;
@@ -263,14 +302,71 @@ public class Tile : MonoBehaviour
 
     private void HandleOnBuildingDestruction(bool isDestroyedByThunder)
     {
-        type = TileType.Free;
         if (isDestroyedByThunder)
         {
-            destructionThunderObject.SetActive(true); 
+            destructionThunderObject.SetActive(true);
+            type = TileType.Free;
         }
         else
         {
             destructionObject.SetActive(true);
+            type = TileType.Materials;
+        }
+    }
+
+    private IEnumerator GatherMaterials()
+    {
+        isMaterialsGathered = true;
+        audioSource.Play();
+        yield return new WaitForSeconds(WorldController.worldController.clickCooldown);
+        isMaterialsGathered = false;
+    }
+
+    private IEnumerator FadeMaterials(List<GameObject> objects, List<GameObject> newObjects = null)
+    {
+        if (objects.Count <= 0) yield break;
+       
+        int index = Random.Range(0, objects.Count - 1);
+        var materialObject = objects[index];
+        objects.RemoveAt(index);
+        var renderer = materialObject.GetComponent<MeshRenderer>();
+
+        Material mat = new Material(renderer.material);
+        renderer.material = mat;
+
+        renderer.material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+        renderer.material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        renderer.material.SetInt("_ZWrite", 0);
+        renderer.material.DisableKeyword("_ALPHATEST_ON");
+        renderer.material.EnableKeyword("_ALPHABLEND_ON");
+        renderer.material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+        renderer.material.renderQueue = 3000;
+
+        Color color1 = renderer.material.color, color2 = new Color(1f, 1f, 1f, 0f);
+
+        if(newObjects != null)
+        {
+            int randomIndex = Random.Range(0, newObjects.Count-1);
+            var newObject = newObjects[randomIndex];
+            Instantiate(newObject, materialObject.transform.position, Quaternion.identity, foliageObject.transform);
+        }
+
+        float t = 0f;
+        while (t < fadeDuration)
+        {
+            Color color = Color.Lerp(color1, color2, t);
+            renderer.material.color = color;
+            yield return new WaitForSeconds(0.1f);
+            t += 0.1f;
+        }
+
+        materialObject.SetActive(false);
+
+        if (objects.Count <= 0)
+        {
+            type = TileType.Free;
+            if(isHoveredOver)
+                SetOverlay(ColorType.Positive);
         }
     }
 
@@ -301,6 +397,7 @@ public class Tile : MonoBehaviour
         Built,
         Tree,
         Rock,
-        Materials
+        Materials,
+        DestructionMaterials
     }
 }
