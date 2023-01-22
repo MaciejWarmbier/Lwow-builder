@@ -10,7 +10,6 @@ public class BuildingSelectionCanvas : MonoBehaviour
     [SerializeField] private Button nextButton;
     [SerializeField] private Button previousButton;
     [SerializeField] private Button buyButton;
-    [SerializeField] private Button backButton;
     [SerializeField] private Image buildingImage;
     [SerializeField] private TextMeshProUGUI resourcesPriceLabel;
     [SerializeField] private TextMeshProUGUI foodPriceLabel;
@@ -23,7 +22,7 @@ public class BuildingSelectionCanvas : MonoBehaviour
     private VillageResources villageResources;
     private List<Building> buildings = new List<Building>();
     private Building shownBuilding;
-    private Color defaultColor;
+    private ColorConfig _colorConfig;
 
     private void Awake()
     {
@@ -37,8 +36,7 @@ public class BuildingSelectionCanvas : MonoBehaviour
 
         buildingsController = FindObjectOfType<BuildingsController>();
         villageResources = FindObjectOfType<VillageResources>();
-        //TODO color manager
-        defaultColor = Color.white;
+        _colorConfig = ConfigController.GetConfig<ColorConfig>();
     }
     
     void Start()
@@ -73,17 +71,17 @@ public class BuildingSelectionCanvas : MonoBehaviour
             description.text = PopulateStringsWithSprites(shownBuilding.Data.Description);
 
             buyButton.enabled = true;
-            foodPriceLabel.color = defaultColor;
-            resourcesPriceLabel.color = defaultColor;
+            foodPriceLabel.color = _colorConfig.GetColor(ColorConfig.ColorType.FontDefault);
+            resourcesPriceLabel.color = _colorConfig.GetColor(ColorConfig.ColorType.FontDefault);
 
             if (shownBuilding.Data.FoodCost > villageResources.Food)
             {
-                foodPriceLabel.color = Color.red;
+                foodPriceLabel.color = _colorConfig.GetColor(ColorConfig.ColorType.Negative);
                 buyButton.enabled = false;
             }
             if (shownBuilding.Data.ResourcesCost > villageResources.Resources)
             {
-                resourcesPriceLabel.color = Color.red;
+                resourcesPriceLabel.color = _colorConfig.GetColor(ColorConfig.ColorType.Negative);
                 buyButton.enabled = false;
             }
         }

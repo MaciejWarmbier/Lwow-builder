@@ -2,38 +2,47 @@ using DG.Tweening;
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 public class GameUICanvas : MonoBehaviour
 {
-    [SerializeField] RectTransform resourcesRT;
-    [SerializeField] RectTransform foodRT;
-    [SerializeField] RectTransform moraleRT;
+    [Header("Resources")]
+    [SerializeField] private RectTransform resourcesRT;
+    [SerializeField] private TextMeshProUGUI resourcesValueLabel;
+    [SerializeField] private TextMeshProUGUI resourcesProductionLabel;
+    [SerializeField] private Sprite ResourcesSprite;
+
+    [Header("Food")]
+    [SerializeField] private RectTransform foodRT;
+    [SerializeField] private TextMeshProUGUI foodValueLabel;
+    [SerializeField] private TextMeshProUGUI foodProductionLabel;
+    [SerializeField] private Sprite FoodSprite;
 
 
-    [SerializeField] TextMeshProUGUI resourcesValueLabel;
-    [SerializeField] TextMeshProUGUI resourcesProductionLabel;
-    [SerializeField] TextMeshProUGUI foodValueLabel;
-    [SerializeField] TextMeshProUGUI foodProductionLabel;
-    [SerializeField] TextMeshProUGUI moraleValueLabel;
-    [SerializeField] TextMeshProUGUI moraleProductionLabel;
-
-    [SerializeField] Sprite FoodSprite;
-    [SerializeField] Sprite ResourcesSprite;
-    [SerializeField] float endOffsetY;
-    [SerializeField] float startOffsetY;
-    [SerializeField] float startOffsetX;
-    [SerializeField] float time;
-    [SerializeField] GameObject Marker;
-
-    [SerializeField] Image moraleImage;
-
+    [Header("Morale")]
+    [SerializeField] private RectTransform moraleRT;
+    [SerializeField] private TextMeshProUGUI moraleValueLabel;
+    [SerializeField] private TextMeshProUGUI moraleProductionLabel;
+    [SerializeField] private Image moraleImage;
     [SerializeField] private Sprite highMoraleSprite;
     [SerializeField] private Sprite normalMoraleSprite;
     [SerializeField] private Sprite lowMoraleSprite;
 
+    [Header("Marker")]
+    [SerializeField] private GameObject Marker;
+    [SerializeField] private float endOffsetY;
+    [SerializeField] private float startOffsetY;
+    [SerializeField] private float startOffsetX;
+    [SerializeField] private float time;
+
+    [Header("Special Items")]
     [SerializeField] private GameObject perunsSword;
     [SerializeField] private GameObject flower;
+
+    [Header("Message Bar")]
+    [SerializeField] private GameObject messageBar;
+    [SerializeField] private TextMeshProUGUI messageText;
 
     private ColorConfig _colorConfig;
     int isResourcesColorChanged = 0;
@@ -42,12 +51,28 @@ public class GameUICanvas : MonoBehaviour
 
     private void Awake()
     {
+        Assert.IsNotNull(resourcesRT);
+        Assert.IsNotNull(resourcesValueLabel);
+        Assert.IsNotNull(resourcesProductionLabel);
+        Assert.IsNotNull(ResourcesSprite);
+        Assert.IsNotNull(foodRT);
+        Assert.IsNotNull(foodValueLabel);
+        Assert.IsNotNull(foodProductionLabel);
+        Assert.IsNotNull(FoodSprite);
+        Assert.IsNotNull(moraleRT);
+        Assert.IsNotNull(moraleValueLabel);
+        Assert.IsNotNull(moraleProductionLabel);
+        Assert.IsNotNull(moraleImage);
+        Assert.IsNotNull(highMoraleSprite);
+        Assert.IsNotNull(normalMoraleSprite);
+        Assert.IsNotNull(lowMoraleSprite);
+        Assert.IsNotNull(Marker);
+        Assert.IsNotNull(perunsSword);
+        Assert.IsNotNull(flower);
+        Assert.IsNotNull(messageBar);
+        Assert.IsNotNull(messageText);
+
         _colorConfig = ConfigController.GetConfig<ColorConfig>();
-        //TODO All asserts
-    }
-    
-    void Start()
-    {
     }
 
     public void UpdateMorale(int value, int newValue)
@@ -149,6 +174,17 @@ public class GameUICanvas : MonoBehaviour
         );
     }
 
+    public void ShowMessageBar(string message)
+    {
+        messageText.text = message.AddSpriteTextToStrings();
+        messageBar.SetActive(true);
+    }
+
+    public void HideMessageBar()
+    {
+        messageBar.SetActive(false);
+    }
+
     public void MakeMarker(Color fontColor, Vector3 position, Sprite sprite, TextMeshProUGUI label, string textValue, Action action = null) 
     {
         var marker = Instantiate(Marker, position + new Vector3(startOffsetX, startOffsetY, 0), Quaternion.identity, this.transform);
@@ -187,4 +223,13 @@ public class GameUICanvas : MonoBehaviour
         moraleProductionLabel.text = value.ToString();
     }
 
+    public void ShowSword()
+    {
+        perunsSword.SetActive(true);
+    }
+
+    public void ShowFlower()
+    {
+        flower.SetActive(true);
+    }
 }

@@ -9,4 +9,9 @@ public class Armory : Building
     {
         WorldController.worldController.GetNamedEvent(EventType.SlayerOfTheBeast2);
     }
+
+    public override string Description()
+    {
+        return "Creates weapons to fight!";
+    }
 }

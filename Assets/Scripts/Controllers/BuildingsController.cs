@@ -1,8 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
+using static BuildingConfig;
 
 public class BuildingsController : MonoBehaviour
 {
@@ -12,12 +12,15 @@ public class BuildingsController : MonoBehaviour
 
     public Building buildingInProgress = null;
     public List<Building> listOfBuiltBuildings;
+    public List<BuildingType> typesOfBuiltBuildings;
 
     private bool isCanvasActive = false;
     private BuildingConfig buildingConfig;
 
     private void Awake()
     {
+        Assert.IsNotNull(buildingSelectionCanvas);
+
         buildingConfig = ConfigController.GetConfig<BuildingConfig>();
         buildingsController = GetComponent<BuildingsController>();
     }
@@ -51,9 +54,19 @@ public class BuildingsController : MonoBehaviour
         isCanvasActive = false;
     }
 
-    public void AddBuildingToList()
+    public void AddBuildingToList(Building building)
     {
-        listOfBuiltBuildings.Add(buildingInProgress);
+        listOfBuiltBuildings.Add(building);
+        if (!typesOfBuiltBuildings.Contains(building.Type))
+            typesOfBuiltBuildings.Add(building.Type);
+    }
+
+    public void RemoveBuildingFromList(Building building)
+    {
+        listOfBuiltBuildings.Remove(building);
+        var type = listOfBuiltBuildings.FirstOrDefault(x => x.Type == building.Type);
+        if (type != null)
+            typesOfBuiltBuildings.Remove(building.Type);
     }
 
     public List<Building> GetAvailableBuildings()
@@ -62,7 +75,7 @@ public class BuildingsController : MonoBehaviour
 
         for(int i = 0; i< availableBuildings.Count; i++)
         {
-            if (!availableBuildings[i].CheckIfUnlocked())
+            if (!availableBuildings[i].CheckIfUnlocked() || (availableBuildings[i].Data.IsOneTimeBuilt && typesOfBuiltBuildings.Contains(availableBuildings[i].Type)))
             {
                 availableBuildings.RemoveAt(i);
                 i--;

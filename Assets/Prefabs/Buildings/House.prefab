@@ -115,9 +115,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de7531952d5d50441afeb496c3a9089f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OverlayObject: {fileID: 3915063981273629116}
-  OverlayMeshList:
-  - {fileID: 7029842454718605095}
   buildingData:
     Name: House
     FoodCost: 20
@@ -451,6 +448,14 @@ PrefabInstance:
     - target: {fileID: 6049493297297238545, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 6049493297297238545, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661234746705180879, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}

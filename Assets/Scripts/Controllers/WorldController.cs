@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -12,13 +11,7 @@ public class WorldController : MonoBehaviour
     [SerializeField] private Canvas pauseUI;
     [SerializeField] private Canvas endGameUI;
     public Tile lastTile = null;
-
-    private Queue<GameEvent> queuedEvents = new Queue<GameEvent>();
     public float clickCooldown;
-    private bool isEventActive = false;
-    private bool isCycleActive = false;
-    private bool isPaused = false;
-    private bool isEventOnCooldown = false;
 
     [Header("Fabularne")]
     public bool hasKupalaFlower = false;
@@ -33,11 +26,19 @@ public class WorldController : MonoBehaviour
 
     private float eventEndTime = 0;
     private int cycle = 0;
+    private bool isEventActive = false;
+    private bool isCycleActive = false;
+    private bool isPaused = false;
+    private bool isEventOnCooldown = false;
+
     public static WorldController worldController;
 
     private void Awake()
     {
         Assert.IsNotNull(eventCanvas);
+        Assert.IsNotNull(gameUI);
+        Assert.IsNotNull(pauseUI);
+        Assert.IsNotNull(endGameUI);
         
         worldController = GetComponent<WorldController>();
     }
@@ -57,10 +58,7 @@ public class WorldController : MonoBehaviour
         if(isEventOnCooldown && Time.time > eventEndTime + eventCooldown && !isPaused)
         {
             isEventOnCooldown = false;
-            if(queuedEvents.Count > 0)
-            {
-                StartCoroutine(StartEvent());
-            }
+            CheckEvent();
         }
     }
 
@@ -69,49 +67,37 @@ public class WorldController : MonoBehaviour
         isCycleActive = true;
         cycle++;
         VillageResources.villageResources.ProcessCycle(cycle);
+        CheckEvent();
         yield return new WaitForSeconds(cycleTime);
         isCycleActive = false;
     }
 
     public void GetNamedEvent(EventType type)
     {
-        GameEvent gameEvent = GameEventsController.gameEventsController.GetNamedEvent(type);
-        if (gameEvent == null) return;
-        else
-        {
-            queuedEvents.Enqueue(gameEvent);
-
-            if (!isEventOnCooldown)
-            {
-                StartCoroutine(StartEvent());
-            }
-        }
+        GameEventsController.gameEventsController.UnlockNamedEvent(type);
+        CheckEvent();
     }
 
     public void CheckEvent()
     {
-        List<GameEvent> gameEvents = GameEventsController.gameEventsController.GetEvent();
-        if (gameEvents == null || gameEvents.Count < 0) return;
+        GameEvent gameEvent = GameEventsController.gameEventsController.GetEvent();
+        if (gameEvent == null) return;
         else
         {
-            foreach(GameEvent gameEvent in gameEvents)
+            if (!isEventOnCooldown && !isEventActive)
             {
-                queuedEvents.Enqueue(gameEvent);
-            }
-
-            if (!isEventOnCooldown)
-            {
-                StartCoroutine(StartEvent());
+                StartCoroutine(StartEvent(gameEvent));
             }
         }
     }
 
-    private IEnumerator StartEvent()
+    private IEnumerator StartEvent(GameEvent gameEvent)
     {
-        
+        FindObjectOfType<GameUICanvas>().HideMessageBar();
+        gameEvent.wasUsed = true;
         isEventActive = true;
         var canvas = Instantiate(eventCanvas);
-        canvas.ShowEvent(queuedEvents.Dequeue());
+        canvas.ShowEvent(gameEvent);
         PauseGame();
         yield return new WaitUntil(() => canvas.EventHasEnded);
 

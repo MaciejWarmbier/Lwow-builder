@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
 using static ColorConfig;
 
 public class Tile : MonoBehaviour
@@ -40,6 +40,8 @@ public class Tile : MonoBehaviour
 
     private void Awake()
     {
+        Assert.IsNotNull(tileMesh);
+
         gridManager = FindObjectOfType<GridManager>();
         soundConfig = ConfigController.GetConfig<SoundConfig>();
         colorConfig = ConfigController.GetConfig<ColorConfig>();
@@ -138,6 +140,7 @@ public class Tile : MonoBehaviour
             foreach (var bigTile in bigBuildingTiles) bigTile.SetOverlay(ColorType.Selected);
             if (placedBuilding != null)
             {
+                SetOverlay(ColorType.Selected);
                 placedBuilding.ShowDescriptionCanvas(true);
             }
         }
@@ -149,7 +152,6 @@ public class Tile : MonoBehaviour
         {
             SetOverlay(ColorType.Negative);
         }
-            
     }
 
     public void SetOverlay(ColorType type)
@@ -249,11 +251,27 @@ public class Tile : MonoBehaviour
     public void BuildingPlaced(Building building, List<Tile> tiles = null)
     {
         placedBuilding = building;
-        if(tiles != null && tiles.Count != 0)
+        destructionThunderObject.SetActive(false);
+        destructionObject.SetActive(false);
+        if (tiles != null && tiles.Count != 0)
         {
             bigBuildingTiles = tiles;
         }
         type = TileType.Built;
+        placedBuilding.OnDestruction += HandleOnBuildingDestruction;
+    }
+
+    private void HandleOnBuildingDestruction(bool isDestroyedByThunder)
+    {
+        type = TileType.Free;
+        if (isDestroyedByThunder)
+        {
+            destructionThunderObject.SetActive(true); 
+        }
+        else
+        {
+            destructionObject.SetActive(true);
+        }
     }
 
     private IEnumerator SmashThatTree()
@@ -282,6 +300,7 @@ public class Tile : MonoBehaviour
         Free,
         Built,
         Tree,
-        Rock
+        Rock,
+        Materials
     }
 }

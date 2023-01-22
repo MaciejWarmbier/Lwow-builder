@@ -126,6 +126,7 @@ MonoBehaviour:
     FoodProduction: 0
     TimeToBuild: 10
     IsBig: 0
+    IsOneTimeBuilt: 1
   buildingCanvas: {fileID: 1365877832009991241}
   constructionObject: {fileID: 6514587890115972269}
   Type: 2
@@ -302,18 +303,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 670180574085651236}
     m_Modifications:
-    - target: {fileID: 937536056417082224, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 937536056417082224, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 937536056417082224, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 3.6462998
-      objectReference: {fileID: 0}
     - target: {fileID: 2967432294237568053, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -397,18 +386,6 @@ PrefabInstance:
     - target: {fileID: 2967432294237568053, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3921613979660017720, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3921613979660017720, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3921613979660017720, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0.91064996
       objectReference: {fileID: 0}
     - target: {fileID: 6049493297297238545, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
       propertyPath: m_Name

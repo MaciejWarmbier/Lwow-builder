@@ -1,7 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 public class BuildingCanvas : MonoBehaviour
@@ -16,6 +16,18 @@ public class BuildingCanvas : MonoBehaviour
     [SerializeField] List<Sprite> constructionSprites;
 
     private Building _building;
+
+    private void Awake()
+    {
+        Assert.IsNotNull(descriptionCanvas);
+        Assert.IsNotNull(nameText);
+        Assert.IsNotNull(descriptionText);
+        Assert.IsNotNull(icon);
+        Assert.IsNotNull(constructionCanvas);
+        Assert.IsNotNull(constructionImage);
+        Assert.IsNotNull(constructionSprites);
+    }
+
     public void Setup(Building building)
     {
         _building = building;

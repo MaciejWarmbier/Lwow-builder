@@ -37,6 +37,7 @@ public class EventCanvas : MonoBehaviour
         Assert.IsNotNull(rightChoiceLabel);
         Assert.IsNotNull(leftChoiceLabel);
         Assert.IsNotNull(description);
+        Assert.IsNotNull(eventName);
 
         continueButton.gameObject.SetActive(false);
     }
@@ -71,11 +72,6 @@ public class EventCanvas : MonoBehaviour
                         descriptions.Add("Let’s not forget that we still have the Daryas’ Fern flower. It could help with the battle.");
 
                 }
-                 
-                if (eventData.type == EventType.StormOfPerun)
-                {
-                    WorldController.worldController.isPerunActivated = true;
-                }
 
                 eventHasEnded = false;
                 description.text = eventData.description.AddSpriteTextToStrings();
@@ -101,6 +97,7 @@ public class EventCanvas : MonoBehaviour
         if (!string.IsNullOrEmpty(_event.rightChoice.choiceResultText4))
             descriptions.Add(_event.rightChoice.choiceResultText4.AddSpriteTextToStrings());
 
+        GameEventsController.gameEventsController.RightEventResults(_event);
         eventHasEnded = false;
         description.text = descriptions[0].AddSpriteTextToStrings();
         eventName.text = _event.title;
@@ -110,6 +107,9 @@ public class EventCanvas : MonoBehaviour
 
     public void OnChoiceClick(bool isRight)
     {
+        pageNumber = 1;
+        CheckButtonFunctionality();
+
         Choice selectedChoice;
         if (isRight)
         {
@@ -139,7 +139,6 @@ public class EventCanvas : MonoBehaviour
 
         descriptionIndex = 0;
 
-        //TODO Resource check
         VillageResources.villageResources.ChangeFood(selectedChoice.foodChange);
         VillageResources.villageResources.ChangeMorale(selectedChoice.moraleChange);
         VillageResources.villageResources.ChangeResources(selectedChoice.resourcesChange);

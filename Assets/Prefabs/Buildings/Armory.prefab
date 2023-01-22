@@ -130,13 +130,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a8296a4dede38f45b0861ffd2adbd70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OverlayObject: {fileID: 3070362096023449665}
-  OverlayMeshList:
-  - {fileID: 9153764661878659398}
-  - {fileID: 8504735873352188154}
-  - {fileID: 1623380358138716050}
-  - {fileID: 6259478748634108191}
-  - {fileID: 8911015294072833442}
   buildingData:
     Name: Armory
     FoodCost: 250
@@ -149,6 +142,7 @@ MonoBehaviour:
     FoodProduction: 0
     TimeToBuild: 90
     IsBig: 1
+    IsOneTimeBuilt: 1
   buildingCanvas: {fileID: 8212935859558968924}
   constructionObject: {fileID: 237443048579590700}
   Type: 4
@@ -483,11 +477,6 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 7686298050807872205, guid: e456f03204e8ed74bb1b4b2de409f6ad, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e456f03204e8ed74bb1b4b2de409f6ad, type: 3}
---- !u!23 &8911015294072833442 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 8717766846935745403, guid: e456f03204e8ed74bb1b4b2de409f6ad, type: 3}
-  m_PrefabInstance: {fileID: 239240470381758169}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8911015294075258690 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8717766846938169755, guid: e456f03204e8ed74bb1b4b2de409f6ad, type: 3}
@@ -1104,11 +1093,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5148838409119275100, guid: 2b6d164177d1f6a49b794393d4c8dd4b, type: 3}
   m_PrefabInstance: {fileID: 5905132348019590446}
   m_PrefabAsset: {fileID: 0}
---- !u!23 &1623380358138716050 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 5148838409117375164, guid: 2b6d164177d1f6a49b794393d4c8dd4b, type: 3}
-  m_PrefabInstance: {fileID: 5905132348019590446}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6623857269385136846
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1409,18 +1393,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2390201350844170122}
     m_Modifications:
-    - target: {fileID: 937536056417082224, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 937536056417082224, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 937536056417082224, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 3.6462998
-      objectReference: {fileID: 0}
     - target: {fileID: 2967432294237568053, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1505,23 +1477,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3921613979660017720, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3921613979660017720, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3921613979660017720, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0.91064996
-      objectReference: {fileID: 0}
     - target: {fileID: 6049493297297238545, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
     - target: {fileID: 6049493297297238545, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661234746705180879, guid: 4bd7c04e3ed77984c8a09f50350ac88b, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -1822,11 +1786,6 @@ PrefabInstance:
 --- !u!4 &6259478748632208383 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2937672411430497592, guid: 2accb331dd019ce44b1b7cdb4af4b61d, type: 3}
-  m_PrefabInstance: {fileID: 9086742047428443847}
-  m_PrefabAsset: {fileID: 0}
---- !u!23 &6259478748634108191 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 2937672411432267736, guid: 2accb331dd019ce44b1b7cdb4af4b61d, type: 3}
   m_PrefabInstance: {fileID: 9086742047428443847}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9128221116402523756

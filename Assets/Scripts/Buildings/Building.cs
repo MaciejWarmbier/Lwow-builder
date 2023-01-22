@@ -5,31 +5,31 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using static BuildingConfig;
-using static ColorConfig;
 using static Tile;
 
 public class Building : MonoBehaviour
 {
+    public Action<bool> OnDestruction;
     [SerializeField] BuildingData buildingData;
     [SerializeField] BuildingCanvas buildingCanvas;
-
     [SerializeField] GameObject constructionObject;
 
     private bool _isInConstruction = false;
+    public bool IsBeingDestroyed = false;
+
     public BuildingData Data { get { return buildingData; } }
     public BuildingType Type;
 
     private List<Tile> neighbors;
-    private ColorConfig _colorConfig;
 
     public void Awake()
     {
         Assert.IsNotNull(buildingData);
         Assert.IsNotNull(buildingCanvas);
-
-        _colorConfig = ConfigController.GetConfig<ColorConfig>();
+        Assert.IsNotNull(constructionObject);
         buildingCanvas.Setup(this);
     }
+
 
     private void OnMouseEnter()
     {
@@ -47,12 +47,26 @@ public class Building : MonoBehaviour
         }
     }
 
+    public List<Building> GetNeighborsOfType(BuildingType buildingType)
+    {
+        List<Building> buildings = new List<Building>();
+        foreach (var neighbor in neighbors)
+        {
+            if (neighbor.PlacedBuilding?.Type == buildingType && !_isInConstruction && !neighbor.PlacedBuilding.IsBeingDestroyed)
+            {
+                buildings.Add(neighbor.PlacedBuilding);
+            }
+        }
+
+        return buildings;
+    }
+
     public int CheckForNeighbor(BuildingType buildingType)
     {
         int buildingTiles = 0;
         foreach(var neighbor in neighbors)
         {
-            if(neighbor.PlacedBuilding?.Type == buildingType)
+            if(neighbor.PlacedBuilding?.Type == buildingType && !_isInConstruction && !neighbor.PlacedBuilding.IsBeingDestroyed)
             {
                 buildingTiles++;
             }
@@ -80,6 +94,11 @@ public class Building : MonoBehaviour
 
     }
 
+    public virtual void ActivateEffect()
+    {
+
+    }
+
     public virtual string Description()
     {
         string description = "";
@@ -94,6 +113,7 @@ public class Building : MonoBehaviour
     public GameObject CreateBuilding(Building building, Vector3 position)
     {
         var instantiatedBuilding = Instantiate(building.gameObject, new Vector3(position.x, 5, position.z) , Quaternion.identity);
+        
         return instantiatedBuilding;
     }
 
@@ -104,14 +124,7 @@ public class Building : MonoBehaviour
 
     public void ShowOnTile(Vector3 position, bool canBePlaced)
     {
-        if (canBePlaced)
-        {
-            gameObject.transform.position = new Vector3(position.x, 4, position.z);
-        }
-        else
-        {
-            gameObject.transform.position = new Vector3(position.x, 4, position.z);
-        }
+       gameObject.transform.position = new Vector3(position.x, 4, position.z);
     }
 
     public void ShowDescriptionCanvas(bool isShown)
@@ -131,10 +144,10 @@ public class Building : MonoBehaviour
         {
             neighbors = listOfTiles;
             gameObject.transform.position = new Vector3(position.x, 4, position.z);
-            //TODO think if not under tiles
             
             gameObject.transform.parent = BuildingsController.buildingsController.gameObject.transform;
             BuildingsController.buildingsController.buildingInProgress = null;
+            BuildingsController.buildingsController.AddBuildingToList(this);
             VillageResources.villageResources.ChangeFood(-buildingData.FoodCost);
             VillageResources.villageResources.ChangeResources(-buildingData.ResourcesCost);
 
@@ -185,16 +198,18 @@ public class Building : MonoBehaviour
     }
 
 
-    public void DestroyBuilding(bool isDestroyedByStorm)
+    public virtual void DestroyBuilding(bool isDestroyedByStorm)
     {
+        IsBeingDestroyed = true;
+        VillageResources.villageResources.ChangeResourcesProduction(-Data.ResourcesProduction);
+        VillageResources.villageResources.ChangeFoodProduction(-Data.FoodProduction);
+        VillageResources.villageResources.ChangeMoraleProduction(-Data.MoraleProduction);
 
-        //TODO
-        if (isDestroyedByStorm)
-        {
-            //TODO add lighting effect
-        }
-        BuildingsController.buildingsController.listOfBuiltBuildings.Remove(this);
-        Destroy(this);
+        OnDestruction?.Invoke(isDestroyedByStorm);
+        BuildingsController.buildingsController.RemoveBuildingFromList(this);
+        
+        Destroy(this.gameObject);
+        IsBeingDestroyed = false;
     }
 
     [Serializable]
@@ -211,6 +226,7 @@ public class Building : MonoBehaviour
         public int FoodProduction;
         public int TimeToBuild;
         public bool IsBig;
+        public bool IsOneTimeBuilt;
     }
 }
 

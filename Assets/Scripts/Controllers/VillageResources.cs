@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -30,7 +26,6 @@ public class VillageResources : MonoBehaviour
 
     [SerializeField] int NormalMoraleBorder;
     [SerializeField] int LowMoraleBorder;
-
 
     [Space(5)]
     [SerializeField] GameUICanvas gameCanvas;
