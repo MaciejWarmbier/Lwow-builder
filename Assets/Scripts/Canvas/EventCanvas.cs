@@ -53,6 +53,7 @@ public class EventCanvas : MonoBehaviour
     {
         if (eventData != null)
         {
+            WorldController.worldController.lastTile.StopHover();
             _event = eventData;
             if (!eventData.skipChoice)
             {

@@ -89,7 +89,7 @@ public class Tile : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (!EventSystem.current.IsPointerOverGameObject() && type != TileType.NonInteractive && !isHoveredOver)
+        if (!EventSystem.current.IsPointerOverGameObject() && type != TileType.NonInteractive && !isHoveredOver && !BuildingsController.buildingsController.isCanvasActive && !WorldController.worldController.isPaused)
         {
             if (BuildingsController.buildingsController.buildingInProgress != null)
             {
@@ -104,6 +104,7 @@ public class Tile : MonoBehaviour
 
     private void BuildHover()
     {
+        WorldController.worldController.lastTile = this;
         Building building = BuildingsController.buildingsController.buildingInProgress;
 
         isHoveredOver = true;
@@ -188,6 +189,14 @@ public class Tile : MonoBehaviour
         tileMesh.SetActive(false);
     }
 
+
+    public void HideOverlayWithCornerTiles()
+    {
+        foreach (var corner in cornerTiles) corner.HideOverlay();
+        StopHover();
+    }
+
+
     private void OnMouseExit()
     {
         if (!EventSystem.current.IsPointerOverGameObject() && type != TileType.NonInteractive && isHoveredOver)
@@ -223,6 +232,7 @@ public class Tile : MonoBehaviour
         }
     }
 
+
     void OnMouseDown()
     {
         if (!EventSystem.current.IsPointerOverGameObject())
@@ -244,7 +254,7 @@ public class Tile : MonoBehaviour
             }
             else if(type == TileType.Materials && !isMaterialsGathered)
             {
-                int number = Random.Range(2, 3);
+                int number = Random.Range(2, 4);
                 VillageResources.villageResources.ChangeResources(number);
                 StartCoroutine(GatherMaterials());
                 for(int i=0; i < number; i++)
@@ -254,10 +264,14 @@ public class Tile : MonoBehaviour
             }
             else if (type == TileType.DestructionMaterials && !isMaterialsGathered)
             {
-                int number = Random.Range(5, 10);
+                int number = Random.Range(0,5);
                 VillageResources.villageResources.ChangeResources(number);
                 StartCoroutine(GatherMaterials());
-                StartCoroutine(FadeMaterials(destructionMaterials));
+
+                for (int i = 0; i < number/2; i++)
+                {
+                    StartCoroutine(FadeMaterials(destructionMaterials));
+                }
             }
         }
     }
@@ -310,7 +324,8 @@ public class Tile : MonoBehaviour
         else
         {
             destructionObject.SetActive(true);
-            type = TileType.Materials;
+            type = TileType.DestructionMaterials;
+            audioSource.clip = soundConfig.GetSound(SoundConfig.SoundType.Rock);
         }
     }
 
@@ -326,7 +341,7 @@ public class Tile : MonoBehaviour
     {
         if (objects.Count <= 0) yield break;
        
-        int index = Random.Range(0, objects.Count - 1);
+        int index = Random.Range(0, objects.Count);
         var materialObject = objects[index];
         objects.RemoveAt(index);
         var renderer = materialObject.GetComponent<MeshRenderer>();
@@ -346,7 +361,7 @@ public class Tile : MonoBehaviour
 
         if(newObjects != null)
         {
-            int randomIndex = Random.Range(0, newObjects.Count-1);
+            int randomIndex = Random.Range(0, newObjects.Count);
             var newObject = newObjects[randomIndex];
             Instantiate(newObject, materialObject.transform.position, Quaternion.identity, foliageObject.transform);
         }
@@ -373,7 +388,7 @@ public class Tile : MonoBehaviour
     private IEnumerator SmashThatTree()
     {
         isTreeSmashed = true;
-        int number = Random.Range(1, 2);
+        int number = Random.Range(1, 3);
         VillageResources.villageResources.ChangeResources(number);
         audioSource.Play();
         yield return new WaitForSeconds(WorldController.worldController.clickCooldown);
@@ -383,7 +398,7 @@ public class Tile : MonoBehaviour
     private IEnumerator SmashThatRock()
     {
         isRockSmashed = true;
-        int number = Random.Range(0, 3);
+        int number = Random.Range(0, 4);
         VillageResources.villageResources.ChangeResources(number);
         audioSource.Play();
         yield return new WaitForSeconds(WorldController.worldController.clickCooldown);

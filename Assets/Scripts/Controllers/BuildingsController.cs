@@ -3,10 +3,12 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 using static BuildingConfig;
+using static Tile;
 
 public class BuildingsController : MonoBehaviour
 {
     [SerializeField] BuildingSelectionCanvas buildingSelectionCanvas;
+    [SerializeField] DestroyBuildingCanvas destroyBuildingCanvas;
 
     public static BuildingsController buildingsController;
 
@@ -14,12 +16,13 @@ public class BuildingsController : MonoBehaviour
     public List<Building> listOfBuiltBuildings;
     public List<BuildingType> typesOfBuiltBuildings;
 
-    private bool isCanvasActive = false;
+    public bool isCanvasActive = false;
     private BuildingConfig buildingConfig;
 
     private void Awake()
     {
         Assert.IsNotNull(buildingSelectionCanvas);
+        Assert.IsNotNull(destroyBuildingCanvas);
 
         buildingConfig = ConfigController.GetConfig<BuildingConfig>();
         buildingsController = GetComponent<BuildingsController>();
@@ -32,10 +35,41 @@ public class BuildingsController : MonoBehaviour
             if (!FindObjectOfType<BuildingSelectionCanvas>())
             {
                 isCanvasActive = true;
+                WorldController.worldController.lastTile.StopHover();
                 var canvas = Instantiate(buildingSelectionCanvas);
                 canvas.OnCanvasClosed += OnBuildingSelection;
             }
         }
+
+        if (Input.GetKeyUp(KeyCode.D) && !isCanvasActive && buildingInProgress == null)
+        {
+            if (WorldController.worldController.lastTile.Type == TileType.Built && WorldController.worldController.lastTile.PlacedBuilding.CheckIfCanBeDestroyed())
+            {
+                if (!FindObjectOfType<DestroyBuildingCanvas>())
+                {
+                    isCanvasActive = true;
+                    var canvas = Instantiate(destroyBuildingCanvas);
+                    canvas.OnCanvasClosed += OnDestroyBuildingCanvasClosed;
+                }
+            }
+        }
+
+        if (Input.GetKeyUp(KeyCode.Mouse1) && !isCanvasActive && buildingInProgress != null)
+        {
+            WorldController.worldController.lastTile.HideOverlayWithCornerTiles();
+            Destroy(buildingInProgress.gameObject);
+            buildingInProgress = null;
+        }
+    }
+
+    private void OnDestroyBuildingCanvasClosed(bool isDestroyed)
+    {
+        if (isDestroyed)
+        {
+            WorldController.worldController.lastTile.PlacedBuilding.DestroyBuilding(false);
+        }
+
+        isCanvasActive = false;
     }
 
     private void OnBuildingSelection(bool isBought, Building boughtBuilding)

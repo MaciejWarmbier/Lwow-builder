@@ -122,6 +122,11 @@ public class Building : MonoBehaviour
         return true;
     }
 
+    public bool CheckIfCanBeDestroyed()
+    {
+        return !_isInConstruction && !IsBeingDestroyed;
+    }
+
     public void ShowOnTile(Vector3 position, bool canBePlaced)
     {
        gameObject.transform.position = new Vector3(position.x, 4, position.z);

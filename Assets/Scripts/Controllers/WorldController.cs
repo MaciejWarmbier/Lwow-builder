@@ -12,6 +12,7 @@ public class WorldController : MonoBehaviour
     [SerializeField] private Canvas endGameUI;
     public Tile lastTile = null;
     public float clickCooldown;
+    public bool isPaused = false;
 
     [Header("Fabularne")]
     public bool hasKupalaFlower = false;
@@ -28,7 +29,6 @@ public class WorldController : MonoBehaviour
     private int cycle = 0;
     private bool isEventActive = false;
     private bool isCycleActive = false;
-    private bool isPaused = false;
     private bool isEventOnCooldown = false;
 
     public static WorldController worldController;
@@ -131,7 +131,8 @@ public class WorldController : MonoBehaviour
 
     public void PauseGame()
     {
-        if(Time.timeScale == 1.0f)
+        isPaused = true;
+        if (Time.timeScale == 1.0f)
         {
             Time.timeScale = 0.0f;
         }
@@ -139,6 +140,7 @@ public class WorldController : MonoBehaviour
 
     public void UnPauseGame()
     {
+        isPaused = false;
         if (Time.timeScale == 0.0f)
         {
             Time.timeScale = 1.0f;
