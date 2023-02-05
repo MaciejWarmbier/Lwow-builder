@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-public class TutorialCanvas : MonoBehaviour
+public class TutorialCanvas : MonoBehaviour, ICanvas
 {
     [SerializeField] private List<string> pages;
     [SerializeField] private Button nextButton;
@@ -16,6 +16,7 @@ public class TutorialCanvas : MonoBehaviour
 
     private List<string> descriptions = new List<string>();
     private int descriptionIndex = 0;
+    private GridManager _gridController;
 
     private int pageNumber = 1;
     private int previousPage = 1;
@@ -32,17 +33,18 @@ public class TutorialCanvas : MonoBehaviour
     private void Start()
     {
         ShowTutorial();
+        _gridController = GameController.Game.GetController<GridManager>();
     }
 
     public void CloseCanvas()
     {
-        WorldController.worldController.UnPauseGame();
+        GameController.Game.UnPauseGame();
         Destroy(gameObject);
     }
 
     public void ShowTutorial() 
     {
-        WorldController.worldController.PauseGame();
+        GameController.Game.PauseGame();
         foreach (var page in pages)
         {
             descriptions.Add(page.ToString());
@@ -51,8 +53,8 @@ public class TutorialCanvas : MonoBehaviour
         description.text = pages[0].AddSpriteTextToStrings();
         title.text = "Tutorial";
         CheckButtonFunctionality();
-        if(WorldController.worldController.lastTile != null)
-            WorldController.worldController.lastTile.StopHover();
+        if(_gridController.lastChosenTile != null)
+            _gridController.lastChosenTile.StopHover();
     }
 
     public void GoToNextPage()
@@ -119,5 +121,10 @@ public class TutorialCanvas : MonoBehaviour
             nextButton.interactable = true;
         }
 
+    }
+
+    public void SetActive(bool active)
+    {
+        this.gameObject.SetActive(active);
     }
 }

@@ -22,7 +22,7 @@ public class Wheat_field : Building
 
     public override string Description()
     {
-        if (WorldController.worldController.isWheatBetter)
+        if (_plotController.isWheatBetter)
         {
             return $"+10{{f}} to {millCount} Mills";
         }

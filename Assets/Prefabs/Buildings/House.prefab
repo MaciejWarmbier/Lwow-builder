@@ -127,8 +127,10 @@ MonoBehaviour:
     FoodProduction: 0
     TimeToBuild: 5
     IsBig: 0
-  buildingCanvas: {fileID: 8237020330341252249}
+    IsOneTimeBuilt: 0
+  buildingDesciptionCanvas: {fileID: 8237020330341252249}
   constructionObject: {fileID: 7837611030203053381}
+  IsBeingDestroyed: 0
   Type: 6
 --- !u!1 &3915063981273629116
 GameObject:

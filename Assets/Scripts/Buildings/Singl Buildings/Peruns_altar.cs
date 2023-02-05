@@ -3,14 +3,14 @@ public class Peruns_altar : Building
 {
     public override bool CheckIfUnlocked()
     {
-        return WorldController.worldController.isPerunActivated;
+        return _plotController.isPerunActivated;
     }
 
     public override void PassiveEffect()
     {
-        if (WorldController.worldController.isPerunHappy)
+        if (_plotController.isPerunHappy)
         {
-             WorldController.worldController.GetNamedEvent(EventType.AltarOfPerun);
+             _gameEventsController.UnlockNamedEvent(EventType.AltarOfPerun);
         }
     }
 }

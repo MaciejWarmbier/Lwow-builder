@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-public class DestroyBuildingCanvas : MonoBehaviour
+public class DestroyBuildingCanvas : MonoBehaviour, ICanvas
 {
     [SerializeField] private Button yesButton;
     [SerializeField] private Button noButton;
@@ -23,7 +23,7 @@ public class DestroyBuildingCanvas : MonoBehaviour
     {
         yesButton.onClick.RemoveListener(HandleOnYesButtonClick);
         noButton.onClick.RemoveListener(HandleOnNoButtonClick);
-        WorldController.worldController.UnPauseGame();
+        GameController.Game.UnPauseGame();
         Destroy(gameObject);
     }
 
@@ -37,5 +37,10 @@ public class DestroyBuildingCanvas : MonoBehaviour
     {
         OnCanvasClosed?.Invoke(false);
         CloseCanvas();
+    }
+
+    public void SetActive(bool active)
+    {
+        this.gameObject.SetActive(active);
     }
 }

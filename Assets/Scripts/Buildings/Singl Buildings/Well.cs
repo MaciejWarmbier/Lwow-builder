@@ -2,7 +2,7 @@ public class Well : Building
 {
     public override void PassiveEffect()
     {
-        WorldController.worldController.GetNamedEvent(EventType.DevilishWell);
+        _gameEventsController.UnlockNamedEvent(EventType.DevilishWell);
         Data.ResourcesProduction += 5;
     }
 }

@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
@@ -6,8 +6,10 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-public class EventCanvas : MonoBehaviour
+public class EventCanvas : MonoBehaviour, ICanvas
 {
+    public Action OnClose;
+
     [SerializeField] private Button nextButton;
     [SerializeField] private Button previousButton;
     [SerializeField] private Button rightChoiceButton;
@@ -26,6 +28,10 @@ public class EventCanvas : MonoBehaviour
     private GameEvent _event;
     private int pageNumber = 1;
     private int previousPage = 1;
+    private ResourcesController _resourcesController;
+    private GameEventsController _gameEventsController;
+    private GridManager _gridController;
+    private PlotController _plotController;
 
     private void Awake()
     {
@@ -40,12 +46,17 @@ public class EventCanvas : MonoBehaviour
         Assert.IsNotNull(eventName);
 
         continueButton.gameObject.SetActive(false);
+        _resourcesController = GameController.Game.GetController<ResourcesController>();
+        _gameEventsController = GameController.Game.GetController<GameEventsController>();
+        _gridController = GameController.Game.GetController<GridManager>();
+        _plotController = GameController.Game.GetController<PlotController>();
     }
 
     public void CloseCanvas()
     {
+        OnClose?.Invoke();
         eventHasEnded = true;
-        WorldController.worldController.UnPauseGame();
+        GameController.Game.UnPauseGame();
         Destroy(gameObject);
     }
 
@@ -53,7 +64,6 @@ public class EventCanvas : MonoBehaviour
     {
         if (eventData != null)
         {
-            WorldController.worldController.lastTile.StopHover();
             _event = eventData;
             if (!eventData.skipChoice)
             {
@@ -67,9 +77,9 @@ public class EventCanvas : MonoBehaviour
 
                 if (eventData.type == EventType.TheGreatHunt)
                 {
-                    if(WorldController.worldController.hasSword)
+                    if(_plotController.hasSword)
                         descriptions.Add("... but we have the sword of Perun. This beast can’t stand the true gift from the God.");
-                    if (WorldController.worldController.hasKupalaFlower)
+                    if (_plotController.hasKupalaFlower)
                         descriptions.Add("Let’s not forget that we still have the Daryas’ Fern flower. It could help with the battle.");
 
                 }
@@ -98,7 +108,7 @@ public class EventCanvas : MonoBehaviour
         if (!string.IsNullOrEmpty(_event.rightChoice.choiceResultText4))
             descriptions.Add(_event.rightChoice.choiceResultText4.AddSpriteTextToStrings());
 
-        GameEventsController.gameEventsController.RightEventResults(_event);
+        _gameEventsController.RightEventResults(_event);
         eventHasEnded = false;
         description.text = descriptions[0].AddSpriteTextToStrings();
         eventName.text = _event.title;
@@ -115,12 +125,12 @@ public class EventCanvas : MonoBehaviour
         if (isRight)
         {
             selectedChoice = _event.rightChoice;
-            GameEventsController.gameEventsController.RightEventResults(_event);
+            _gameEventsController.RightEventResults(_event);
         }
         else
         {
             selectedChoice = _event.leftChoice;
-            GameEventsController.gameEventsController.WrongEventResults(_event);
+            _gameEventsController.WrongEventResults(_event);
         }
 
 
@@ -140,9 +150,9 @@ public class EventCanvas : MonoBehaviour
 
         descriptionIndex = 0;
 
-        VillageResources.villageResources.ChangeFood(selectedChoice.foodChange);
-        VillageResources.villageResources.ChangeMorale(selectedChoice.moraleChange);
-        VillageResources.villageResources.ChangeResources(selectedChoice.resourcesChange);
+        _resourcesController.ChangeFood(selectedChoice.foodChange);
+        _resourcesController.ChangeMorale(selectedChoice.moraleChange);
+        _resourcesController.ChangeResources(selectedChoice.resourcesChange);
         description.text = selectedChoice.choiceResultText.AddSpriteTextToStrings();
         CheckButtonFunctionality();
         ShowContinueButton();
@@ -150,20 +160,20 @@ public class EventCanvas : MonoBehaviour
 
     private void EndGameDialogue()
     {
-        if (WorldController.worldController.hasSword)
+        if (_plotController.hasSword)
             descriptions.Add("The sword of Perun sparked with the lightning power enchanted within the blade, and Daniel was confident that this day will be the last of this enormous Lion.");
-        if (WorldController.worldController.hasKupalaFlower)
+        if (_plotController.hasKupalaFlower)
             descriptions.Add("The Fern flower disappeared as the soldiers felt unstoppable.");
 
             descriptions.Add("The fight was long and tiring. Few of the villagers fell, but Daniel did not stop attacking the beast. The lion was jumping all over the place, but it began to growl out of pain. Suddenly the Lion jumped on Daniel and tried to bite his head off when Daniel grabbed his fangs and was trying to wrestle the beast.");
 
-        if (WorldController.worldController.hasSword)
+        if (_plotController.hasSword)
         {
             descriptions.Add("He managed to toss the beast to the ground when one of the villagers swung a final blow to the beast. The Lion was dead.");
             descriptions.Add("People in the town watched when the villagers came down the hill with the head of a lion. The cheering and applauding rose and Daniel became a legend! That is how the town was saved and was named Leviv after that act of bravery.");
             descriptions.Add("Game Over. You killed the Lion. Thank you for playing <3");
         }
-        else if (WorldController.worldController.hasKupalaFlower)
+        else if (_plotController.hasKupalaFlower)
         {
             descriptions.Add("He managed to toss the beast to the ground as he reached for the blade of the God, and sink it into his throat. The Lion was dead.");
             descriptions.Add("People in the town watched when the villagers came down the hill with the head of a lion. The cheering and applauding rose and Daniel became a legend! That is how the town was saved and was named Leviv after that act of bravery. ");
@@ -246,6 +256,10 @@ public class EventCanvas : MonoBehaviour
         {
             nextButton.interactable = true;
         }
+    }
 
+    public void SetActive(bool active)
+    {
+        this.gameObject.SetActive(active);
     }
 }

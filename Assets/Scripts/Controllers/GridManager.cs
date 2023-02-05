@@ -1,18 +1,17 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
-public class GridManager : MonoBehaviour
+public class GridManager : MonoBehaviour, IController
 {
     [SerializeField] Vector2Int gridSize;
     [SerializeField] int unityGridSizeSnap = 10;
+    public float clickOnTileCooldown;
     Dictionary<Vector2, Tile> grid = new Dictionary<Vector2, Tile>();
     public int UnityGridSizeSnap { get { return unityGridSizeSnap; } }
+    public Tile lastChosenTile;
 
-    private void Awake()
-    {
-        CreateGrid();
-    }
-    
+    public GridManager() { }
     void CreateGrid()
     {
         for (int x = 0; x < gridSize.x; x++)
@@ -20,7 +19,8 @@ public class GridManager : MonoBehaviour
             for (int y = 0; y < gridSize.y; y++)
             {
                 Vector2Int coordinates = new Vector2Int(x, y);
-                grid.Add(coordinates, null);
+                if(!grid.ContainsKey(coordinates))
+                    grid.Add(coordinates, null);
             }
         }
     }
@@ -109,5 +109,13 @@ public class GridManager : MonoBehaviour
         coordinates.y = Mathf.RoundToInt(position.z / unityGridSizeSnap);
 
         return coordinates;
+    }
+
+    public async Task<bool> Initialize()
+    {
+        await Task.Yield();
+        CreateGrid();
+        Debug.Log("Grid Created");
+        return true;
     }
 }

@@ -1,3 +1,4 @@
+using System.Linq;
 using static BuildingConfig;
 
 public class Mill : Building
@@ -13,7 +14,7 @@ public class Mill : Building
             wheat.ActivateEffect();
         }
 
-        if (WorldController.worldController.isWheatBetter)
+        if (_plotController.isWheatBetter)
         {
             Data.FoodProduction += wheatCount * 10;
         }
@@ -22,13 +23,13 @@ public class Mill : Building
             Data.FoodProduction += wheatCount * 5;
         }
 
-        if(!WorldController.worldController.isPerunActivated &&
-           !WorldController.worldController.isMillBuilt &&
-            WorldController.worldController.destroyMill == null)
+        if(!_plotController.isPerunActivated &&
+           !_plotController.isMillBuilt &&
+            _plotController.destroyMill == null)
         {
-            WorldController.worldController.destroyMill = this;
-            WorldController.worldController.isMillBuilt = true;
-            WorldController.worldController.GetNamedEvent(EventType.StormOfPerun);
+            _plotController.destroyMill = this;
+            _plotController.isMillBuilt = true;
+            _gameEventsController.UnlockNamedEvent(EventType.StormOfPerun);
         }
     }
 
@@ -36,7 +37,7 @@ public class Mill : Building
     {
         int newWheatCount = GetNeighborsOfType(BuildingType.Wheat).Count;
         
-        if (WorldController.worldController.isWheatBetter)
+        if (_plotController.isWheatBetter)
         {
             Data.FoodProduction += (newWheatCount - wheatCount) * 10;
         }
@@ -56,6 +57,21 @@ public class Mill : Building
         foreach (var wheat in wheatList)
         {
             wheat.ActivateEffect();
+        }
+
+        if(_plotController.destroyMill == this)
+        {
+            var millList = _buildingsController.listOfBuiltBuildings.Where(x=> x.Type == BuildingType.Mill).ToList();
+            if(millList.Count == 1)
+            {
+                _gameEventsController.LockNamedEvent(EventType.StormOfPerun);
+                _plotController.isMillBuilt= false;
+            }
+            else
+            {
+                _buildingsController.RemoveBuildingFromList(this);
+                _plotController.destroyMill = _buildingsController.listOfBuiltBuildings.FirstOrDefault(x => x.Type == BuildingType.Mill) as Mill;
+            }
         }
 
         base.DestroyBuilding(isDestroyedByStorm);

@@ -127,8 +127,9 @@ MonoBehaviour:
     TimeToBuild: 10
     IsBig: 0
     IsOneTimeBuilt: 1
-  buildingCanvas: {fileID: 1365877832009991241}
+  buildingDesciptionCanvas: {fileID: 1365877832009991241}
   constructionObject: {fileID: 6514587890115972269}
+  IsBeingDestroyed: 0
   Type: 2
 --- !u!1 &3637543971257840872
 GameObject:

@@ -48,17 +48,24 @@ public class Tile : MonoBehaviour
     bool isRockSmashed = false;
     bool isMaterialsGathered = false;
 
-    private void Awake()
+    private ResourcesController _resourcesController;
+    private GridManager _gridController;
+    private CanvasController _canvasController;
+    private BuildingsController _buildingsController;
+
+    private void Start()
     {
         Assert.IsNotNull(tileMesh);
 
         gridManager = FindObjectOfType<GridManager>();
         soundConfig = ConfigController.GetConfig<SoundConfig>();
         colorConfig = ConfigController.GetConfig<ColorConfig>();
-    }
 
-    private void Start()
-    {
+        _resourcesController = GameController.Game.GetController<ResourcesController>();
+        _gridController = GameController.Game.GetController<GridManager>();
+        _buildingsController = GameController.Game.GetController<BuildingsController>();
+        _canvasController = GameController.Game.GetController<CanvasController>();
+
         if (gridManager != null)
         {
             coordinates = gridManager.GetCoordinatesFromPosition(this.transform.position);
@@ -89,9 +96,9 @@ public class Tile : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (!EventSystem.current.IsPointerOverGameObject() && type != TileType.NonInteractive && !isHoveredOver && !BuildingsController.buildingsController.isCanvasActive && !WorldController.worldController.isPaused)
+        if (!EventSystem.current.IsPointerOverGameObject() && type != TileType.NonInteractive && !isHoveredOver && !_canvasController.isCanvasActive && !GameController.Game.isPaused)
         {
-            if (BuildingsController.buildingsController.buildingInProgress != null)
+            if (_buildingsController.buildingInProgress != null)
             {
                 BuildHover();
             }
@@ -104,8 +111,8 @@ public class Tile : MonoBehaviour
 
     private void BuildHover()
     {
-        WorldController.worldController.lastTile = this;
-        Building building = BuildingsController.buildingsController.buildingInProgress;
+        _gridController.lastChosenTile = this;
+        Building building = _buildingsController.buildingInProgress;
 
         isHoveredOver = true;
         tileMesh.SetActive(true);
@@ -150,7 +157,7 @@ public class Tile : MonoBehaviour
     private void Hover()
     {
         isHoveredOver = true;
-        WorldController.worldController.lastTile = this;
+        _gridController.lastChosenTile = this;
 
         if (type == TileType.Free)
         {
@@ -201,8 +208,8 @@ public class Tile : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject() && type != TileType.NonInteractive && isHoveredOver)
         {
-            if (BuildingsController.buildingsController.buildingInProgress != null 
-                && BuildingsController.buildingsController.buildingInProgress.Data.IsBig)
+            if (_buildingsController.buildingInProgress != null 
+                && _buildingsController.buildingInProgress.Data.IsBig)
             {
                 if(cornerTiles == null) cornerTiles = gridManager.GetBigBuildingTiles(this);
                 
@@ -237,7 +244,7 @@ public class Tile : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            if (BuildingsController.buildingsController.buildingInProgress != null)
+            if (_buildingsController.buildingInProgress != null)
             {
                 if (isBuildingPossibleToPlaceOnTile)
                 {
@@ -255,7 +262,7 @@ public class Tile : MonoBehaviour
             else if(type == TileType.Materials && !isMaterialsGathered)
             {
                 int number = Random.Range(2, 4);
-                VillageResources.villageResources.ChangeResources(number);
+                _resourcesController.ChangeResources(number);
                 StartCoroutine(GatherMaterials());
                 for(int i=0; i < number; i++)
                 {
@@ -265,7 +272,7 @@ public class Tile : MonoBehaviour
             else if (type == TileType.DestructionMaterials && !isMaterialsGathered)
             {
                 int number = Random.Range(0,5);
-                VillageResources.villageResources.ChangeResources(number);
+                _resourcesController.ChangeResources(number);
                 StartCoroutine(GatherMaterials());
 
                 for (int i = 0; i < number/2; i++)
@@ -278,7 +285,7 @@ public class Tile : MonoBehaviour
 
     private void PlaceBuilding()
     {
-        var building = BuildingsController.buildingsController.buildingInProgress;
+        var building = _buildingsController.buildingInProgress;
 
         if (building.Data.IsBig)
         {
@@ -288,12 +295,12 @@ public class Tile : MonoBehaviour
                 tile.BuildingPlaced(building, cornerTiles);
             }
             
-            BuildingsController.buildingsController.buildingInProgress.PlaceOnTile(cornerPosition, gridManager.GetBigTileNeighbors(cornerTiles));
+            _buildingsController.buildingInProgress.PlaceOnTile(cornerPosition, gridManager.GetBigTileNeighbors(cornerTiles));
         }
         else
         {
             BuildingPlaced(building);
-            BuildingsController.buildingsController.buildingInProgress.PlaceOnTile(gameObject.transform.position, gridManager.GetNeighbors(this));
+            _buildingsController.buildingInProgress.PlaceOnTile(gameObject.transform.position, gridManager.GetNeighbors(this));
         }
 
         StopHover();
@@ -333,7 +340,7 @@ public class Tile : MonoBehaviour
     {
         isMaterialsGathered = true;
         audioSource.Play();
-        yield return new WaitForSeconds(WorldController.worldController.clickCooldown);
+        yield return new WaitForSeconds(_gridController.clickOnTileCooldown);
         isMaterialsGathered = false;
     }
 
@@ -389,9 +396,9 @@ public class Tile : MonoBehaviour
     {
         isTreeSmashed = true;
         int number = Random.Range(1, 3);
-        VillageResources.villageResources.ChangeResources(number);
+        _resourcesController.ChangeResources(number);
         audioSource.Play();
-        yield return new WaitForSeconds(WorldController.worldController.clickCooldown);
+        yield return new WaitForSeconds(_gridController.clickOnTileCooldown);
         isTreeSmashed = false;
     }
 
@@ -399,9 +406,9 @@ public class Tile : MonoBehaviour
     {
         isRockSmashed = true;
         int number = Random.Range(0, 4);
-        VillageResources.villageResources.ChangeResources(number);
+        _resourcesController.ChangeResources(number);
         audioSource.Play();
-        yield return new WaitForSeconds(WorldController.worldController.clickCooldown);
+        yield return new WaitForSeconds(_gridController.clickOnTileCooldown);
         isRockSmashed = false;
     }
 

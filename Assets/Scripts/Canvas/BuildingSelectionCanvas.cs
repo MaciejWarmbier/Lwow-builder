@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-public class BuildingSelectionCanvas : MonoBehaviour
+public class BuildingSelectionCanvas : MonoBehaviour, ICanvas
 {
     [SerializeField] private Button nextButton;
     [SerializeField] private Button previousButton;
@@ -18,8 +18,9 @@ public class BuildingSelectionCanvas : MonoBehaviour
     public Action<bool, Building> OnCanvasClosed; 
 
     private int buildingIndex = 0;
-    private BuildingsController buildingsController;
-    private VillageResources villageResources;
+    private BuildingsController _buildingsController;
+    private ResourcesController _resourcesController;
+    private GridManager _gridController;
     private List<Building> buildings = new List<Building>();
     private Building shownBuilding;
     private ColorConfig _colorConfig;
@@ -34,14 +35,15 @@ public class BuildingSelectionCanvas : MonoBehaviour
         Assert.IsNotNull(foodPriceLabel);
         Assert.IsNotNull(description);
 
-        buildingsController = FindObjectOfType<BuildingsController>();
-        villageResources = FindObjectOfType<VillageResources>();
+        _resourcesController =  GameController.Game.GetController<ResourcesController>();
+        _buildingsController = GameController.Game.GetController<BuildingsController>();
+        _gridController = GameController.Game.GetController<GridManager>();
         _colorConfig = ConfigController.GetConfig<ColorConfig>();
     }
     
     void Start()
     {
-        buildings = buildingsController.GetAvailableBuildings();
+        buildings = _buildingsController.GetAvailableBuildings();
         if(buildings == null || buildings.Count <= 0)
         {
             Debug.LogError("No buildings to buy");
@@ -74,12 +76,12 @@ public class BuildingSelectionCanvas : MonoBehaviour
             foodPriceLabel.color = _colorConfig.GetColor(ColorConfig.ColorType.FontDefault);
             resourcesPriceLabel.color = _colorConfig.GetColor(ColorConfig.ColorType.FontDefault);
 
-            if (shownBuilding.Data.FoodCost > villageResources.Food)
+            if (shownBuilding.Data.FoodCost > _resourcesController.Food)
             {
                 foodPriceLabel.color = _colorConfig.GetColor(ColorConfig.ColorType.Negative);
                 buyButton.enabled = false;
             }
-            if (shownBuilding.Data.ResourcesCost > villageResources.Resources)
+            if (shownBuilding.Data.ResourcesCost > _resourcesController.Resources)
             {
                 resourcesPriceLabel.color = _colorConfig.GetColor(ColorConfig.ColorType.Negative);
                 buyButton.enabled = false;
@@ -119,14 +121,13 @@ public class BuildingSelectionCanvas : MonoBehaviour
 
     public void BuyBuilding()
     {
-        WorldController.worldController.lastTile?.StopHover();
         OnCanvasClosed?.Invoke(true, shownBuilding);
         Destroy(gameObject);
     }
 
     void Update()
     {
-        if(Input.GetKey(KeyCode.Escape))
+        if(Input.GetKeyUp(KeyCode.Escape) || Input.GetKeyUp(KeyCode.B))
         {
             CloseCanvas();
         }
@@ -136,5 +137,10 @@ public class BuildingSelectionCanvas : MonoBehaviour
     {
         OnCanvasClosed?.Invoke(false, null);
         Destroy(gameObject);
+    }
+
+    public void SetActive(bool active)
+    {
+        this.gameObject.SetActive(active);
     }
 }

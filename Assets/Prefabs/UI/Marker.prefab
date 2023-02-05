@@ -222,13 +222,14 @@ GameObject:
   - component: {fileID: 4594966708322407549}
   - component: {fileID: 5152316407270813985}
   - component: {fileID: 2008912177908997056}
+  - component: {fileID: -153248371230083592}
   m_Layer: 5
   m_Name: Marker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4594966708322407549
 RectTransform:
   m_ObjectHideFlags: 0
@@ -289,3 +290,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &-153248371230083592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4622859826644810411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db1e1e2c4d6195d4a8c141f58b98c1f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  icon: {fileID: 8645557142526585860}
+  background: {fileID: 2008912177908997056}
+  text: {fileID: 5152948670627689234}

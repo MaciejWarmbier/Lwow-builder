@@ -245,8 +245,9 @@ MonoBehaviour:
     TimeToBuild: 5
     IsBig: 1
     IsOneTimeBuilt: 1
-  buildingCanvas: {fileID: 5635269582518820519}
+  buildingDesciptionCanvas: {fileID: 5635269582518820519}
   constructionObject: {fileID: 2152055639766126485}
+  IsBeingDestroyed: 0
   Type: 5
 --- !u!1001 &1118336729707729114
 PrefabInstance:

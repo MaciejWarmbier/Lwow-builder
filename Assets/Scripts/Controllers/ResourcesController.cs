@@ -1,7 +1,9 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.SocialPlatforms.GameCenter;
 
-public class VillageResources : MonoBehaviour
+public class ResourcesController : MonoBehaviour, IController
 {
     [Header("Resources")]
     [SerializeField] int resources;
@@ -28,8 +30,10 @@ public class VillageResources : MonoBehaviour
     [SerializeField] int LowMoraleBorder;
 
     [Space(5)]
-    [SerializeField] GameUICanvas gameCanvas;
     [SerializeField] int buildingScore;
+
+    private CanvasController _canvasController;
+    private PlotController _plotController;
 
     public MoraleState VillageMorale
     {
@@ -40,20 +44,14 @@ public class VillageResources : MonoBehaviour
             else return MoraleState.High;
         }
     }
-
-    public static VillageResources villageResources;
     public int Resources { get { return resources; } }
     public int Food { get { return food; } }
     public int Morale { get { return morale; } }
     public int BuildingScore { get { return buildingScore; } }
    
     
-    //TODO look at
-    private void Awake()
-    {
-        Assert.IsNotNull(gameCanvas);
-        villageResources = GetComponent<VillageResources>();
-    }
+    //TODO stacking markers
+    //TODO penalty for <0 stuff
 
     public bool ChangeBuildingScore(int value)
     {
@@ -106,17 +104,23 @@ public class VillageResources : MonoBehaviour
         }
     }
 
-    private void Start()
+    public async Task<bool> Initialize()
     {
-        gameCanvas.UpdateResources(0, resources);
-        gameCanvas.UpdateFood(0, food);
-        gameCanvas.UpdateMorale(0, morale);
+        await Task.Yield();
+        _canvasController = GameController.Game.GetController<CanvasController>();
+        _plotController = GameController.Game.GetController<PlotController>();
 
-        gameCanvas.UpdateResourcesProduction(resourceProduction);
-        gameCanvas.UpdateMoraleProduction(foodProduction);
-        gameCanvas.UpdateFoodProduction(moraleProduction );
+        _canvasController.GameCanvas.UpdateResources(0, resources);
+        _canvasController.GameCanvas.UpdateFood(0, food);
+        _canvasController.GameCanvas.UpdateMorale(0, morale);
 
+        _canvasController.GameCanvas.UpdateResourcesProduction(resourceProduction);
+        _canvasController.GameCanvas.UpdateMoraleProduction(foodProduction);
+        _canvasController.GameCanvas.UpdateFoodProduction(moraleProduction );
 
+        GameController.Game.OnCycle += ProcessCycle;
+        Debug.Log("Village resources Initialized");
+        return true;
     }
 
     public bool ChangeResources(int value)
@@ -127,7 +131,7 @@ public class VillageResources : MonoBehaviour
         }
             
         resources += value;
-        gameCanvas.UpdateResources(value, resources);
+        _canvasController.GameCanvas.UpdateResources(value, resources);
         return true;
     }
 
@@ -138,7 +142,7 @@ public class VillageResources : MonoBehaviour
             return false;
         }
         resourceProduction += value;
-        gameCanvas.UpdateResourcesProduction(resourceProduction);
+        _canvasController.GameCanvas.UpdateResourcesProduction(resourceProduction);
         return true;
     }
 
@@ -159,7 +163,7 @@ public class VillageResources : MonoBehaviour
             return false;
         }
         food += value;
-        gameCanvas.UpdateFood(value, food);
+        _canvasController.GameCanvas.UpdateFood(value, food);
         return true;
     }
 
@@ -171,7 +175,7 @@ public class VillageResources : MonoBehaviour
         }
         foodProduction += value;
 
-        gameCanvas.UpdateFoodProduction(foodProduction);
+        _canvasController.GameCanvas.UpdateFoodProduction(foodProduction);
         return true;
     }
 
@@ -189,14 +193,14 @@ public class VillageResources : MonoBehaviour
     {
         if (value < 0)
         {
-            if (WorldController.worldController.isCityHallBuilt) value = Mathf.FloorToInt(value / 2);
+            if (_plotController.isCityHallBuilt) value = Mathf.FloorToInt(value / 2);
             if (morale + value < 0)
             {
-                WorldController.worldController.EndGame();
+                _plotController.EndGame();
                 return false;
             }
             morale += value;
-            gameCanvas.UpdateMorale(value, morale);
+            _canvasController.GameCanvas.UpdateMorale(value, morale);
             return true;
         }
         else if(morale + value > 100)
@@ -206,14 +210,14 @@ public class VillageResources : MonoBehaviour
             else
             {
                 morale += value;
-                gameCanvas.UpdateMorale(value, morale);
+                _canvasController.GameCanvas.UpdateMorale(value, morale);
                 return true;
             }
         }
         else
         {
             morale += value;
-            gameCanvas.UpdateMorale(value, morale);
+            _canvasController.GameCanvas.UpdateMorale(value, morale);
             return true;
         }
     }
@@ -225,7 +229,7 @@ public class VillageResources : MonoBehaviour
             return false;
         }
         moraleProduction += value;
-        gameCanvas.UpdateMoraleProduction(moraleProduction);
+        _canvasController.GameCanvas.UpdateMoraleProduction(moraleProduction);
         return true;
     }
 

@@ -1,11 +1,13 @@
 using DG.Tweening;
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
+using static Marker;
 
-public class GameUICanvas : MonoBehaviour
+public class GameUICanvas : MonoBehaviour, ICanvas
 {
     [Header("Resources")]
     [SerializeField] private RectTransform resourcesRT;
@@ -45,11 +47,16 @@ public class GameUICanvas : MonoBehaviour
     [SerializeField] private TextMeshProUGUI messageText;
 
     private ColorConfig _colorConfig;
-    int isResourcesColorChanged = 0;
-    int isFoodColorChanged = 0;
-    int isMoraleColorChanged = 0;
+    private ResourcesController _resourcesController;
+    bool isResourcesMarkerActive = false;
+    bool isFoodMarkerActive = false;
+    bool isMoraleMarkerActive = false;
 
-    private void Awake()
+    Queue<Marker> resourcesMarkerQueue = new Queue<Marker>();
+    Queue<Marker> foodMarkerQueue = new Queue<Marker>();
+    Queue<Marker> moraleMarkerQueue = new Queue<Marker>();
+
+    private void Start()
     {
         Assert.IsNotNull(resourcesRT);
         Assert.IsNotNull(resourcesValueLabel);
@@ -73,14 +80,15 @@ public class GameUICanvas : MonoBehaviour
         Assert.IsNotNull(messageText);
 
         _colorConfig = ConfigController.GetConfig<ColorConfig>();
+        _resourcesController = GameController.Game.GetController<ResourcesController>();
     }
 
     public void UpdateMorale(int value, int newValue)
     {
         moraleValueLabel.text = newValue.ToString();
-        if (VillageResources.villageResources.VillageMorale == MoraleState.Low) moraleImage.sprite = lowMoraleSprite;
-        else if (VillageResources.villageResources.VillageMorale == MoraleState.Normal) moraleImage.sprite = normalMoraleSprite;
-        else if (VillageResources.villageResources.VillageMorale == MoraleState.High) moraleImage.sprite = highMoraleSprite;
+        if (_resourcesController.VillageMorale == MoraleState.Low) moraleImage.sprite = lowMoraleSprite;
+        else if (_resourcesController.VillageMorale == MoraleState.Normal) moraleImage.sprite = normalMoraleSprite;
+        else if (_resourcesController.VillageMorale == MoraleState.High) moraleImage.sprite = highMoraleSprite;
 
         var color = _colorConfig.GetColor(ColorConfig.ColorType.FontDefault);
         var text = "";
@@ -89,7 +97,7 @@ public class GameUICanvas : MonoBehaviour
         if (value < 0)
         {
             color = _colorConfig.GetColor(ColorConfig.ColorType.FontNegative);
-            text = $"-{value}";
+            text = $"-{Math.Abs(value)}";
             sprite = lowMoraleSprite;
         }
         else
@@ -98,19 +106,17 @@ public class GameUICanvas : MonoBehaviour
             text = $"+{value}";
             sprite = highMoraleSprite;
         }
-
-        moraleValueLabel.color = color;
-        isMoraleColorChanged++;
-
-        MakeMarker(color, moraleRT.position + new Vector3(moraleRT.rect.width/2, -moraleRT.rect.height,0), sprite, moraleValueLabel, text, () =>
-            {
-                isMoraleColorChanged--;
-                if (isMoraleColorChanged == 0)
-                {
-                    moraleValueLabel.color = _colorConfig.GetColor(ColorConfig.ColorType.FontDefault);
-                }
-            }
-        );
+        
+        var marker = MakeMarker(color, moraleRT.position + new Vector3(moraleRT.rect.width / 2, -moraleRT.rect.height, 0), sprite, text, moraleValueLabel, () =>
+        {
+            isMoraleMarkerActive = false;
+            moraleValueLabel.color = _colorConfig.GetColor(ColorConfig.ColorType.FontDefault);
+            ActivateMarker(moraleMarkerQueue, isMoraleMarkerActive);
+        }
+            );
+        moraleMarkerQueue.Enqueue(marker);
+        ActivateMarker(moraleMarkerQueue, isMoraleMarkerActive);
+        isMoraleMarkerActive = true;
     }
 
     public void UpdateResources(int value, int newValue)
@@ -122,25 +128,24 @@ public class GameUICanvas : MonoBehaviour
         if (value < 0)
         {
             color = _colorConfig.GetColor(ColorConfig.ColorType.FontNegative);
-            text = $"-{value}";
+            text = $"-{Math.Abs(value)}";
         }
         else
         {
             color = _colorConfig.GetColor(ColorConfig.ColorType.FontPositive);
             text = $"+{value}";
         }
-        resourcesValueLabel.color = color;
-        isResourcesColorChanged++;
 
-        MakeMarker(color, resourcesRT.position + new Vector3(resourcesRT.rect.width/2, -resourcesRT.rect.height, 0), ResourcesSprite, resourcesValueLabel, text, () =>
-            {
-                isResourcesColorChanged--;
-                if (isResourcesColorChanged == 0)
-                {
-                    resourcesValueLabel.color = _colorConfig.GetColor(ColorConfig.ColorType.FontDefault);
-                }
-            }
-        );
+        var marker = MakeMarker(color, resourcesRT.position + new Vector3(resourcesRT.rect.width / 2, -resourcesRT.rect.height, 0), ResourcesSprite, text, resourcesValueLabel, () =>
+        {
+            isResourcesMarkerActive = false;
+            resourcesValueLabel.color = _colorConfig.GetColor(ColorConfig.ColorType.FontDefault);
+            ActivateMarker(resourcesMarkerQueue, isResourcesMarkerActive);
+        }
+            );
+        resourcesMarkerQueue.Enqueue(marker);
+        ActivateMarker(resourcesMarkerQueue, isResourcesMarkerActive);
+        isResourcesMarkerActive = true;
     }
 
     public void UpdateFood(int value, int newValue)
@@ -152,7 +157,7 @@ public class GameUICanvas : MonoBehaviour
         if (value < 0)
         {
             color = _colorConfig.GetColor(ColorConfig.ColorType.FontNegative);
-            text = $"-{value}";
+            text = $"-{Math.Abs(value)}";
         }
         else
         {
@@ -160,18 +165,16 @@ public class GameUICanvas : MonoBehaviour
             text = $"+{value}";
         }
 
-        foodValueLabel.color = color;
-        isFoodColorChanged++;
-
-        MakeMarker(color, foodRT.position + new Vector3(foodRT.rect.width/2, -foodRT.rect.height, 0), FoodSprite, foodValueLabel, text, () =>
-            {
-                isFoodColorChanged--;
-                if (isFoodColorChanged == 0)
+        var marker = MakeMarker(color, foodRT.position + new Vector3(foodRT.rect.width/2, -foodRT.rect.height, 0), FoodSprite, text, foodValueLabel, () =>
                 {
+                    isFoodMarkerActive= false;
                     foodValueLabel.color = _colorConfig.GetColor(ColorConfig.ColorType.FontDefault);
+                    ActivateMarker(foodMarkerQueue, isFoodMarkerActive);
                 }
-            }
-        );
+            );
+        foodMarkerQueue.Enqueue(marker);
+        ActivateMarker(foodMarkerQueue, isFoodMarkerActive);
+        isFoodMarkerActive = true;
     }
 
     public void ShowMessageBar(string message)
@@ -185,27 +188,28 @@ public class GameUICanvas : MonoBehaviour
         messageBar.SetActive(false);
     }
 
-    public void MakeMarker(Color fontColor, Vector3 position, Sprite sprite, TextMeshProUGUI label, string textValue, Action action = null) 
+    public Marker MakeMarker(Color fontColor, Vector3 position, Sprite sprite, string textValue, TextMeshProUGUI label, Action action = null) 
     {
-        var marker = Instantiate(Marker, position + new Vector3(startOffsetX, startOffsetY, 0), Quaternion.identity, this.transform);
-        var rectTransform = marker.GetComponent<RectTransform>();
-        var image = marker.GetComponentsInChildren<Image>()[1];
-        var background = marker.GetComponent<Image>();
-        var text = marker.GetComponentInChildren<TextMeshProUGUI>();
+        var startPosition = position + new Vector3(startOffsetX, startOffsetY, 0);
+        var endPosition = position + new Vector3(0, endOffsetY, 0);
 
-        image.sprite = sprite;
-        text.color = fontColor;
-        text.text = textValue;
+        var markerObject = Instantiate(Marker, startPosition, Quaternion.identity, this.transform);
+        Marker marker = markerObject.GetComponent<Marker>();
+        MarkerData markerData = new MarkerData(startPosition, endPosition, sprite, fontColor, textValue, time, label);
 
+        marker.UpdateContent(markerData);
+        marker.OnAnimationFinished += action;
+        
+        return marker;
+    }
 
-        Sequence sequence = DOTween.Sequence();
-        sequence.Append(rectTransform.DOMoveY(position.y + endOffsetY, time)).Join(image.DOFade(0.0f, time)).Join(background.DOFade(0.0f, time)).Join(text.DOFade(0.0f, time));
-        sequence.OnComplete(() => {
-            action?.Invoke();
-            Destroy(marker);
-            }
-        );
-        sequence.Play();
+    private void ActivateMarker(Queue<Marker> markers, bool isMarkerActive)
+    {
+        if (!isMarkerActive && markers.Count >0)
+        {
+            var marker = markers.Dequeue();
+            marker.ShowMarker();
+        }
     }
 
     public void UpdateFoodProduction(int value)
@@ -231,5 +235,15 @@ public class GameUICanvas : MonoBehaviour
     public void ShowFlower()
     {
         flower.SetActive(true);
+    }
+
+    public void SetActive(bool active)
+    {
+        this.gameObject.SetActive(active);
+    }
+
+    public void CloseCanvas()
+    {
+       
     }
 }

@@ -1,17 +1,55 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
-public class GameEventsController : MonoBehaviour
+public class GameEventsController : MonoBehaviour, IController
 {
     [SerializeField] List<GameEvent> events;
+    [SerializeField] private float eventCooldown;
+    
+    private ResourcesController _resourcesController;
+    private CanvasController _canvasController;
+    private PlotController _plotController;
+    private BuildingsController _buildingsController;
 
-    public static GameEventsController gameEventsController;
-    private GameUICanvas gameUICanvas;
+    private bool isEventActive = false;
+    private bool isEventOnCooldown = false;
+    private float eventEndTime = 0;
 
-    private void Start()
+    private void Update()
     {
-        gameEventsController = GetComponent<GameEventsController>();
-        gameUICanvas = FindObjectOfType<GameUICanvas>();
+        if (isEventOnCooldown && Time.time > eventEndTime + eventCooldown && !GameController.Game.isPaused)
+        {
+            isEventOnCooldown = false;
+            CheckEvent();
+        }
+    }
+
+    public void CheckEvent(int i =0)
+    {
+        GameEvent gameEvent = GetEvent();
+        if (gameEvent == null) return;
+        else
+        {
+            if (!isEventOnCooldown && !isEventActive)
+            {
+                StartCoroutine(StartEvent(gameEvent));
+            }
+        }
+    }
+
+    private IEnumerator StartEvent(GameEvent gameEvent)
+    {
+        FindObjectOfType<GameUICanvas>().HideMessageBar();
+        gameEvent.wasUsed = true;
+        isEventActive = true;
+        _canvasController.ShowEventCanvas(gameEvent);
+        yield return new WaitUntil(() => !_canvasController.isCanvasActive);
+
+        isEventOnCooldown = true;
+        eventEndTime = Time.time;
+        isEventActive = false;
     }
 
     public void UnlockNamedEvent(EventType type)
@@ -24,18 +62,31 @@ public class GameEventsController : MonoBehaviour
                 return;
             }
         }
+        CheckEvent();
     }
 
-    public GameEvent GetEvent()
+    public void LockNamedEvent(EventType type)
+    {
+        for (int i = 0; i < events.Count; i++)
+        {
+            if (events[i].type == type && !events[i].wasUsed)
+            {
+                events[i].isUnlocked = false;
+                return;
+            }
+        }
+    }
+
+    private GameEvent GetEvent()
     {
         GameEvent possibleGameEvent = null; 
         for (int i = 0; i< events.Count; i++)
         {
-            if (!events[i].wasUsed && events[i].eventLevel <= VillageResources.villageResources.BuildingScore && events[i].isUnlocked)
+            if (!events[i].wasUsed && events[i].eventLevel <= _resourcesController.BuildingScore && events[i].isUnlocked)
             {
-                if (events[i].minimumResources.resources <= VillageResources.villageResources.Resources
-                    && events[i].minimumResources.food <= VillageResources.villageResources.Food
-                    && events[i].minimumResources.morale <= VillageResources.villageResources.Morale)
+                if (events[i].minimumResources.resources <= _resourcesController.Resources
+                    && events[i].minimumResources.food <= _resourcesController.Food
+                    && events[i].minimumResources.morale <= _resourcesController.Morale)
                 {
                     return events[i];
                 }
@@ -49,13 +100,13 @@ public class GameEventsController : MonoBehaviour
         if(possibleGameEvent != null)
         {
             string message = "You need a bit more ";
-            if (possibleGameEvent.minimumResources.resources > VillageResources.villageResources.Resources) message = message + "{r} ";
-            if (possibleGameEvent.minimumResources.food > VillageResources.villageResources.Food) message = message + "{f} ";
-            if (possibleGameEvent.minimumResources.morale > VillageResources.villageResources.Morale) message = message + "{m} ";
+            if (possibleGameEvent.minimumResources.resources > _resourcesController.Resources) message = message + "{r} ";
+            if (possibleGameEvent.minimumResources.food > _resourcesController.Food) message = message + "{f} ";
+            if (possibleGameEvent.minimumResources.morale > _resourcesController.Morale) message = message + "{m} ";
 
             message = message + "to start next event.";
 
-            gameUICanvas.ShowMessageBar(message);
+            _canvasController.GameCanvas.ShowMessageBar(message);
         }
 
         return null;
@@ -66,23 +117,23 @@ public class GameEventsController : MonoBehaviour
         switch (gameEvent.type)
         {
             case EventType.KupalaNight:
-                WorldController.worldController.hasKupalaFlower = true;
-                gameUICanvas.ShowFlower();
+                _plotController.hasKupalaFlower = true;
+                _canvasController.GameCanvas.ShowFlower();
                 break;
             case EventType.SlayerOfTheBeast:
-                WorldController.worldController.isArmoryUnlocked = true;
+                _plotController.isArmoryUnlocked = true;
                 break;
             case EventType.ForestNymph:
-                WorldController.worldController.isWheatBetter = true;
+                _plotController.isWheatBetter = true;
                 IncreaseWheat();
                 break;
             case EventType.StormOfPerun:
-                WorldController.worldController.isPerunHappy = true;
+                _plotController.isPerunHappy = true;
                 PerunsStormConsequences();
                 break;
             case EventType.AltarOfPerun:
-                WorldController.worldController.hasSword = true;
-                gameUICanvas.ShowSword();
+                _plotController.hasSword = true;
+                _canvasController.GameCanvas.ShowSword();
                 break;
             default:
                 break;
@@ -103,24 +154,36 @@ public class GameEventsController : MonoBehaviour
         foreach (Wheat_field field in fields)
         {
             int mills = field.CheckForNeighbor(BuildingConfig.BuildingType.Mill);
-            VillageResources.villageResources.ChangeFoodProduction(mills * 5);
+            _resourcesController.ChangeFoodProduction(mills * 5);
         }
     }
 
     public void PerunsStormConsequences()
     {
-        WorldController.worldController.isPerunActivated = true;
-        WorldController.worldController.destroyMill.DestroyBuilding(true);
+        _plotController.isPerunActivated = true;
+        _plotController.destroyMill.DestroyBuilding(true);
 
-        if (!WorldController.worldController.isPerunHappy)
+        if (!_plotController.isPerunHappy)
         {
             for(int i=0; i< 2; i++)
             {
-                var range = BuildingsController.buildingsController.listOfBuiltBuildings.Count;
+                var range = _buildingsController.listOfBuiltBuildings.Count;
                 int number = Random.Range(0, range - 1);
 
-                BuildingsController.buildingsController.listOfBuiltBuildings[number].DestroyBuilding(false);
+                _buildingsController.listOfBuiltBuildings[number].DestroyBuilding(false);
             }
         }
+    }
+
+    public async Task<bool> Initialize()
+    {
+        await Task.Yield();
+        _resourcesController = GameController.Game.GetController<ResourcesController>();
+        _canvasController = GameController.Game.GetController<CanvasController>();
+        _plotController = GameController.Game.GetController<PlotController>();
+        _buildingsController = GameController.Game.GetController<BuildingsController>();
+
+        GameController.Game.OnCycle += CheckEvent;
+        return true;
     }
 }

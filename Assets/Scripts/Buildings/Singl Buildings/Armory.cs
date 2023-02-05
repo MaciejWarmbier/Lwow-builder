@@ -2,12 +2,12 @@ public class Armory : Building
 {
     public override bool CheckIfUnlocked()
     {
-        return WorldController.worldController.isArmoryUnlocked;
+        return _plotController.isArmoryUnlocked;
     }
 
     public override void PassiveEffect()
     {
-        WorldController.worldController.GetNamedEvent(EventType.SlayerOfTheBeast2);
+        _gameEventsController.UnlockNamedEvent(EventType.SlayerOfTheBeast2);
     }
 
     public override string Description()

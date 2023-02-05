@@ -1,6 +1,6 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
@@ -11,23 +11,38 @@ public class Building : MonoBehaviour
 {
     public Action<bool> OnDestruction;
     [SerializeField] BuildingData buildingData;
-    [SerializeField] BuildingCanvas buildingCanvas;
+    [SerializeField] BuildingDescriptionCanvas buildingDesciptionCanvas;
     [SerializeField] GameObject constructionObject;
 
     private bool _isInConstruction = false;
     public bool IsBeingDestroyed = false;
+    private ResourcesController _resourcesController;
+    protected PlotController _plotController;
+    protected GameEventsController _gameEventsController;
+    protected BuildingsController _buildingsController;
 
     public BuildingData Data { get { return buildingData; } }
     public BuildingType Type;
 
     private List<Tile> neighbors;
 
-    public void Awake()
+    public void Start()
     {
         Assert.IsNotNull(buildingData);
-        Assert.IsNotNull(buildingCanvas);
+        Assert.IsNotNull(buildingDesciptionCanvas);
         Assert.IsNotNull(constructionObject);
-        buildingCanvas.Setup(this);
+
+        buildingDesciptionCanvas.Setup(this);
+
+        Initialize();
+    }
+
+    public void Initialize()
+    {
+        _resourcesController = GameController.Game.GetController<ResourcesController>();
+        _plotController = GameController.Game.GetController<PlotController>();
+        _gameEventsController = GameController.Game.GetController<GameEventsController>();
+        _buildingsController = GameController.Game.GetController<BuildingsController>();
     }
 
 
@@ -137,63 +152,68 @@ public class Building : MonoBehaviour
         if (!_isInConstruction)
         {
             if (isShown)
-                buildingCanvas.ShowBuildingDescription();
+                buildingDesciptionCanvas.ShowBuildingDescription();
             else
-                buildingCanvas.HideBuildingDescription();
+                buildingDesciptionCanvas.HideBuildingDescription();
         }
     }
 
-    public async void PlaceOnTile(Vector3 position, List<Tile> listOfTiles)
+    public void PlaceOnTile(Vector3 position, List<Tile> listOfTiles)
     {
         if (CheckCosts())
         {
             neighbors = listOfTiles;
             gameObject.transform.position = new Vector3(position.x, 4, position.z);
             
-            gameObject.transform.parent = BuildingsController.buildingsController.gameObject.transform;
-            BuildingsController.buildingsController.buildingInProgress = null;
-            BuildingsController.buildingsController.AddBuildingToList(this);
-            VillageResources.villageResources.ChangeFood(-buildingData.FoodCost);
-            VillageResources.villageResources.ChangeResources(-buildingData.ResourcesCost);
+            gameObject.transform.parent = _buildingsController.gameObject.transform;
+            _buildingsController.buildingInProgress = null;
+            _buildingsController.AddBuildingToList(this);
+            _resourcesController.ChangeFood(-buildingData.FoodCost);
+            _resourcesController.ChangeResources(-buildingData.ResourcesCost);
 
-            await StartConstructionTimer();
-
-            this.PassiveEffect();
-
-            VillageResources.villageResources.ChangeBuildingScore(buildingData.BuildingScore);
-            VillageResources.villageResources.ChangeFoodProduction(buildingData.FoodProduction);
-            VillageResources.villageResources.ChangeResourcesProduction(buildingData.ResourcesProduction);
-            VillageResources.villageResources.ChangeMoraleProduction(buildingData.MoraleProduction);
-
-            WorldController.worldController.CheckEvent();
+            StartCoroutine(StartConstructionTimer());
         }
     }
 
-    public async Task StartConstructionTimer()
+    private void FinishConstruction()
+    {
+        this.PassiveEffect();
+
+        _resourcesController.ChangeBuildingScore(buildingData.BuildingScore);
+        _resourcesController.ChangeFoodProduction(buildingData.FoodProduction);
+        _resourcesController.ChangeResourcesProduction(buildingData.ResourcesProduction);
+        _resourcesController.ChangeMoraleProduction(buildingData.MoraleProduction);
+
+        _gameEventsController.CheckEvent();
+    }
+
+    public IEnumerator StartConstructionTimer()
     {
         _isInConstruction = true;
         constructionObject.SetActive(true);
-        var part = (int)(((float)buildingData.TimeToBuild / 9) * 1000);
+        var part = (((float)buildingData.TimeToBuild / 9));
         for (int i=0; i<9; i++)
         {
-            buildingCanvas.UpdateConstructionTimer(i);
-            await Task.Delay(part);
+            buildingDesciptionCanvas.UpdateConstructionTimer(i);
+            yield return new WaitForSeconds(part);
         }
-        buildingCanvas.HideConstructionTimer();
+        buildingDesciptionCanvas.HideConstructionTimer();
         constructionObject.SetActive(false);
         _isInConstruction= false;
+
+        FinishConstruction();
     }
 
     
 
     private bool CheckCosts()
     {
-        if (VillageResources.villageResources.Food < buildingData.FoodCost)
+        if (_resourcesController.Food < buildingData.FoodCost)
         {
             Debug.LogError("Not enough food");
             return false;
         }
-        if(VillageResources.villageResources.Resources < buildingData.ResourcesCost)
+        if(_resourcesController.Resources < buildingData.ResourcesCost)
         {
             Debug.LogError("Not enough resources");
             return false;
@@ -206,12 +226,12 @@ public class Building : MonoBehaviour
     public virtual void DestroyBuilding(bool isDestroyedByStorm)
     {
         IsBeingDestroyed = true;
-        VillageResources.villageResources.ChangeResourcesProduction(-Data.ResourcesProduction);
-        VillageResources.villageResources.ChangeFoodProduction(-Data.FoodProduction);
-        VillageResources.villageResources.ChangeMoraleProduction(-Data.MoraleProduction);
+        _resourcesController.ChangeResourcesProduction(-Data.ResourcesProduction);
+        _resourcesController.ChangeFoodProduction(-Data.FoodProduction);
+        _resourcesController.ChangeMoraleProduction(-Data.MoraleProduction);
 
         OnDestruction?.Invoke(isDestroyedByStorm);
-        BuildingsController.buildingsController.RemoveBuildingFromList(this);
+        _buildingsController.RemoveBuildingFromList(this);
         
         Destroy(this.gameObject);
         IsBeingDestroyed = false;

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-public class BuildingCanvas : MonoBehaviour
+public class BuildingDescriptionCanvas : MonoBehaviour
 {
     [SerializeField] GameObject descriptionCanvas;
     [SerializeField] TextMeshProUGUI nameText;
