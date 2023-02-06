@@ -16,6 +16,7 @@ public class CanvasController : MonoBehaviour, IController
     [SerializeField] private DestroyBuildingCanvas destroyBuildingCanvas;
     [SerializeField] private PauseCanvas pauseCanvas;
     [SerializeField] private GameUICanvas gameCanvas;
+    [SerializeField] private TutorialCanvas tutorialCanvas;
     public GameUICanvas GameCanvas { get { return gameCanvas; } }
     [SerializeField] private ICanvas activeCanvas;
     [SerializeField] private EventCanvas eventCanvas;
@@ -161,7 +162,7 @@ public class CanvasController : MonoBehaviour, IController
 
     public void OpenTutorialCanvas()
     {
-
+        tutorialCanvas.SetActive(true);
     }
 
 }
