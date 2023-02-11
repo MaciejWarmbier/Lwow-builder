@@ -13,6 +13,7 @@ public class PauseCanvas : MonoBehaviour, ICanvas
 
     public void ContinueGame()
     {
+        SetActive(false);
         OnClose?.Invoke();
     }
 
@@ -29,5 +30,10 @@ public class PauseCanvas : MonoBehaviour, ICanvas
     public void CloseCanvas()
     {
         ContinueGame();
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
@@ -7,6 +8,8 @@ using UnityEngine.UI;
 
 public class TutorialCanvas : MonoBehaviour, ICanvas
 {
+    public Action OnClose;
+
     [SerializeField] private List<string> pages;
     [SerializeField] private Button nextButton;
     [SerializeField] private Button previousButton;
@@ -32,14 +35,14 @@ public class TutorialCanvas : MonoBehaviour, ICanvas
 
     private void Start()
     {
-        ShowTutorial();
         _gridController = GameController.Game.GetController<GridManager>();
     }
 
     public void CloseCanvas()
     {
         GameController.Game.UnPauseGame();
-        Destroy(gameObject);
+        OnClose?.Invoke();
+        SetActive(false);
     }
 
     public void ShowTutorial() 
@@ -50,11 +53,15 @@ public class TutorialCanvas : MonoBehaviour, ICanvas
             descriptions.Add(page.ToString());
         }
 
-        description.text = pages[0].AddSpriteTextToStrings();
+        //description.text = pages[0].AddSpriteTextToStrings();
+        description.SetText(pages[0].AddSpriteTextToStrings().Replace("<enter>", "\n"));
         title.text = "Tutorial";
         CheckButtonFunctionality();
-        if(_gridController.lastChosenTile != null)
+        if(_gridController?.lastChosenTile != null)
             _gridController.lastChosenTile.StopHover();
+
+        description.enabled = false;
+        description.enabled = true;
     }
 
     public void GoToNextPage()
@@ -67,7 +74,7 @@ public class TutorialCanvas : MonoBehaviour, ICanvas
             {
                 previousPage = pageCount;
                 descriptionIndex++;
-                description.text = descriptions[descriptionIndex];
+                description.SetText(descriptions[descriptionIndex].AddSpriteTextToStrings().Replace("<enter>", "\n"));
             }
             pageNumber = 1;
         }
@@ -86,7 +93,7 @@ public class TutorialCanvas : MonoBehaviour, ICanvas
             if(descriptionIndex > 0)
             {
                 descriptionIndex--;
-                description.text = descriptions[descriptionIndex];
+                description.SetText(descriptions[descriptionIndex].AddSpriteTextToStrings().Replace("<enter>", "\n"));
             }
 
             pageNumber = previousPage;

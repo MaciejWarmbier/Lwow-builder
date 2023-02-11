@@ -1,7 +1,5 @@
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.SocialPlatforms.GameCenter;
 
 public class ResourcesController : MonoBehaviour, IController
 {

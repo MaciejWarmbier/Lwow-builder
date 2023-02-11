@@ -1,11 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using static ColorConfig;
-using static UnityEditor.Experimental.GraphView.Port;
 
 public class Tile : MonoBehaviour
 {
@@ -206,7 +204,7 @@ public class Tile : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (!EventSystem.current.IsPointerOverGameObject() && type != TileType.NonInteractive && isHoveredOver)
+        if (!EventSystem.current.IsPointerOverGameObject() && type != TileType.NonInteractive && isHoveredOver && !GameController.Game.isPaused)
         {
             if (_buildingsController.buildingInProgress != null 
                 && _buildingsController.buildingInProgress.Data.IsBig)
@@ -242,7 +240,7 @@ public class Tile : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (!EventSystem.current.IsPointerOverGameObject())
+        if (!EventSystem.current.IsPointerOverGameObject() && !GameController.Game.isPaused)
         {
             if (_buildingsController.buildingInProgress != null)
             {

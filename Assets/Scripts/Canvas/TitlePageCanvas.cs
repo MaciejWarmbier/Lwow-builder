@@ -71,6 +71,8 @@ public class TitlePageCanvas : MonoBehaviour
         yield return new WaitForSeconds(0.05f);
 
         Debug.Log("Scene Fully Loaded");
+        GameController.Game.GetController<CanvasController>().OpenTutorialCanvas();
+
         Destroy(this.gameObject);
     }
 }

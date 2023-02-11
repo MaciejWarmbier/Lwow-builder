@@ -162,7 +162,17 @@ public class CanvasController : MonoBehaviour, IController
 
     public void OpenTutorialCanvas()
     {
+        ActivateCanvas();
+        GameController.Game.PauseGame();
+        tutorialCanvas.ShowTutorial();
         tutorialCanvas.SetActive(true);
+
+        tutorialCanvas.OnClose += () =>
+            {
+            tutorialCanvas.SetActive(false);
+                DeactivateCanvas();
+              
+        };
     }
 
 }
