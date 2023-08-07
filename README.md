@@ -39,3 +39,7 @@ To play the Lviv Tales game you only need a computer mouse or a touchpad and a k
 ### 3D graphic assets
   - https://assetstore.unity.com/packages/3d/environments/landscapes/rpg-poly-pack-lite-148410
   - https://assetstore.unity.com/packages/3d/environments/fantasy/low-poly-fantasy-medieval-village-163701
+
+
+https://github.com/MaciejWarmbier/Lwow-builder/assets/68277319/1ebdb672-ed25-4039-bb9d-38b6392e71de
+
